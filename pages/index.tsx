@@ -1,9 +1,20 @@
+import axios from 'axios'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
+
+  useEffect(() => {
+    
+    if (process.env.apiUrl)
+      axios.get(`${process.env.apiUrl}/status`).then(res => {
+        console.log(res.data);
+      });
+  },[]);
+
   return (
     <div className={styles.container}>
       <Head>
