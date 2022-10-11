@@ -1,0 +1,91 @@
+.wrapper {
+  overflow-wrap: break-word;
+  padding: 50px 20px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  & h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 3em;
+    word-break: break-all;
+  }
+}
+.userInfoCard {
+  display: flex;
+  gap: 8px;
+  padding: 5px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  margin: 20px 0 20px 0;
+}
+.userInfoCard:hover {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.content {
+  max-width: 100%;
+}
+
+.containers {
+  display: grid;
+  //grid-template-columns: 70% 30%;
+  grid-template-columns: 100%;
+  column-gap: 20px;
+}
+.commentContainer {
+  display: grid;
+  grid-template-columns: auto;
+  row-gap: 1em;
+  & > .__form {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 1em;
+  }
+  & .__input {
+    width: 50%;
+  }
+}
+.rate {
+  gap: 8px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  & span {
+    font-weight: bold;
+  }
+}
+.comment {
+  & > .__title {
+    font-weight: bold;
+  }
+}
+
+.divider_text {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1.5rem 0;
+  & button {
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .containers {
+    grid-template-columns: auto;
+  }
+  .commentContainer {
+    & .__input {
+      width: 100%;
+    }
+  }
+}

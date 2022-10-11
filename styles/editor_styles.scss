@@ -1,0 +1,40 @@
+figure {
+  margin: 0;
+}
+
+.editor_ol {
+  margin: 16px 0;
+  padding: 0;
+  & li {
+    margin-left: 1.5em;
+    position: relative;
+    direction: ltr;
+  }
+}
+
+pre pre {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+}
+
+.separator {
+  display: inline-block;
+  border-right: 1px solid #ddd;
+  height: 24px;
+  margin: 0 0.5em;
+}
+
+.color-highlight-1 {
+  &:before {
+    content: "\2713";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+  }
+}
+

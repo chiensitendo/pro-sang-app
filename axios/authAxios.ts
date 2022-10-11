@@ -1,39 +1,17 @@
 import axios from "axios";
-import { refreshTokenAPI } from "../apis/auth-apis";
-import { getSessionAccessToken, getSessionRefreshToken, getSessionUsername, isSessionAccessTokenExpired, isSessionRefreshTokenExpired, setRefreshTokenSessionStorage } from "../services/session-service";
-import { RefreshTokenResponse } from "../types/account";
+import {GlobalError} from "../types/error";
+import {API_TIMEOUT} from "../constants";
 
-const authAxios = axios.create();
+const authAxios = axios.create({
+    timeout: API_TIMEOUT
+});
 authAxios.interceptors.request.use(
   async function (request) {
-    let accessToken = getSessionAccessToken();
-    if (isSessionAccessTokenExpired()) {
-      if (isSessionRefreshTokenExpired()) {
-          window.location.href = "/login";
-          return;
-      } else {
-          const token = getSessionRefreshToken();
-          const username = getSessionUsername();
-          try {
-            const res = await refreshTokenAPI({
-              refreshToken: token,
-              username: username
-            });
-            const response = res.data.body as RefreshTokenResponse;
-            accessToken = response.accessToken;
-            setRefreshTokenSessionStorage(response);
-          } catch (err) {
-            window.location.href = "/login";
-          }
-      }
-    }
-    request.headers = {
-      'Access-Control-Allow-Origin': '*',
-      'Authorization': `Bearer ${accessToken}`,
-      ...request.headers,
-    }
     return request;
-  }
+  },
+    function (error) {
+        return Promise.reject(error);
+    },
 )
 
 authAxios.interceptors.response.use(
@@ -41,8 +19,15 @@ authAxios.interceptors.response.use(
       return response;
     },
     function (error) {
-      return Promise.reject(error);
+        if (!error.response || !error.response.data) {
+            return Promise.reject(error);
+        }
+        const errorObj: GlobalError = error.response.data;
+        if (!errorObj.errors && !errorObj.validations) {
+            return Promise.reject(error);
+        }
+      return Promise.reject(error.response.data);
     }
   );
-  
+
   export default authAxios;

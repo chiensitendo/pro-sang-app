@@ -1,0 +1,122 @@
+{
+  "lyric": {
+    "list": {
+      "header": "Lyric List",
+      "actions": {
+        "searchPlaceholder": "Search Lyrics",
+        "searchBtnText": "Search"
+      },
+      "items": {
+        "editBtnText": "Edit",
+        "deleteBtnText": "Delete",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+      }
+    },
+    "layout": {
+      "header": {
+        "newBtn": "Create New Lyric",
+        "listBtn": "Your Lyrics",
+        "profile": "Profile",
+        "logout": "Logout",
+        "searchPlaceholder": "Find lyrics"
+      }
+    },
+    "detail": {
+      "comment": {
+        "replies": "Replies",
+        "replyTo": "Reply To",
+        "sendButton": "Send",
+        "like": "Like",
+        "unlike": "Unlike",
+        "endMessage": "It is all, nothing more ",
+        "title": "COMMENTS"
+      },
+      "rate": "Rate!",
+      "rateDone": "Thank you for your rate!",
+      "composers": "Composers",
+      "singers": "Singers",
+      "owners": "Current Owners",
+      "content": "CONTENT",
+      "description": "FEELING OF WRITER",
+      "notFound": {
+        "title": "Lyric Not Found",
+        "text": "Sorry! We couldn't find this lyric."
+      }
+    },
+    "notification": {
+      "mustLoginToUse": "You must log in to use this feature!",
+      "error": "Error",
+      "alreadyPublic": "This lyric is on public mode. Do you want to switch to private mode?",
+      "loginSuccess": "Your login is successfully!"
+    },
+    "title": "Lyric Title",
+    "addComposer": "Add Composer",
+    "addSinger": "Add Singer",
+    "addOwner": "Add Owner",
+    "composer": "Composer",
+    "singer": "Singer",
+    "owner": "Current Owner",
+    "content": "Content",
+    "count": "Count",
+    "image": "Image",
+    "video": "Video",
+    "line": "Line",
+    "contentNote": {
+      "line1_1": "You must input at least ",
+      "line1_2": " characters.",
+      "line2_1": "You couldn't input more than ",
+      "line2_2": " characters and have more than ",
+      "line2_3": " lines."
+    },
+    "description": "Your emotion",
+    "descriptionNote": {
+      "line1_1": "You couldn't input more than ",
+      "line1_2": " characters and have more than ",
+      "line1_3": " lines.",
+      "line2_1": "You can add ",
+      "line2_2": " pictures and ",
+      "line2_3": " video links."
+    },
+    "validation": {
+      "nameMaxLength": "$s0 couldn't contain more than $s1 characters.",
+      "nameNotSpecialCharacter": "$s0 cannot contain special characters.",
+      "inputMinimum": "You must input at least $s0 characters.",
+      "inputMaximum": "You can't input more than $s0 characters.",
+      "lineMaximum": "You can't input more than $s0 lines.",
+      "videoMaximum": "You can't add more than $s0 video links.",
+      "imageMaximum": "You can't add more than $s0 images.",
+      "content": {
+        "required": "Please input your content!"
+      },
+      "title": {
+        "required": "Please input your lyric title!",
+        "min": "Title must contain at least $s0 characters.",
+        "max": "Title must contain less than $s0 characters.",
+        "valid": "Title cannot contain any special characters."
+      },
+      "username": {
+        "required": "Please input your username!"
+      },
+      "password": {
+        "required": "Please input your password!"
+      }
+    },
+    "button": {
+      "save": "Save (Private)",
+      "publish": "Publish",
+      "back": "Back",
+      "preview": "Preview",
+      "saveAndPublish": "Save and Publish",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "login": "Login"
+    },
+    "created": "Created",
+    "updated": "Updated",
+    "public": "Public",
+    "private": "Private",
+    "username": "Username",
+    "password": "Password"
+  }
+}

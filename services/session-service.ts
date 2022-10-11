@@ -1,13 +1,14 @@
 import moment from "moment";
-import { LoginResponse, RefreshTokenResponse } from "../types/account";
+import {LoggingUserInfo, LoginResponse, RefreshTokenResponse} from "../types/account";
 
 const PREFIX = "PRO_SANG_";
 
 
 export const isSessionLogging = () => {
-    return !(!sessionStorage.getItem(PREFIX + "TOKEN") || 
-           !sessionStorage.getItem(PREFIX + "RERESH_TOKEN") || 
-           !sessionStorage.getItem(PREFIX + "USERNAME"));
+    return (!(!sessionStorage.getItem(PREFIX + "TOKEN") ||
+        !sessionStorage.getItem(PREFIX + "RERESH_TOKEN") ||
+        !sessionStorage.getItem(PREFIX + "USERNAME")));
+
 }
 
 export const setLoginSessionStorage = (res: LoginResponse) => {
@@ -15,9 +16,11 @@ export const setLoginSessionStorage = (res: LoginResponse) => {
     if (!res) {
         return;
     }
+    const userInfo: LoggingUserInfo = {...res};
     sessionStorage.setItem(PREFIX + "TOKEN", res.accessToken);
     sessionStorage.setItem(PREFIX + "RERESH_TOKEN", res.refreshToken);
     sessionStorage.setItem(PREFIX + "USERNAME", res.username);
+    sessionStorage.setItem(PREFIX + "USER_INFO", JSON.stringify(userInfo));
     sessionStorage.setItem(PREFIX + "TOKEN_EXPIRED_TIME", res.accessTokenExpiredTime + "+07:00");
     sessionStorage.setItem(PREFIX + "REFRESH_TOKEN_EXPIRED_TIME", res.refreshTokenExpiredTime + "+07:00");
 }
@@ -79,6 +82,14 @@ export const getSessionUsername = () => {
         return "";
     }
     return username;
+}
+
+export const getSessionUserInfo = (): LoggingUserInfo | null => {
+    const userInfoVal = sessionStorage.getItem(PREFIX + "USER_INFO");
+    if (!userInfoVal) {
+        return null;
+    }
+    return JSON.parse(userInfoVal);
 }
 
 export const setSessionItem = (key: string, value: string) => {

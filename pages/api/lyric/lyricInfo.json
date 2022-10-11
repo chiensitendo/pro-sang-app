@@ -1,0 +1,89 @@
+{
+  "id": 11,
+  "title": "Phú Quốc và những điều lưu ý!",
+  "rate": 4.5,
+  "status": 1,
+  "isDeleted": false,
+  "createdDate": "2022-03-28 12:46:10",
+  "updatedDate": "2022-09-14 23:38:00",
+  "composers": "Sang,Tran",
+  "currentOwners": null,
+  "singers":  "Sang",
+  "accountInfo": {
+    "id": 1221,
+    "name": "Sang Tran",
+    "username": "tr_sang",
+    "email": "sang_tran@gmail.com",
+    "photoUrl": "https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png",
+    "lyricNumber": 10,
+    "totalRate": 2100
+  },
+  "comment": {
+    "total": 3,
+    "hasNext": false,
+    "comments": [
+      {
+        "id": 1,
+        "content": "{\"blocks\":[{\"key\":\"9jakp\",\"text\":\"It's a good lyric. Thank you so much.\",\"type\":\"header-two\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":37,\"style\":\"FONT_SIZE_14\"},{\"offset\":7,\"length\":10,\"style\":\"BOLD\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
+        "likes": 3,
+        "stars": null,
+        "isLiked": true,
+        "userInfo": {
+          "id": 111,
+          "name": "Alex Bond",
+          "username": "alex_bond",
+          "email": "alexBond@gmail.com",
+          "photoUrl": "https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png"
+        },
+        "replied": {
+          "total": 0,
+          "hasNext": false,
+          "comments": []
+        },
+        "createdDate": "2022-03-29 08:46:10",
+        "updatedDate": "2022-06-15 23:39:00"
+      },
+      {
+        "id": 2,
+        "content": "",
+        "likes": 0,
+        "stars": 3.5,
+        "userInfo": {
+          "id": 222,
+          "name": "Omg Him",
+          "username": "huh_ts",
+          "email": "omg@gmail.com",
+          "photoUrl": "https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png"
+        },
+        "replied": {
+          "total": 0,
+          "hasNext": false,
+          "comments": []
+        },
+        "createdDate": "2022-03-29 10:00:10",
+        "updatedDate": "2022-03-29 10:00:10"
+      },
+      {
+        "id": 3,
+        "content": "{\"blocks\":[{\"key\":\"9jakp\",\"text\":\"I think you should create more lyrics! That'll help me a lot. Thanks.\",\"type\":\"header-two\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":69,\"style\":\"FONT_SIZE_14\"},{\"offset\":62,\"length\":7,\"style\":\"BOLD\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
+        "likes": 0,
+        "stars": null,
+        "isLiked": false,
+        "userInfo": {
+          "id": 333,
+          "name": "Peter Saint",
+          "username": "peter_saint",
+          "email": "peter@gmail.com",
+          "photoUrl": "https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png"
+        },
+        "replied": {
+          "total": 0,
+          "hasNext": false,
+          "comments": []
+        },
+        "createdDate": "2022-04-19 10:00:10",
+        "updatedDate": "2022-07-23 11:00:00"
+      }
+    ]
+  }
+}

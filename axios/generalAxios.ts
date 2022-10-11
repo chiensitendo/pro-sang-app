@@ -1,10 +1,16 @@
 import axios from "axios";
+import {API_TIMEOUT} from "../constants";
 
-const generalAxios = axios.create();
+const generalAxios = axios.create({
+    timeout: API_TIMEOUT
+});
 generalAxios.interceptors.request.use(
-  function (request) {
-    return request;
-  }
+  async function (request) {
+      return request;
+  },
+    function (error) {
+        return Promise.reject(error);
+    },
 )
 
 generalAxios.interceptors.response.use(
@@ -19,5 +25,5 @@ generalAxios.interceptors.response.use(
       }
     }
   );
-  
+
   export default generalAxios;
