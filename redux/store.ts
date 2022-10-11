@@ -13,7 +13,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: new MiddlewareArray().concat(logger, sagaMiddleware),
+    middleware: process.env.NODE_ENV !== "production" ?
+        new MiddlewareArray().concat(logger, sagaMiddleware): new MiddlewareArray().concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(lyricListSaga);
