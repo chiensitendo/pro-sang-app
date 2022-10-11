@@ -1,0 +1,122 @@
+{
+  "lyric": {
+    "list": {
+      "header": "Danh sách lời nhạc",
+      "actions": {
+        "searchPlaceholder": "Tìm kiếm lời nhạc",
+        "searchBtnText": "Tìm kiếm"
+      },
+      "items": {
+        "editBtnText": "Chỉnh sửa",
+        "deleteBtnText": "Xóa",
+        "createdAt": "Ngày tạo",
+        "updatedAt": "Cập nhật lúc"
+      }
+    },
+    "layout": {
+      "header": {
+        "newBtn": "Tạo lời nhạc mới",
+        "listBtn": "Lời nhạc của bạn",
+        "profile": "Profile",
+        "logout": "Đăng xuất",
+        "searchPlaceholder": "Tìm kiếm lời nhạc"
+      }
+    },
+    "detail": {
+      "comment": {
+        "replies": "Bình luận",
+        "replyTo": "Phản hồi",
+        "sendButton": "Gửi",
+        "like": "Thích",
+        "unlike": "Bỏ thích",
+        "endMessage": "Hết rồi ",
+        "title": "BÌNH LUẬN"
+      },
+      "rate": "Đánh Giá!",
+      "rateDone": "Cảm ơn bạn đã đánh giá!",
+      "composers": "Người Sáng tác",
+      "singers": "Ca sĩ",
+      "owners": "Chủ sở hữu hiện tại",
+      "content": "NỘI DUNG",
+      "description": "CẢM NGHĨ CỦA NGƯỜI VIẾT",
+      "notFound": {
+        "title": "Không tìm thấy lời nhạc này ",
+        "text": "Xin lỗi! Chúng tôi rất tiếc không thể tìm thấy lời nhạc này."
+      }
+    },
+    "notification": {
+      "mustLoginToUse": "Bạn phải đăng nhập để sử dụng tính năng này!",
+      "error": "Lỗi",
+      "alreadyPublic": "Lời nhạc này đang ở chế độ công khai. Bạn có muốn chuyển nó sang chế độ riêng tư không?",
+      "loginSuccess": "Bạn đã đăng nhập thành công!"
+    },
+    "title": "Tiêu đề lời nhạc",
+    "addComposer": "Thêm người sách tác",
+    "addSinger": "Thêm ca sĩ",
+    "addOwner": "Thêm chủ sở hữu",
+    "composer": "Người Sáng tác",
+    "singer": "Ca sĩ",
+    "owner": "Chủ sở hữu hiện tại",
+    "content": "Nội dung của lời nhạc",
+    "count": "Số ký tự",
+    "image": "Hình",
+    "video": "Video",
+    "line": "Dòng",
+    "contentNote": {
+      "line1_1": "Bạn phải nhập ít nhất ",
+      "line1_2": " ký tự.",
+      "line2_1": "Bạn không thể tạo lời nhạc nhiều hơn ",
+      "line2_2": " ký tự và chứa hơn ",
+      "line2_3": " dòng."
+    },
+    "description": "Cảm nhận của bạn",
+    "descriptionNote": {
+      "line1_1": "Bạn không thể nhập nhiều hơn ",
+      "line1_2": " ký tự và chứa hơn ",
+      "line1_3": " dòng.",
+      "line2_1": "Bạn có thể thêm ",
+      "line2_2": " hình và ",
+      "line2_3": " đường dẫn video."
+    },
+    "validation": {
+      "nameMaxLength": "$s0 không được chứa nhiều hơn $s1 ký tự.",
+      "nameNotSpecialCharacter": "$s0 không được chứa các ký tự đặc biệt.",
+      "inputMinimum": "Bạn phải nhập tối thiểu $s0 ký tự.",
+      "inputMaximum": "Bạn khổng thể nhập nhiều hơn $s0 ký tự.",
+      "lineMaximum": "Bạn khổng thể nhập nhiều hơn $s0 dòng.",
+      "videoMaximum": "Bạn không thể thêm nhiều hơn $s0 đường dẫn video.",
+      "imageMaximum": "Bạn không thể thêm nhiều hơn $s0 hình ảnh.",
+      "content": {
+        "required": "Vui lòng nhập nội dung của lời nhạc!"
+      },
+      "title": {
+        "required": "Vui lòng nhập tiêu đề của lời nhạc!",
+        "min": "Lời nhạc chứa ít nhất $s0 ký tự.",
+        "max": "Lời nhạc không thể chứa nhiều hơn $s0 ký tự.",
+        "valid": "Lời nhạc không thể chứa ký tự đặc biệt."
+      },
+      "username": {
+        "required": "Vui lòng nhập tên đăng nhập!"
+      },
+      "password": {
+        "required": "Vui lòng nhập mật khẩu!"
+      }
+    },
+    "button": {
+      "save": "Lưu (Riêng tư)",
+      "publish": "Đăng",
+      "back": "Quay lại",
+      "preview": "Xem trước",
+      "saveAndPublish": "Lưu và Đăng",
+      "cancel": "Không",
+      "edit": "Chỉnh sửa",
+      "login": "Đặng nhập"
+    },
+    "created": "Đã tạo",
+    "updated": "Đã cập nhật",
+    "public": "Công khai",
+    "private": "Riêng tư",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu"
+  }
+}

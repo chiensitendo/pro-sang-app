@@ -1,0 +1,60 @@
+{
+  "fonts": [
+    {
+      "name": "Default",
+      "font": "Poppins, Helvetica, Arial, sans-serif"
+    },
+    {
+      "name": "Arial",
+      "font": "Arial, sans-serif"
+    },
+    {
+      "name": "Calibri",
+      "font": "Calibri"
+    },
+    {
+      "name": "Times New Roman",
+      "font": "\"Times New Roman\", Times, Georgia, serif"
+    },
+    {
+      "name": "Monospace",
+      "font": "\"Lucida Console\", Courier, monospace"
+    },
+    {
+      "name": "Sofia",
+      "font": "\"Sofia\", sans-serif"
+    },
+    {
+      "name": "Trirong",
+      "font": "\"Trirong\", serif"
+    },
+    {
+      "name": "Audiowide",
+      "font": "\"Audiowide\", sans-serif"
+    },
+    {
+      "name": "Tangerine",
+      "font": "\"Tangerine\", serif"
+    },
+    {
+      "name": "Roboto",
+      "font": "\"Roboto\", sans-serif"
+    },
+    {
+      "name": "Dancing Script",
+      "font": "\"Dancing Script\", cursive"
+    },
+    {
+      "name": "Combo",
+      "font": "\"Combo\", cursive"
+    },
+    {
+      "name": "Noto Sans JP",
+      "font": "\"Noto Sans JP\", sans-serif"
+    },
+    {
+      "name": "Noto Music",
+      "font": "\"Noto Music\", sans-serif"
+    }
+  ]
+}

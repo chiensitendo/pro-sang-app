@@ -1,0 +1,26 @@
+.wrapper {
+  position: relative;
+}
+
+.picker {
+  position: absolute;
+}
+
+.color_selection {
+  max-height: 150px;
+  overflow: auto;
+}
+
+.chrome_picker {
+  width: 100% !important;
+}
+
+.add_color_modal {
+  [class*="ant-modal-body"] {
+    padding: 0;
+  }
+}
+.color_buttons {
+  display: flex;
+  justify-content: space-between;
+}

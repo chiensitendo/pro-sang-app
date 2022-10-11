@@ -1,75 +1,76 @@
-import { Button, Form, Input } from "antd";
-import TextArea from "antd/lib/input/TextArea";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import React from "react";
-import authAxios from "../../axios/authAxios";
-import withAuth from "../../components/with-auth";
+import {NextPage} from "next";
+import {NotificationProps} from "../../types/page";
 import withNotification from "../../components/with-notification";
-import { LyricRequest } from "../../types/account";
-import { NotificationProps } from "../../types/page";
+import LyricLayout from "../../layouts/LyricLayout";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../redux/store";
+import styles from "./styles/index.module.scss";
+import ListActions from "../../components/lyric/components/ListActions";
+import LyricListComponent from "../../components/lyric/components/LyricListComponent";
+import {fetchList, loadMoreLyricList, searchLyricList} from "../../redux/reducers/lyric/lyricListSlice";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+import {getUserInfo, isAccountLogging} from "../../services/auth_services";
 
-const LyricPage: NextPage = (props: LyricPageProps) => {
-   
-    const {onSuccess, onErrors} = props;
-    const [isLoad, setIsLoad] = React.useState(false);
-    const router = useRouter();
-    const handleCreate = async (req: LyricRequest) => {
-        try {
-            await authAxios.post(process.env.apiUrl + "/lyric", req);
-            onSuccess && onSuccess("Lyric has been saved!");
-            router.push("/lyric/list");
-        } catch(err) {
-            onErrors && onErrors(err);
-            setIsLoad(false);
-        }  
+const LyricListPage: NextPage = (props: LyricListPageProps) => {
+    const dispatch = useDispatch();
+    const {locale, push, defaultLocale} = useRouter();
+    const {list, initLoading, itemLoading, hasNext} = useSelector((state: RootState) => state.lyric.list);
+    const [offset, setOffset] = useState(0);
+    const [searchText, setSearchText] = useState('');
+    const [isLogging, setIsLogging] = useState(false);
+    const [accountId, setAccountId] = useState<number | undefined>(undefined);
+    const handleEdit = (id: number) => {
+        isLogging && push("/lyric/edit/" + id).then();
     }
 
-    const onFinish = (values: LyricRequest) => {
-        setIsLoad(true);
-        handleCreate(values);
-    };
-    
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
-
-    return <div className = "center-1">
-        <Form
-            name="lyric"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-            >
-            <Form.Item
-                label="Lyric name"
-                name="title"
-                rules={[{ required: true, message: 'Please input your lyric name!' }]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="Content"
-                name="content"
-                rules={[{ required: true, message: 'Please input your content!' }]}
-            >
-                <TextArea rows={5}/>
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit" disabled ={isLoad}>
-                Save
-                </Button>
-            </Form.Item>
-        </Form>
-    </div>
+    useEffect(() => {
+        dispatch(fetchList({
+            offset,
+            locale,
+            searchText
+        }));
+        setIsLogging(isAccountLogging());
+        setAccountId(getUserInfo()?.id);
+    },[]);
+    return <LyricLayout>
+        <div className={styles.wrapper}>
+            <ListActions loading={initLoading} locale={locale} onSearch={(value) => {
+                dispatch(searchLyricList({
+                    offset: 0,
+                    searchText: value,
+                    locale
+                }));
+                setOffset(0);
+                setSearchText(value);
+            }
+            }/>
+            <LyricListComponent
+                list={list}
+                hasNext={hasNext}
+                locale={locale}
+                defaultLocale={defaultLocale}
+                initLoading={initLoading}
+                isLogging={isLogging}
+                loading={itemLoading}
+                accountId={accountId}
+                onEdit={handleEdit}
+                onLoadMore={() => {
+                    dispatch(loadMoreLyricList({
+                        offset: offset + 1,
+                        locale,
+                        searchText
+                    }));
+                    setOffset(offset + 1);
+                }
+                }
+            />
+        </div>
+    </LyricLayout>
 }
 
-interface LyricPageProps extends NotificationProps {
-   children?: any; 
+interface LyricListPageProps extends NotificationProps {
+    children?: any;
 }
 
-export default withNotification(withAuth(LyricPage));
+export default withNotification(LyricListPage);

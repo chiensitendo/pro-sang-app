@@ -1,10 +1,20 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
+import { useRouter} from "next/router";
 import React, { useEffect } from "react";
 import { refreshTokenAPI } from "../apis/auth-apis";
-import { getSessionRefreshToken, getSessionUsername, isSessionAccessTokenExpired, isSessionLogging, isSessionRefreshTokenExpired, setRefreshTokenSessionStorage } from "../services/session-service";
 import { RefreshTokenResponse } from "../types/account";
 import { NotificationProps } from "../types/page";
+import {
+    getRefreshToken, getUsername,
+    isAccessTokenExpired,
+    isAccountLogging,
+    isRefreshTokenExpired, setRefreshTokenLocalStorage
+} from "../services/auth_services";
+
+const getUri = (location: Location) => {
+    if (!location || !location.pathname) return "";
+    return location.pathname.substring(1);
+}
 
 const withAuth = (WrapperComponent: NextPage<any>) => {
     // eslint-disable-next-line react/display-name
@@ -13,25 +23,27 @@ const withAuth = (WrapperComponent: NextPage<any>) => {
         const router = useRouter();
         const [shouldLoad, setShouldLoad] = React.useState(false);
         useEffect(() => {
-            const isLogging = isSessionLogging();
+            const isLogging = isAccountLogging();
+            const uri = getUri(location);
+            const loginUrl = `/login${uri? '?redirectUrl='+ uri: ''}`;
             if (!isLogging) {
-                router.push("/login");
+                router.push(loginUrl).then();
                 return;
             }
-            if (isSessionAccessTokenExpired()) {
-                if (isSessionRefreshTokenExpired()) {
-                    router.push("/login");
+            if (isAccessTokenExpired()) {
+                if (isRefreshTokenExpired()) {
+                    router.push(loginUrl).then();
                     return;
                 } else {
-                    const token = getSessionRefreshToken();
-                    const username = getSessionUsername();
+                    const token = getRefreshToken();
+                    const username = getUsername();
                     refreshTokenAPI({
                         refreshToken: token,
                         username: username
                     }).then(res => {
-                        setRefreshTokenSessionStorage(res.data.body as RefreshTokenResponse);
+                        setRefreshTokenLocalStorage(res.data.body as RefreshTokenResponse);
                         setShouldLoad(true);
-                    }).catch(err => router.push("/login"));
+                    }).catch(err => router.push(loginUrl));
                 }
             } else  {
                 setShouldLoad(true);
