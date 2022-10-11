@@ -2,7 +2,6 @@ import React from 'react';
 import createBlockAlignmentButton from '../utils/createBlockEditImageButton';
 
 export default createBlockAlignmentButton({
-    alignment: 'center',
     editPopup: false,
     children: (
         <svg
