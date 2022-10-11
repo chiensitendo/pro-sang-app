@@ -41,12 +41,11 @@ import classNames from "classnames";
 import {getAtomicCount, getCharCount, getImageCount, getLineCount, getVideoUrlCount} from "../editor/utils";
 
 
-const uploadFile = async (e: UploadFile) => {
+const uploadFile = async (e: UploadFile, setLoading: any) => {
     const {name, originFileObj} = e;
     const file = originFileObj as File;
     const lyricStorage = ref(fireBaseStorage, LYRIC_TEMP_PICTURE_BUCK + name);
     const lyricTempDb = collection(fireBaseDatabase, "/lyrics/temp/files/");
-    const {setLoading} = useLoading();
     setLoading(true);
     return addDoc(lyricTempDb, {
         file: file.name,
@@ -74,7 +73,8 @@ const uploadFile = async (e: UploadFile) => {
 const SeparatorComponent = (props: any) => <Separator {...props}/>;
 
 const TextEditor: React.FC<TextEditorProps> = (props: TextEditorProps)=> {
-    const [pluginSetting, setPluginSetting] = useState<ProFullPlugin>(exportFullPlugin(uploadFile));
+    const {setLoading} = useLoading();
+    const [pluginSetting, setPluginSetting] = useState<ProFullPlugin>(exportFullPlugin(e => uploadFile(e, setLoading)));
     const {plugins, InlineToolbar, Toolbar, ProAlignmentTool, LinkButton, EmojiSelect, EmojiSuggestions, addImage, addVideo} = pluginSetting;
     const {size, charLimit, lineLimit, minChar, customKey, disableImage, disableVideo, onTextChange, onNewCustomStyleMap, customStyleMap, initialValue} = props;
     const [editorState, setEditorState] = useState<EditorState | null>(null);
@@ -307,7 +307,7 @@ const TextEditor: React.FC<TextEditorProps> = (props: TextEditorProps)=> {
                                 <AlignTextRightButton {...externalProps} />
                                 <BlockquoteButton {...externalProps}/>
                                 {!disableImage && !disableVideo && <SeparatorComponent {...externalProps} />}
-                                {!disableImage &&  <AddImageButton {...externalProps} uploadImageFile={uploadFile} addImage={addImageFromSrc} />}
+                                {!disableImage &&  <AddImageButton {...externalProps} uploadImageFile={e => uploadFile(e, setLoading)} addImage={addImageFromSrc} />}
                                 {!disableVideo && <AddVideoButton {...externalProps} addVideo={(src, width, height) => {
                                     const state = addVideo(editorState, {src: src, width: width, height: height});
                                     setEditorState(Object.assign(editorState, state));

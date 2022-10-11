@@ -71,7 +71,7 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
                     <List.Item
                         key={item.id}
                         actions={[
-                            <div><Button onClick={() => handleEdit(item.id)}>{getTranslation("lyric.button.edit", "Edit", locale)}</Button></div>
+                            <div key={0}><Button  onClick={() => handleEdit(item.id)}>{getTranslation("lyric.button.edit", "Edit", locale)}</Button></div>
                         ]}
                     >
                         <List.Item.Meta

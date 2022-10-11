@@ -61,7 +61,7 @@ const LyricComment: React.FC<CommentProps> = (props: CommentProps) => {
                   <span className="comment-action"> {item.likes}</span>
               </span>
                     </Tooltip>,
-                    <span onClick={onShowComments}>
+                    <span key={"show-comment"} onClick={onShowComments}>
                     {`${getTranslation( "lyric.detail.comment.replies", "Replies", locale)}(${item.replied ? item.replied.total : 0})`}
                 </span>,
         ];

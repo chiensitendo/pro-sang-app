@@ -52,7 +52,7 @@ export function getBlockBeforeSelectedBlock(editorState: EditorState) {
             .toList();
         let previousIndex = 0;
         blockList.forEach((block, index) => {
-            if (block.get('key') === selectedBlock.get('key')) {
+            if (block && index && selectedBlock && block.get('key') === selectedBlock.get('key')) {
                 previousIndex = index - 1;
             }
         });
@@ -73,23 +73,10 @@ export function getAllBlocks(editorState: EditorState) {
             .getBlockMap()
             .toList();
     }
+    // @ts-ignore
     return new List();
 }
 
-/**
- * If all currently selected blocks are of same type the function will return their type,
- * Else it will return empty string.
- */
-export function getSelectedBlocksType(editorState: EditorState) {
-    const blocks = getSelectedBlocksList(editorState);
-    const hasMultipleBlockTypes = blocks.some(
-        block => block.type !== blocks.get(0).type
-    );
-    if (!hasMultipleBlockTypes) {
-        return blocks.get(0).type;
-    }
-    return undefined;
-}
 
 /**
  * Function will change block style to unstyled for selected blocks.
@@ -133,26 +120,6 @@ export function getSelectionText(editorState: EditorState) {
     return selectedText;
 }
 
-/**
- * Function will handle followind keyPress scenario:
- * case Shift+Enter, select not collapsed ->
- *   selected text will be removed and line break will be inserted.
- */
-export function addLineBreakRemovingSelection(editorState: EditorState) {
-    const content = editorState.getCurrentContent();
-    const selection = editorState.getSelection();
-    let newContent = Modifier.removeRange(content, selection, 'forward');
-    const fragment = newContent.getSelectionAfter();
-    const block = newContent.getBlockForKey(fragment.getStartKey());
-    newContent = Modifier.insertText(
-        newContent,
-        fragment,
-        '\n',
-        block.getInlineStyleAt(fragment.getStartOffset()),
-        null
-    );
-    return EditorState.push(editorState, newContent, 'insert-fragment');
-}
 
 /**
  * Function will inset a new unstyled block.

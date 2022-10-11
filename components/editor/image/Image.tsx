@@ -31,24 +31,19 @@ export default React.forwardRef<HTMLImageElement, ImageProps>(
 
         // leveraging destructuring to omit certain properties from props
         const {
-            blockProps, // eslint-disable-line @typescript-eslint/no-unused-vars
-            customStyleMap, // eslint-disable-line @typescript-eslint/no-unused-vars
-            customStyleFn, // eslint-disable-line @typescript-eslint/no-unused-vars
-            decorator, // eslint-disable-line @typescript-eslint/no-unused-vars
-            forceSelection, // eslint-disable-line @typescript-eslint/no-unused-vars
-            offsetKey, // eslint-disable-line @typescript-eslint/no-unused-vars
-            selection, // eslint-disable-line @typescript-eslint/no-unused-vars
-            tree, // eslint-disable-line @typescript-eslint/no-unused-vars
-            blockStyleFn, // eslint-disable-line @typescript-eslint/no-unused-vars
-            preventScroll, // eslint-disable-line @typescript-eslint/no-unused-vars
+            blockProps,
+            customStyleMap,
+            customStyleFn,
+            decorator,
+            forceSelection,
+            offsetKey,
+            selection,
+            tree,
+            blockStyleFn,
+            preventScroll,
             contentState,
             ...elementProps
         } = otherProps;
-        // useMemo(() => {
-        //     if (editPopup) {
-        //         alert("OK");
-        //     }
-        // },[editPopup]);
         const combinedClassName = clsx(theme.image, className);
         const { src } = contentState.getEntity(block.getEntityAt(0)).getData();
         const finalElementProps = useMemo(() => {
@@ -68,7 +63,6 @@ export default React.forwardRef<HTMLImageElement, ImageProps>(
                     role="presentation"
                     className={combinedClassName}
                 />
-                {/*{editPopup && <div>OKKK</div>}*/}
             </React.Fragment>
         );
     }

@@ -4,7 +4,6 @@ export interface SubscriptionCallback<T> {
     (item: T): void;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export interface Store<T extends object> {
     subscribeToItem<K extends keyof T>(
         key: K,
@@ -19,16 +18,13 @@ export interface Store<T extends object> {
     // setItem<K extends keyof T>(key: K, T[K]): void;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function createStore<T extends object>(
     initialState: T = {} as T
 ): Store<T> {
     let state: T = initialState;
     const listeners: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [x in keyof T]: Array<(v: any) => void>;
     } = {} as {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [x in keyof T]: Array<(v: any) => void>;
     };
 

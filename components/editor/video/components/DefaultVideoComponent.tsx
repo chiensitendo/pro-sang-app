@@ -66,16 +66,16 @@ const DefaultVideoComponent = ({
     }
 
     const {
-        block, // eslint-disable-line @typescript-eslint/no-unused-vars
-        customStyleMap, // eslint-disable-line @typescript-eslint/no-unused-vars
-        customStyleFn, // eslint-disable-line @typescript-eslint/no-unused-vars
-        decorator, // eslint-disable-line @typescript-eslint/no-unused-vars
-        forceSelection, // eslint-disable-line @typescript-eslint/no-unused-vars
-        offsetKey, // eslint-disable-line @typescript-eslint/no-unused-vars
-        selection, // eslint-disable-line @typescript-eslint/no-unused-vars
-        tree, // eslint-disable-line @typescript-eslint/no-unused-vars
-        contentState, // eslint-disable-line @typescript-eslint/no-unused-vars
-        blockStyleFn, // eslint-disable-line @typescript-eslint/no-unused-vars
+        block,
+        customStyleMap,
+        customStyleFn,
+        decorator,
+        forceSelection,
+        offsetKey,
+        selection,
+        tree,
+        contentState,
+        blockStyleFn,
         ...elementProps
     } = otherProps;
     return (

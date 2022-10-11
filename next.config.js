@@ -27,7 +27,7 @@ const nextConfig = {
     locales: ['en-US', 'fr', 'vi', 'nl-NL'],
     // This is the default locale you want to be used when visiting
     // a non-locale prefixed path e.g. `/hello`
-    defaultLocale: 'en-US',
+    defaultLocale: 'vi',
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],

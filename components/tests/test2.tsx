@@ -132,13 +132,12 @@ const textAlignmentPlugin = createTextAlignmentPlugin({
     }
 });
 
-const uploadFile = async (e: UploadFile) => {
+const uploadFile = async (e: UploadFile, setLoading: any) => {
     const {name, originFileObj} = e;
     const file = originFileObj as File;
     const lyricStorage = ref(fireBaseStorage, LYRIC_TEMP_PICTURE_BUCK + name);
     const lyricTempDb = collection(fireBaseDatabase, "/lyrics/temp/files/");
-    const {setLoading} = useLoading();
-    setLoading(true);
+    setLoading && setLoading(true);
     return addDoc(lyricTempDb, {
         file: file.name,
         isSaved: false,
@@ -155,7 +154,7 @@ const uploadFile = async (e: UploadFile) => {
             });
         });
     }).catch(err => {
-        setLoading(false);
+        setLoading && setLoading(false);
         return err;
     });
 
@@ -166,7 +165,7 @@ const resizeablePlugin = createResizeablePlugin();
 const blockDndPlugin = createBlockDndPlugin();
 const videoPlugin = createVideoPlugin();
 const alignmentPlugin = createAlignmentPlugin({
-    uploadImageFile: uploadFile,
+    uploadImageFile: e => uploadFile(e, null),
     theme: {
         buttonStyles: staticToolbarButtonStyles,
         alignmentToolStyles: {
@@ -332,6 +331,7 @@ const TestPage2: NextPage = () => {
     const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
     const [editor, setEditor] = useState(false);
     const [text, setText] = useState(false);
+    const {setLoading} = useLoading();
     const [styleMap, setStyleMap] = useState<DraftStyleMap>({...fontFamilyStyleMap, ...fontSizeStyleMap});
     const [textColors, setTextColors] = useState<string[]>([]);
     const [recentColors, setRecentColors] = useState<ColorResult[]>([]);
@@ -602,7 +602,7 @@ const TestPage2: NextPage = () => {
                                         });
                                     }} />
                                     <SeparatorComponent {...externalProps} />
-                                    <AddImageButton {...externalProps} uploadImageFile={uploadFile} addImage={addImageFromSrc} />
+                                    <AddImageButton {...externalProps} uploadImageFile={e => uploadFile(e, setLoading)} addImage={addImageFromSrc} />
                                     <AddVideoButton {...externalProps} addVideo={(src, width, height) => {
                                         const state = videoPlugin.addVideo(editorState, {src: src, width: width, height: height});
                                         setEditorState(Object.assign(editorState, state));

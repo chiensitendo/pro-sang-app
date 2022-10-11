@@ -54,7 +54,7 @@ const LyricListComponent: React.FC<LyricListComponentProps> = (props: LyricListC
                 <List.Item
                     className={styles.item}
                     actions={isLogging && item.account_info.id === accountId ? [
-                        <Button icon={<EditFilled />} onClick={() => onEdit && onEdit(item.id)}>{getTranslation("lyric.button.edit", "Edit", locale)}</Button>
+                        <Button key={0} icon={<EditFilled />} onClick={() => onEdit && onEdit(item.id)}>{getTranslation("lyric.button.edit", "Edit", locale)}</Button>
                     ]: []}
                 >
                     <Skeleton avatar title={false}

@@ -18,10 +18,9 @@ import {logoutAccount} from "../../../../apis/auth-apis";
 import {useDispatch} from "react-redux";
 import {showErrorNotification} from "../../../../redux/reducers/lyric/notificationSlice";
 import {useLoading} from "../../../core/useLoading";
-const {setLoading} = useLoading();
 
 
-const handleLogout = (locale: string | undefined, push: any, dispatch: any) => {
+const handleLogout = (locale: string | undefined, push: any, dispatch: any, setLoading: any) => {
     setLoading(true);
     logoutAccount(locale).then(res => {
         clearAuthLocalStorage();
@@ -33,11 +32,11 @@ const handleLogout = (locale: string | undefined, push: any, dispatch: any) => {
     });
 }
 
-const generateMenu = (locale: string | undefined, push: any, dispatch: any) => {
+const generateMenu = (locale: string | undefined, push: any, dispatch: any, setLoading: any) => {
     const handleMenuClick: MenuProps['onClick'] = e => {
         const {key} = e;
         if (key === "/logout") {
-            handleLogout(locale,push,dispatch);
+            handleLogout(locale,push,dispatch, setLoading);
         } else {
             push(key, key, {locale: locale ? locale: 'en-US'});
         }
@@ -91,6 +90,7 @@ const IconMenuList = (props: IconMenuListProps) => <React.Fragment>
 const LyricPageHeader = (props: LyricHeaderPageProps) => {
     const {locale, push, pathname} = useRouter();
     const dispatch = useDispatch();
+    const {setLoading} = useLoading();
     const [showSearchBox, setShowSearchBox] = useState(false);
     const [isLogging, setIsLogging] = useState(false);
     useEffect(() => {
@@ -105,7 +105,7 @@ const LyricPageHeader = (props: LyricHeaderPageProps) => {
     const handleMenuClick = useCallback((path: string) => {
         push(path, path, {locale: locale}).then();
     },[locale]);
-    const menu = generateMenu(locale, push, dispatch);
+    const menu = generateMenu(locale, push, dispatch, setLoading);
     const onSearch = (value: string) => console.log(value);
     const headerText = useMemo(() => {
         if (!pathname) {
@@ -151,7 +151,7 @@ const LyricPageHeader = (props: LyricHeaderPageProps) => {
                 </div>
                 <div className={styles.iconMenuList}>
                     <IconMenuList
-                        onLogout={() =>  handleLogout(locale,push,dispatch)}
+                        onLogout={() =>  handleLogout(locale,push,dispatch, setLoading)}
                         onMenuClick={handleMenuClick}
                         isLogging={isLogging}
                         onClickSearchBox={() => setShowSearchBox(!showSearchBox)}

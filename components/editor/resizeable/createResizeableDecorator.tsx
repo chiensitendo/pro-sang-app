@@ -295,7 +295,6 @@ export default ({ config, store }: DecoratorProps) =>
             WrappedComponent
         )})`;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (BlockResizeableDecorator as any).WrappedComponent =
             WrappedComponent.WrappedComponent || WrappedComponent;
 
