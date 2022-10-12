@@ -4,7 +4,7 @@ const path = require('path');
 let apiUrl = "http://localhost:3000/api";
 switch (process.env.NODE_ENV) {
   case "production":
-    apiUrl = "https://103.82.20.216:8080/api";
+    apiUrl = "https://minhsang.space:8080/api";
     break;
   case "development":
     apiUrl = "https://localhost:8080/api";
@@ -35,6 +35,11 @@ const nextConfig = {
     prependData: `@import "_variables.scss";`
   },
   webpack(config) {
+    config.resolve.fallback = {
+      ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified
+      // by next.js will be dropped. Doesn't make much sense, but how it is
+      fs: false, // the solution
+    };
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
