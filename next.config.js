@@ -7,7 +7,7 @@ switch (process.env.NODE_ENV) {
     apiUrl = "https://minhsang.space/api";
     break;
   case "development":
-    apiUrl = "https://minhsang.space/api";
+    apiUrl = "http://localhost:8080/api";
     break;
   case "local":
     break;
