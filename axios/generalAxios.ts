@@ -1,8 +1,12 @@
 import axios from "axios";
 import {API_TIMEOUT} from "../constants";
+import * as https from "https";
 
 const generalAxios = axios.create({
-    timeout: API_TIMEOUT
+    timeout: API_TIMEOUT,
+    httpsAgent: new https.Agent({
+        rejectUnauthorized: false
+    })
 });
 generalAxios.interceptors.request.use(
   async function (request) {
