@@ -7,7 +7,6 @@ import '../styles/text.scss';
 import type { AppProps } from 'next/app'
 import {Provider} from "react-redux";
 import store from "../redux/store";
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Provider store={store}><Component {...pageProps} /></Provider>

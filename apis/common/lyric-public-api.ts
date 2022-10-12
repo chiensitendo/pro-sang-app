@@ -9,13 +9,8 @@ import {
 } from "../../services/auth_services";
 import {refreshTokenAPI} from "../auth-apis";
 import {RefreshTokenResponse} from "../../types/account";
-import * as https from "https";
 
 const PREFIX = "/public/lyric";
-
-const agent = new https.Agent({
-    rejectUnauthorized: false
-});
 
 export const langHeader = (locale: string | undefined) => ({
     headers: {

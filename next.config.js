@@ -4,10 +4,10 @@ const path = require('path');
 let apiUrl = "http://localhost:3000/api";
 switch (process.env.NODE_ENV) {
   case "production":
-    apiUrl = "https://minhsang.space:8080/api";
+    apiUrl = "https://minhsang.space/api";
     break;
   case "development":
-    apiUrl = "https://localhost:8080/api";
+    apiUrl = "https://minhsang.space/api";
     break;
   case "local":
     break;
