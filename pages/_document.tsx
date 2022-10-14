@@ -18,6 +18,7 @@ export default function Document() {
         <Html>
             <Head>
                 <meta charSet="utf-8"/>
+                <meta name="description" content="Tạo lời nhạc miễn phí và cảm nhận của mình của mình về nó. Khi bạn cần hát cho ai đó hoặc hát một mình, bạn chỉ việc vào trang và xem!"/>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"/>
                 <link rel="preconnect" href="https://fonts.googleapis.com"/>
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={"true"}/>

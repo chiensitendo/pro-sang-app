@@ -11,6 +11,9 @@ import {fetchList, loadMoreLyricList, searchLyricList} from "../../redux/reducer
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {getUserInfo, isAccountLogging} from "../../services/auth_services";
+import Head from "next/head";
+import * as React from "react";
+import getTranslation from "../../components/translations";
 
 const LyricListPage: NextPage = (props: LyricListPageProps) => {
     const dispatch = useDispatch();
@@ -34,6 +37,9 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
         setAccountId(getUserInfo()?.id);
     },[]);
     return <LyricLayout>
+        <Head>
+            <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {getTranslation("lyric.list.header", "Lyric List", locale)}</title>
+        </Head>
         <div className={styles.wrapper}>
             <ListActions loading={initLoading} locale={locale} onSearch={(value) => {
                 dispatch(searchLyricList({

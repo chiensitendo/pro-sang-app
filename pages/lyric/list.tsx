@@ -16,6 +16,8 @@ import {List, Tag, Button, Rate} from "antd";
 import {getFullDatetimeString} from "../../utils/utils";
 import getTranslation from "../../components/translations";
 import {useRouter} from "next/router";
+import Head from "next/head";
+import * as React from "react";
 
 export const PublicTag: FC<{locale: string | undefined}> = (props) => {
     return <Tag style={{margin: 0}} color="#87d068">{getTranslation("lyric.public", "Public", props.locale)}</Tag>;
@@ -53,6 +55,9 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
     },[]);
     return <LyricLayout>
         <div className={styles.wrapper}>
+            <Head>
+                <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", locale)}</title>
+            </Head>
             <List
                 loading={isLoading}
                 dataSource={lyricList === null ? []: lyricList}

@@ -31,6 +31,7 @@ import LyricMainContent from "../../components/lyric/components/LyricMainContent
 import {getUserInfo} from "../../services/auth_services";
 import {PrivateTag} from "./list";
 import {LyricStatuses} from "../../apis/lyric-apis";
+import Head from "next/head";
 
 
 const toUserInfo = (u: LoggingUserInfo): LyricCommentUserInfo => {
@@ -86,6 +87,9 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
     },[isRateSuccess]);
 
     return <LyricLayout>
+        <Head>
+            <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {lyricDetail ? lyricDetail.title: ''}</title>
+        </Head>
         {isNotFound && <LyricNotFound locale={locale}/>}
         {lyricDetail && <div className={styles.wrapper}>
             <div className={styles.actions}>

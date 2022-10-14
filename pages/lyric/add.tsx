@@ -23,6 +23,7 @@ import {addLyric, editLyric, LyricActionStatus} from "../../redux/reducers/lyric
 import getTranslation from "../../components/translations";
 import ConfirmModal from "../../components/core/modals/ConfirmModal";
 import {getUserInfo} from "../../services/auth_services";
+import Head from "next/head";
 
 const MAXIMUM_CONTENT_CHAR_COUNT = 5000;
 
@@ -468,6 +469,9 @@ const AddingLyricPage: NextPage<LyricPageProps> = (props: LyricPageProps) => {
     },[detail]);
 
     return <LyricLayout>
+        <Head>
+            <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {!detail ? getTranslation( "lyric.layout.header.newBtn", "Create New Lyric", locale): getTranslation("lyric.button.edit", "Edit", locale) + ` ${detail.title}`}</title>
+        </Head>
         {previewData == null && <div className = {classNames("center-1", styles.wrapper)}>
             {rule && <Form
                 name="lyric"
