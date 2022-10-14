@@ -1,4 +1,8 @@
 {
+  "services": {
+    "welcome": "Welcome to ",
+    "name": "Sang services"
+  },
   "lyric": {
     "slogan": "Save your lyric for free",
     "lyric": "Lyric",
