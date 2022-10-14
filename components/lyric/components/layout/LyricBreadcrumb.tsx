@@ -15,7 +15,7 @@ const generateBreadcrumb = (path: string, query: ParsedUrlQuery | undefined, loc
         if (path === "/lyric/list") {
             items.push(<Breadcrumb.Item key={"1"} href="">
                 <Icon component={MusicIcon} />
-                <span>{getTranslation( "lyric.list.header", "Lyric List", locale)}</span>
+                <span>{getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", locale)}</span>
             </Breadcrumb.Item>);
         } else if (path === "/lyric/profile") {
             items.push(<Breadcrumb.Item key={"1"} href="">

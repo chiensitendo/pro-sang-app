@@ -48,7 +48,11 @@
       "mustLoginToUse": "Bạn phải đăng nhập để sử dụng tính năng này!",
       "error": "Lỗi",
       "alreadyPublic": "Lời nhạc này đang ở chế độ công khai. Bạn có muốn chuyển nó sang chế độ riêng tư không?",
-      "loginSuccess": "Bạn đã đăng nhập thành công!"
+      "loginSuccess": "Bạn đã đăng nhập thành công!",
+      "lyricCreateSuccess": "Lời nhạc đã được tạo!",
+      "lyricCreateAndPublicSuccess": "Lời nhạc đã được tạo và đăng công khai!",
+      "lyricEditSuccess": "Lời nhạc đã được cập nhật!",
+      "lyricEditAndPublicSuccess": "Lời nhạc đã được cập nhật và đăng công khai!"
     },
     "title": "Tiêu đề lời nhạc",
     "addComposer": "Thêm người sách tác",
@@ -117,6 +121,39 @@
     "public": "Công khai",
     "private": "Riêng tư",
     "username": "Tên đăng nhập",
-    "password": "Mật khẩu"
+    "password": "Mật khẩu",
+    "rePassword": "Nhập lại mật khẩu"
+  },
+  "account": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "lastName": "Tên",
+    "firstName": "Họ",
+    "photoUrl": "Đường dẫn ảnh đại diện",
+    "uploadPhotoUrl": "Tải ảnh đại diện",
+    "uploadPhotoText": "Click hoặc kéo file vào để upload"
+  },
+  "validation": {
+    "rePassword": {
+      "notSame": "Vui lòng nhập đúng mật khẩu!"
+    },
+    "email": {
+      "required": "Vui lòng nhập email!",
+      "email": "Dạng email không chính xác!"
+    },
+    "firstName": {
+      "required": "Vui lòng nhập họ của bạn!"
+    },
+    "lastName": {
+      "required": "Vui lòng nhập tên của bạn!"
+    }
+  },
+  "button": {
+    "register": "Đăn ký"
+  },
+  "notification": {
+    "uploadPhotoFailed": "Không thể upload file của bạn. Vui lòng thử lại!",
+    "createAccountSuccess": "Chúc mừng bạn đã tạo tài khoản thành công!",
+    "inValidPhotoUrlConfirm": "Đường dẫn ảnh đại diện không đúng hoặc không còn tồn tại. Bạn có muốn đăng ký tài khoản với ảnh đại diện mặc định không?"
   }
 }

@@ -6,6 +6,8 @@ import lyricContentSlice from "./lyric/lyricContentSlice";
 import lyricInfoSlice from "./lyric/lyricInfoSlice";
 import notificationSlice from "./lyric/notificationSlice";
 import lyricActionSlice from "./lyric/lyricActionSlice";
+import accountLoginSlice from "./account/accountLoginSlice";
+import accountRegisterSlice from "./account/accountRegisterSlice";
 
 const rootReducer = combineReducers({
     lyric: combineReducers({
@@ -17,6 +19,10 @@ const rootReducer = combineReducers({
     lyricContent: lyricContentSlice,
     lyricInfo: lyricInfoSlice,
     notification: notificationSlice,
+    account: combineReducers({
+        login: accountLoginSlice,
+        register: accountRegisterSlice
+    })
 });
 
 export default rootReducer;

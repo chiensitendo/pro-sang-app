@@ -1,51 +1,65 @@
-import { Button, Checkbox, Form, Input } from "antd";
-import { AxiosResponse } from "axios";
-import moment from "moment";
+import { Button, Form, Input } from "antd";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React from "react";
-import { loginAccount } from "../apis/auth-apis";
+import React, {useEffect} from "react";
 import withNotification from "../components/with-notification";
-import { LoginRequest, LoginResponse } from "../types/account";
-import { GlobalError } from "../types/error";
+import { LoginRequest } from "../types/account";
 import { NotificationProps } from "../types/page";
-import {setLoginLocalStorage} from "../services/auth_services";
+import {isAccountLogging, setLoginLocalStorage} from "../services/auth_services";
 import getTranslation from "../components/translations";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../redux/store";
+import {clearLoginState, login} from "../redux/reducers/account/accountLoginSlice";
+import Icon, {UserAddOutlined} from "@ant-design/icons";
+import MusicIcon from "/public/icons/music_note_1.svg";
 
 const LoginPage: NextPage = (props: LoginPageProps) => {
-    const {onErrors, onSuccess} = props;
+    const {onSuccess} = props;
     const router = useRouter();
+    const dispatch = useDispatch();
     const {redirectUrl} = router.query;
-    const [isSubmit, setIsSubmit] = React.useState(false);
-
-    const handleLoginResponse = (res: AxiosResponse) => {
-        if (res && res.data && res.data.body) {
-            setLoginLocalStorage(res.data.body as LoginResponse);
-        } else {
-            throw {} as GlobalError;
-        }
-    }
+    const {isSubmit, response} = useSelector((state: RootState) => state.account.login);
 
     const onFinish = (values: any) => {
         const req: LoginRequest = {
             username: values.username,
             password: values.password
         };
-        setIsSubmit(true);
-        loginAccount(req).then(res => {
-            handleLoginResponse(res);
-            onSuccess && onSuccess(getTranslation("lyric.notification.loginSuccess","Your login is successfully!", router.locale));
-            router.push(redirectUrl ? redirectUrl as string: "/lyric/list").then();
-        }).catch((err)  => onErrors && onErrors(err) && setIsSubmit(false));
+        dispatch(login({
+            request: req,
+            locale: router.locale
+        }));
     };
 
     const onFinishFailed = (errorInfo: any) => {
         // console.log('Failed:', errorInfo);
     };
 
-    return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100vh"}}>
+    useEffect(() => {
+        if (response !== null) {
+            setLoginLocalStorage(response);
+            onSuccess && onSuccess(getTranslation("lyric.notification.loginSuccess","Your login is successfully!", router.locale));
+            router.push(redirectUrl ? redirectUrl as string: "/lyric/list").then();
+        }
+    },[response, redirectUrl, router]);
+
+    useEffect(() => {
+        try {
+            if (isAccountLogging()) {
+                router.push(redirectUrl ? redirectUrl as string: "/lyric").then();
+            }
+        } catch (e) {}
+       return () => {
+           dispatch(clearLoginState());
+       }
+    },[]);
+
+    return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", flexDirection: "column"}}>
+        <div style={{padding: "2rem 0"}}>
+            <h1>{getTranslation("account.login", "Login", router.locale)}</h1>
+        </div>
         <Form
-            name="basic"
+            name="loin"
             labelCol={{ span: 8 }}
 
             initialValues={{ remember: true }}
@@ -79,6 +93,13 @@ const LoginPage: NextPage = (props: LoginPageProps) => {
                 </Button>
                 </Form.Item>
         </Form>
+        <div style={{padding: "50px 0 0 0"}}>
+            <Button onClick={() => router.push("/lyric").then()} icon={ <Icon component={MusicIcon} />}>
+                {getTranslation("lyric.list.header", "Lyric List", router.locale)}
+            </Button>
+            <Button onClick={() => router.push("/register").then()} icon={<UserAddOutlined />} type={"primary"}>
+                {getTranslation("account.register", "Register", router.locale)}</Button>
+        </div>
     </div>
 }
 

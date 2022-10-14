@@ -1,12 +1,20 @@
 import { AxiosResponse } from "axios";
 import generalAxios from "../axios/generalAxios";
-import { LoginRequest, RefreshTokenRequest } from "../types/account";
-import {authHeaders, preAxios, redirectToLogin} from "./common/lyric-public-api";
+import {CreateAccountRequest, LoginRequest, RefreshTokenRequest} from "../types/account";
+import {authHeaders, langHeader, preAxios, redirectToLogin} from "./common/lyric-public-api";
 import authAxios from "../axios/authAxios";
 import {LyricListAccountResponse} from "./lyric-apis";
 
-export const loginAccount = (req: LoginRequest): Promise<AxiosResponse> => {
-    return generalAxios.post<any>(process.env.apiUrl + "/account/login", req);
+export const loginAccount = (req: LoginRequest, locale: string | undefined): Promise<AxiosResponse> => {
+    return generalAxios.post<any>(process.env.apiUrl + "/account/login", req, {
+        ...langHeader(locale)
+    });
+}
+
+export const registerAccountAPI = (req: CreateAccountRequest, locale: string | undefined): Promise<AxiosResponse> => {
+    return generalAxios.post<any>(process.env.apiUrl + "/account/create", req, {
+        ...langHeader(locale)
+    });
 }
 
 export const refreshTokenAPI = (req: RefreshTokenRequest): Promise<AxiosResponse> => {

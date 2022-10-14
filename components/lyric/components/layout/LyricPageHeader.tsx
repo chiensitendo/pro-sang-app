@@ -7,24 +7,25 @@ import type { MenuProps } from 'antd';
 
 import Icon, {
     CaretDownOutlined, HomeFilled, HomeOutlined, LogoutOutlined, PlusCircleFilled,
-    PlusCircleOutlined, ProfileOutlined, SearchOutlined,
+    PlusCircleOutlined, ProfileOutlined, SearchOutlined, UserAddOutlined,
     UserOutlined
 } from "@ant-design/icons";
 import MusicIcon from "../../../../public/icons/music_note_1.svg";
 import Search from "antd/lib/input/Search";
 import classNames from "classnames";
-import {clearAuthLocalStorage, isAccountLogging} from "../../../../services/auth_services";
+import {clearAuthLocalStorage, getUserInfo, isAccountLogging} from "../../../../services/auth_services";
 import {logoutAccount} from "../../../../apis/auth-apis";
 import {useDispatch} from "react-redux";
 import {showErrorNotification} from "../../../../redux/reducers/lyric/notificationSlice";
 import {useLoading} from "../../../core/useLoading";
+import {LoggingUserInfo} from "../../../../types/account";
 
 
 const handleLogout = (locale: string | undefined, push: any, dispatch: any, setLoading: any) => {
     setLoading(true);
     logoutAccount(locale).then(res => {
         clearAuthLocalStorage();
-        push("/login").then();
+        push("/lyric").then();
     }).catch(err => {
         dispatch(showErrorNotification(err));
     }).finally(() => {
@@ -64,23 +65,28 @@ const MenuList = (props: MenuListProps) => <React.Fragment>
         <span>{getTranslation( "lyric.layout.header.newBtn", "Create New Lyric", props.locale)}</span></div>}
     {props.isLogging && <div className={styles.menuItem} onClick={() => props.onMenuClick("/lyric/list")}><Icon component={MusicIcon} />
         <span>{getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", props.locale)}</span></div>}
+    {!props.isLogging && <div className={styles.menuItem} onClick={() => props.onMenuClick("/register")}><UserAddOutlined/>
+        <span>{getTranslation("account.register", "Register", props.locale)}</span></div>}
     {props.isLogging ?
         <div className={styles.menuItemWithAvatar}>
             {props.menu && <Dropdown overlay={props.menu} placement="bottomLeft" arrow trigger={["click"]}>
                 <Space>
-                    <Avatar size={32} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+                    <Avatar size={32} style={{ backgroundColor: '#87d068' }} icon={!props.userInfo?.photoUrl ? <UserOutlined />: undefined} src={props.userInfo?.photoUrl} />
                     <CaretDownOutlined />
                 </Space>
             </Dropdown>}
         </div> :
-        <div className={styles.menuItem} onClick={() => props.onMenuClick("/login")}><UserOutlined /><span>Login</span></div>}
+        <div className={styles.menuItem} onClick={() => props.onMenuClick("/login")}><UserOutlined /><span>
+            {getTranslation("account.login", "Login", props.locale)}
+        </span></div>}
 </React.Fragment>
 
 const IconMenuList = (props: IconMenuListProps) => <React.Fragment>
     <div className={styles.menuIconItem} onClick={() => props.onMenuClick("/lyric")}><HomeOutlined /></div>
     <div className={styles.menuIconItem} ref={props.iconSearchRef} onClick={() => props.onClickSearchBox()}><SearchOutlined /></div>
     <div className={styles.menuIconItem} onClick={() => props.onMenuClick("/lyric/add")}><PlusCircleFilled /></div>
-    <div className={styles.menuIconItem} onClick={() => props.onMenuClick("/lyric/list")}><Icon component={MusicIcon} /></div>
+    {!props.isLogging ? <div className={styles.menuIconItem} onClick={() => props.onMenuClick("/register")}><UserAddOutlined /></div>
+    : <div className={styles.menuIconItem} onClick={() => props.onMenuClick("/lyric/list")}><Icon component={MusicIcon} /></div>}
     {!props.isLogging ? <div className={styles.menuIconItem} onClick={() => props.onMenuClick("/login")}><UserOutlined /></div> :
         <div className={styles.menuIconItem} onClick={() => {
             props.onLogout();
@@ -93,9 +99,7 @@ const LyricPageHeader = (props: LyricHeaderPageProps) => {
     const {setLoading} = useLoading();
     const [showSearchBox, setShowSearchBox] = useState(false);
     const [isLogging, setIsLogging] = useState(false);
-    useEffect(() => {
-        setIsLogging(isAccountLogging());
-    },[]);
+    const [userInfo, setUserInfo] = useState<LoggingUserInfo | null>();
     const searchRef = useRef(null);
     const iconSearchRef = useRef(null);
     const handleWhenClickOutsite = useCallback(() => {
@@ -122,6 +126,10 @@ const LyricPageHeader = (props: LyricHeaderPageProps) => {
         }
         return "";
     },[pathname, locale]);
+    useEffect(() => {
+        setIsLogging(isAccountLogging());
+        setUserInfo(getUserInfo());
+    },[]);
 
     return <div className={styles.wrapper}>
             <div className={styles.container}>
@@ -147,6 +155,7 @@ const LyricPageHeader = (props: LyricHeaderPageProps) => {
                         isLogging={isLogging}
                         menu={menu}
                         locale={locale}
+                        userInfo = {userInfo}
                         />
                 </div>
                 <div className={styles.iconMenuList}>
@@ -167,6 +176,7 @@ interface MenuListProps {
     isLogging: boolean;
     menu: any;
     locale: string | undefined;
+    userInfo: LoggingUserInfo | null | undefined;
 }
 interface IconMenuListProps {
     onClickSearchBox: () => void;

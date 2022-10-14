@@ -389,11 +389,15 @@ const AddingLyricPage: NextPage<LyricPageProps> = (props: LyricPageProps) => {
     useEffect(() => {
         if (actionStatus === LyricActionStatus.SAVED) {
             router.push("/lyric/list").then(() => {
-                onSuccess && onSuccess(`Lyric has been created successfully!`);
+                !detail && onSuccess && onSuccess(
+                    getTranslation("lyric.notification.lyricCreateSuccess", "Lyric has been created successfully!", locale));
+                detail && onSuccess && onSuccess(
+                    getTranslation("lyric.notification.lyricEditSuccess", "Lyric has been updated successfully!", locale));
             });
         } else if (actionStatus === LyricActionStatus.PUBLISHED) {
             router.push("/lyric").then(() => {
-                onSuccess && onSuccess(`Lyric has been created and published successfully!`);
+                !detail && onSuccess && onSuccess(getTranslation("lyric.notification.lyricCreateAndPublicSuccess", "Lyric has been created and published successfully!", locale));
+                detail && onSuccess && onSuccess(getTranslation("lyric.notification.lyricEditAndPublicSuccess", "Lyric has been updated and published successfully!", locale));
             });
         }
 

@@ -48,7 +48,11 @@
       "mustLoginToUse": "You must log in to use this feature!",
       "error": "Error",
       "alreadyPublic": "This lyric is on public mode. Do you want to switch to private mode?",
-      "loginSuccess": "Your login is successfully!"
+      "loginSuccess": "Your login is successfully!",
+      "lyricCreateSuccess": "Lyric has been created successfully!",
+      "lyricCreateAndPublicSuccess": "Lyric has been created and published successfully!",
+      "lyricEditSuccess": "Lyric has been updated successfully!",
+      "lyricEditAndPublicSuccess": "Lyric has been updated and published successfully!"
     },
     "title": "Lyric Title",
     "addComposer": "Add Composer",
@@ -117,6 +121,39 @@
     "public": "Public",
     "private": "Private",
     "username": "Username",
-    "password": "Password"
+    "password": "Password",
+    "rePassword": "Verify Password"
+  },
+  "account": {
+    "login": "Login",
+    "register": "Register",
+    "lastName": "Last Name",
+    "firstName": "First Name",
+    "photoUrl": "Photo Url",
+    "uploadPhotoUrl": "Upload Photo Url",
+    "uploadPhotoText": "Click or drag file to this area to upload"
+  },
+  "validation": {
+    "rePassword": {
+      "notSame": "Please input correct password!"
+    },
+    "email": {
+      "required": "Please input your email!",
+      "email": "Email is not valid!"
+    },
+    "firstName": {
+      "required": "Please input first name!"
+    },
+    "lastName": {
+      "required": "Please input your last name!"
+    }
+  },
+  "button": {
+    "register": "Register"
+  },
+  "notification": {
+    "uploadPhotoFailed": "Oops! Could not upload your photo! Please try again!",
+    "createAccountSuccess": "Congratulation! Your account has been created successfully!",
+    "inValidPhotoUrlConfirm": "Photo url isn't valid or available. Do you want to create new account with our default photo?"
   }
 }
