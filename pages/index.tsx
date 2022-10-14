@@ -4,6 +4,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import getTranslation from "../components/translations";
 import {useRouter} from "next/router";
+import Link from "next/link";
 
 const Index: NextPage = () => {
     const router = useRouter();
@@ -28,10 +29,12 @@ const Index: NextPage = () => {
         {/*</p>*/}
 
         <div className={styles.grid}>
-          <a href="/lyric" className={styles.card}>
-            <h2>{getTranslation("lyric.lyric", "Lyric", router.locale)} &rarr;</h2>
-            <p>{getTranslation("lyric.slogan", "Save your lyric for free", router.locale)}</p>
-          </a>
+          <Link href="/lyric" >
+            <div className={styles.card}>
+                <h2>{getTranslation("lyric.lyric", "Lyric", router.locale)} &rarr;</h2>
+                <p>{getTranslation("lyric.slogan", "Save your lyric for free", router.locale)}</p>
+            </div>
+          </Link>
 
           {/*<a href="https://nextjs.org/learn" className={styles.card}>*/}
           {/*  <h2>Learn &rarr;</h2>*/}
