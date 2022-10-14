@@ -8,6 +8,7 @@ import shellUserSaga from "./sagas/shellUserSaga";
 import lyricContentSaga from "./sagas/lyric/lyricContentSaga";
 import lyricInfoSaga from "./sagas/lyric/lyricInfoSaga";
 import lyricActionSaga from "./sagas/lyric/lyricActionSaga";
+import accountSaga from "./sagas/accountSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -23,6 +24,7 @@ sagaMiddleware.run(shellUserSaga);
 sagaMiddleware.run(lyricContentSaga);
 sagaMiddleware.run(lyricInfoSaga);
 sagaMiddleware.run(lyricActionSaga);
+sagaMiddleware.run(accountSaga);
 
 
 export type RootState = ReturnType<typeof store.getState>;

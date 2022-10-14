@@ -19,7 +19,7 @@ const firebaseConfig = {
     measurementId: "G-GP1SWVDMFC"
 };
 
-export const LYRIC_TEMP_PICTURE_BUCK = "/lyrics/temp/pictures/"
+export const LYRIC_TEMP_PICTURE_BUCK = "/lyrics/temp/pictures/";
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);

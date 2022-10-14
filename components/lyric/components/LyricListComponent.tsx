@@ -8,13 +8,13 @@ import moment from "moment";
 import {FULL_DATETIME_FORMAT} from "../../../constants";
 moment.updateLocale("vi", {
     calendar: {
-        lastDay: "Hôm qua, HH:mm:ss",
-        lastWeek: "Tuần trước, HH:mm:ss",
-        nextDay: "Ngày mai",
-        sameDay: "Hôm nay, HH:mm:ss",
-        nextWeek: "Tuần tới",
-        sameElse: FULL_DATETIME_FORMAT
-    }
+        lastDay: "[Hôm qua lúc] HH:mm:ss",
+        lastWeek: "[Tuần trước lúc] HH:mm:ss",
+        nextDay: "[Ngày mai lúc] HH:mm:ss",
+        sameDay: '[Hôm nay lúc] HH:mm:ss',
+        nextWeek: "[Tuần tới lúc] HH:mm:ss",
+        sameElse: FULL_DATETIME_FORMAT,
+    },
 });
 
 const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
@@ -63,7 +63,7 @@ const LyricListComponent: React.FC<LyricListComponentProps> = (props: LyricListC
                         <List.Item.Meta
                             className={styles.itemMeta}
                             avatar={<Avatar src={item.account_info.photo_url} />}
-                            title={<a href={`${locale && locale !== defaultLocale ? '/' + locale : ''}/lyric/` + item.id}><span className={styles.itemTitle}>{item.title}</span></a>}
+                            title={<a href={`${locale && locale !== defaultLocale ? '/' + locale : ''}/lyric/` + item.title}><span className={styles.itemTitle}>{item.title}</span></a>}
                             description= {<div>
                                 <p className={styles.itemContent} style={{margin: "0 0 5px 0"}}>{item.account_info.name}</p>
                                 <p className={styles.itemDateTime}><span>{moment(item.updated_date, FULL_DATETIME_FORMAT).locale(locale ? locale: 'en').calendar()}</span></p>

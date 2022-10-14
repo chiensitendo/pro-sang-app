@@ -47,3 +47,27 @@ export interface LoggingUserInfo {
 	name: string;
 	photoUrl: string;
 }
+
+export enum Roles {
+	SUPER_ADMIN,
+	ADMIN,
+	USER
+}
+
+export interface CreateAccountRequest {
+	username: string;
+	email: string;
+	password: string;
+	first_name: string;
+	last_name: string;
+	photoUrl?: string;
+	role: Roles;
+}
+
+export interface CreateAccountResponse {
+	username: string;
+	email: string;
+	id: number;
+	created_date: string;
+	updated_date: string;
+}

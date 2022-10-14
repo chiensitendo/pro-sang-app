@@ -39,7 +39,7 @@ const lyricListSlice = createSlice({
         fetchListSuccess(state,action) {
             state.initLoading = false;
             const res: LyricListResponse = action.payload.data.body;
-            state.list = state.list.concat(res.items);
+            state.list = state.list = res.items;
             state.hasNext = state.list.length < res.total;
         },
         fetchListFailed(state) {
