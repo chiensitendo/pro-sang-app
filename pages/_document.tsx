@@ -19,11 +19,14 @@ export default function Document() {
             <Head>
                 <meta charSet="utf-8"/>
                 <meta name="description" content="Tạo lời nhạc miễn phí và cảm nhận của mình của mình về nó. Khi bạn cần hát cho ai đó hoặc hát một mình, bạn chỉ việc vào trang và xem!"/>
+                <meta name="google-site-verification" content="W8kc4WlU1OO_I76CmgndqrjA0JXtU4N3I_HrigWRaSE" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"/>
                 <link rel="preconnect" href="https://fonts.googleapis.com"/>
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={"true"}/>
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Trirong|Audiowide|Tangerine|Roboto|Dancing+Script|Noto+Sans+JP|Noto+Music"/>
+                <script type="text/javascript" src="/analytics.js">
+                </script>
             </Head>
         <body>
             <div id="pro-loading" hidden style={proLoadingCssStyles}>
