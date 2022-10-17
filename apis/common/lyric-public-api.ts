@@ -2,6 +2,7 @@ import {AxiosResponse} from "axios";
 import generalAxios from "../../axios/generalAxios";
 import { DEFAULT_LANG} from "../../constants";
 import {
+    clearAuthLocalStorage,
     getAccessToken,
     getRefreshToken, getUsername,
     isAccessTokenExpired, isAccountLogging,
@@ -37,14 +38,6 @@ export const redirectToLogin = (err: any, reject: any) => {
     reject(err);
 }
 
-export const processWhenAuthFailed = (err: any, reject: any, resolve: any) => {
-    if (err.shouldRedirect !== undefined) {
-        resolve(null);
-    } else {
-        reject(err);
-    }
-}
-
 export const preAxios = (isAuthAPI?: boolean): Promise<string | null> => {
     return new Promise((resolve, reject) => {
         if (!isAuthAPI && !isAccountLogging()) {
@@ -57,6 +50,7 @@ export const preAxios = (isAuthAPI?: boolean): Promise<string | null> => {
             }
             if (isAccessTokenExpired()) {
                 if (isRefreshTokenExpired()) {
+                    clearAuthLocalStorage();
                     reject({shouldRedirect: true});
                 } else {
                     const token = getRefreshToken();
@@ -69,7 +63,10 @@ export const preAxios = (isAuthAPI?: boolean): Promise<string | null> => {
                         accessToken = response.accessToken;
                         setRefreshTokenLocalStorage(response);
                         resolve(accessToken);
-                    }).catch(err => reject({shouldRedirect: true}));
+                    }).catch(err => {
+                        clearAuthLocalStorage();
+                        reject({shouldRedirect: true});
+                    });
                 }
             } else {
                 resolve(accessToken);
@@ -79,23 +76,63 @@ export const preAxios = (isAuthAPI?: boolean): Promise<string | null> => {
         }
     });
 }
+
+export const prePublicAxios = (): Promise<string | null> => {
+    return new Promise((resolve, reject) => {
+        if (!isAccountLogging()) resolve(null);
+
+        try {
+            let accessToken = getAccessToken();
+            if (!accessToken) {
+                resolve(null);
+            }
+            if (isAccessTokenExpired()) {
+                if (isRefreshTokenExpired()) {
+                    clearAuthLocalStorage();
+                    resolve(null);
+                } else {
+                    const token = getRefreshToken();
+                    const username = getUsername();
+                    refreshTokenAPI({
+                        refreshToken: token,
+                        username: username
+                    }).then(res => {
+                        const response = res.data.body as RefreshTokenResponse;
+                        accessToken = response.accessToken;
+                        setRefreshTokenLocalStorage(response);
+                        resolve(accessToken);
+                    }).catch(err => {
+                        clearAuthLocalStorage();
+                        resolve(null);
+                    });
+                }
+            } else {
+                resolve(accessToken);
+            }
+        } catch (e) {
+            resolve(null);
+        }
+    });
+}
+
+
 export const getLyricRepliedComments = (lyricId: number, commentId: number, offset: number, locale: string | undefined): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preAxios().then(accessToken => {
+        prePublicAxios().then(accessToken => {
             generalAxios.get<any>(process.env.apiUrl + `${PREFIX}/${lyricId}/comment/${commentId}/replies?offset=${offset ? offset: 0}`,
                 { headers: authHeaders(locale, accessToken) as any }).then(res => resolve(res)).catch(err => reject(err));
-        }).catch(err => processWhenAuthFailed(err, reject, resolve));
+        }).catch(err => reject(err));
     });
 }
 
 export const getLyricInfo = (ref: string, locale: string | undefined): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preAxios().then(accessToken => {
+        prePublicAxios().then(accessToken => {
             generalAxios.get<any>(process.env.apiUrl + `${PREFIX}/${ref}`,
                 { headers: authHeaders(locale, accessToken) as any }).then(res => resolve(res)).catch(err => reject(err));
-        }).catch(err => processWhenAuthFailed(err, reject, resolve));
+        }).catch(err => reject(err));
     });
 }
 
@@ -103,18 +140,18 @@ export const getLyricInfo = (ref: string, locale: string | undefined): Promise<A
 export const loadMoreCommentsAPI = (lyricId: number, offset: number, locale: string | undefined): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preAxios().then(accessToken => {
+        prePublicAxios().then(accessToken => {
             generalAxios.get<any>(process.env.apiUrl + `${PREFIX}/${lyricId}/comments?offset=${offset ? offset: 0}`,
                 { headers: authHeaders(locale, accessToken) as any }).then(res => resolve(res)).catch(err => reject(err));
-        }).catch(err => processWhenAuthFailed(err, reject, resolve));
+        }).catch(err => reject(err));
     });
 }
 
 export const getLyricListAPI = (offset: number, searchText: string | undefined, locale: string | undefined): Promise<AxiosResponse> => {
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preAxios().then(accessToken => {
+        prePublicAxios().then(accessToken => {
             generalAxios.get<any>(process.env.apiUrl + `${PREFIX}/list?offset=${offset ? offset: 0}${searchText ? '&searchText=' + searchText: ''}`,
                 { headers: authHeaders(locale, accessToken) as any }).then(res => resolve(res)).catch(err => reject(err));
-        }).catch(err => processWhenAuthFailed(err, reject, resolve));
+        }).catch(err => reject(err));
     });
 }
