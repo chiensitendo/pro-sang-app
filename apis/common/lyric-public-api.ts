@@ -31,10 +31,10 @@ export const authHeaders = (locale: string | undefined, accessToken?: string | n
 
 export const redirectToLogin = (err: any, reject: any) => {
     if (!err.shouldRedirect) {
-        reject(err);
     } else {
         window.location.href = "/login";
     }
+    reject(err);
 }
 
 export const preAxios = (isAuthAPI?: boolean): Promise<string | null> => {
