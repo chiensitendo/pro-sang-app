@@ -4,6 +4,7 @@ import { Input, Tag, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from "./TagsInput.module.scss";
 import getTranslation from "../translations";
+import {SPECIAL_CHARS_REGEX} from "../../pages/lyric/add";
 
 const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
     const {name, onChange, max, maxLength, placeholder, initialValue, locale} = props;
@@ -47,7 +48,7 @@ const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
             const nameMaxLength = getTranslation("lyric.validation.nameMaxLength", `${name} couldn't contain more than ${maxLength} characters.`, locale, name, maxLength);
             err.push(nameMaxLength);
         }
-        if (/[`~,.<>;':"/[\]|{}()=_+-]/.test(value)) {
+        if (SPECIAL_CHARS_REGEX.test(value)) {
             const nameNotSpecialCharacter = getTranslation("lyric.validation.nameNotSpecialCharacter",
                 `${name} cannot contain special characters.`, locale, name);
             err.push(nameNotSpecialCharacter);

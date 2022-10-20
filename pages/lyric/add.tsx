@@ -25,17 +25,23 @@ import ConfirmModal from "../../components/core/modals/ConfirmModal";
 import {getUserInfo} from "../../services/auth_services";
 import Head from "next/head";
 
-const MAXIMUM_CONTENT_CHAR_COUNT = 5000;
+const MAXIMUM_CONTENT_CHAR_COUNT = 9000;
+
+const MAXIMUM_DESCRIPTION_CHAR_COUNT = 5000;
 
 const MINIMUM_CONTENT_CHAR_COUNT = 100;
 
 const MAXIMUM_CONTENT_LINE_COUNT = 300;
+
+const MAXIMUM_DESCRIPTION_LINE_COUNT = 200;
 
 const MAXIMUM_IMAGE_COUNT = 10;
 
 const MAXIMUM_VIDEO_LINK_COUNT = 10;
 
 const MAXIMUM_ARRAY_NAME_LENGTH = 3;
+
+export const SPECIAL_CHARS_REGEX = /[`~<>;'"/[\]{}=]/;
 
 interface RichFormFieldSharp {
     value: string,
@@ -127,7 +133,7 @@ const contentValidator = (locale: string | undefined, rule: Rule, value: RichFor
 
 const descriptionValidator = (locale: string | undefined, rule: Rule, value: RichFormFieldSharp, callback: any) => {
     if (value && value.value && value.count) {
-        callback(richTextValidator(locale, value, MINIMUM_CONTENT_CHAR_COUNT, MAXIMUM_CONTENT_CHAR_COUNT, MAXIMUM_CONTENT_LINE_COUNT));
+        callback(richTextValidator(locale, value, MINIMUM_CONTENT_CHAR_COUNT, MAXIMUM_DESCRIPTION_CHAR_COUNT, MAXIMUM_DESCRIPTION_LINE_COUNT));
     } else {
         callback([]);
     }
@@ -140,7 +146,7 @@ const createRule = (locale: string | undefined): FormRuleSharp => {
             { min: 2, message: getTranslation("lyric.validation.title.min", "Title must contain at least 2 characters.", locale, 2)},
             { max: 250, message: getTranslation("lyric.validation.title.max", "Title must contain less than 250 characters.", locale, 250)},
             {validator: (rule,value,callback) => {
-                    if (value && /[`~,.<>;':"/[\]|{}()=_+-]/.test(value)) {
+                    if (value && SPECIAL_CHARS_REGEX.test(value)) {
                         callback(getTranslation("lyric.validation.title.valid", "Title cannot contain any special characters.", locale));
                     } else {
                         callback([] as any);
@@ -253,8 +259,8 @@ const AddingLyricPage: NextPage<LyricPageProps> = (props: LyricPageProps) => {
     const isContentCountValid = useMemo(() => content.count >= MINIMUM_CONTENT_CHAR_COUNT && content.count <= MAXIMUM_CONTENT_CHAR_COUNT, [content]);
     const isContentLineValid = useMemo(() => content.line <= MAXIMUM_CONTENT_LINE_COUNT, [content]);
 
-    const isDescriptionCountValid = useMemo(() => description.count >= MINIMUM_CONTENT_CHAR_COUNT && description.count <= MAXIMUM_CONTENT_CHAR_COUNT, [description]);
-    const isDescriptionLineValid = useMemo(() => description.line <= MAXIMUM_CONTENT_LINE_COUNT, [description]);
+    const isDescriptionCountValid = useMemo(() => description.count >= MINIMUM_CONTENT_CHAR_COUNT && description.count <= MAXIMUM_DESCRIPTION_CHAR_COUNT, [description]);
+    const isDescriptionLineValid = useMemo(() => description.line <= MAXIMUM_DESCRIPTION_LINE_COUNT, [description]);
     const isDescriptionImageCountValid = useMemo(() => description.imageCount <= MAXIMUM_IMAGE_COUNT, [description]);
     const isDescriptionVideoUrlCountValid = useMemo(() => description.videoUrlCount <= MAXIMUM_VIDEO_LINK_COUNT, [description]);
 
@@ -599,8 +605,8 @@ const AddingLyricPage: NextPage<LyricPageProps> = (props: LyricPageProps) => {
                         <TextEditor
                             size="md"
                             minChar={MINIMUM_CONTENT_CHAR_COUNT}
-                            lineLimit={MAXIMUM_CONTENT_LINE_COUNT}
-                            charLimit={MAXIMUM_CONTENT_CHAR_COUNT}
+                            lineLimit={MAXIMUM_DESCRIPTION_LINE_COUNT}
+                            charLimit={MAXIMUM_DESCRIPTION_CHAR_COUNT}
                             disableVideo={description.disableVideo}
                             disableImage={description.disableImage}
                             customKey={"editor-description"}
