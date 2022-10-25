@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import withNotification from "../../components/with-notification";
 import { NotificationProps } from "../../types/page";
-import {useCallback, useEffect, useState, FC} from "react";
+import {useCallback, useEffect, useState, FC, useMemo} from "react";
 import {
     AccountLyricItemResponse,
     getOwnLyricList,
@@ -48,6 +48,12 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
         push(`/lyric/edit/` + id).then();
     }
 
+    const title = useMemo(() => {
+        return [getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", locale),
+            getTranslation("lyric.slogan", "Save your lyric for free", locale)]
+            .join(" | ")
+    },[locale]);
+
     useEffect(() => {
         getOwnLyricList(locale,0).then(res => {
             handleLyricResponse(res);
@@ -56,7 +62,7 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
     return <LyricLayout>
         <div className={styles.wrapper}>
             <Head>
-                <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", locale)}</title>
+                <title>{title}</title>
             </Head>
             <List
                 loading={isLoading}

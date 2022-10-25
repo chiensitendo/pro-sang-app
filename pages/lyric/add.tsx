@@ -393,6 +393,12 @@ const AddingLyricPage: NextPage<LyricPageProps> = (props: LyricPageProps) => {
         }
     },[form, isContentCountValid]);
 
+    const title = useMemo(() => {
+        return [!detail ? getTranslation( "lyric.layout.header.newBtn", "Create New Lyric", locale): getTranslation("lyric.button.edit", "Edit", locale) + ` ${detail.title}`,
+            getTranslation("lyric.slogan", "Save your lyric for free", locale)]
+            .join(" | ")
+    },[locale, detail]);
+
     useEffect(() => {
         if (actionStatus === LyricActionStatus.SAVED) {
             router.push("/lyric/list").then(() => {
@@ -476,7 +482,7 @@ const AddingLyricPage: NextPage<LyricPageProps> = (props: LyricPageProps) => {
 
     return <LyricLayout>
         <Head>
-            <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {!detail ? getTranslation( "lyric.layout.header.newBtn", "Create New Lyric", locale): getTranslation("lyric.button.edit", "Edit", locale) + ` ${detail.title}`}</title>
+            <title>{title}</title>
         </Head>
         {previewData == null && <div className = {classNames("center-1", styles.wrapper)}>
             {rule && <Form
