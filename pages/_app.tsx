@@ -11,8 +11,8 @@ import Script from "next/script";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Provider store={store}>
-    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-W8K7JKM5D0"/>
-    <Script strategy="afterInteractive">
+    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-W8K7JKM5D0" strategy="afterInteractive"/>
+    <Script id="google-analytics" strategy="afterInteractive">
       {`window.dataLayer = window.dataLayer || [];
                     function gtag(){window.dataLayer.push(arguments);}
                     gtag('js', new Date());
