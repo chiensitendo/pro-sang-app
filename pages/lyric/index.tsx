@@ -8,7 +8,7 @@ import styles from "./styles/index.module.scss";
 import ListActions from "../../components/lyric/components/ListActions";
 import LyricListComponent from "../../components/lyric/components/LyricListComponent";
 import {fetchList, loadMoreLyricList, searchLyricList} from "../../redux/reducers/lyric/lyricListSlice";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useRouter} from "next/router";
 import {getUserInfo, isAccountLogging} from "../../services/auth_services";
 import Head from "next/head";
@@ -36,9 +36,16 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
         setIsLogging(isAccountLogging());
         setAccountId(getUserInfo()?.id);
     },[]);
+
+    const title = useMemo(() => {
+        return [getTranslation("lyric.list.header", "Lyric List", locale),
+                getTranslation("lyric.slogan", "Save your lyric for free", locale)]
+            .join(" | ")
+    },[locale]);
+
     return <LyricLayout>
         <Head>
-            <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {getTranslation("lyric.list.header", "Lyric List", locale)}</title>
+            <title>{title}</title>
         </Head>
         <div className={styles.wrapper}>
             <ListActions loading={initLoading} locale={locale} onSearch={(value) => {

@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import styles from "./styles/detail.module.scss";
 import {Alert, Button, Form, Rate} from "antd";
 import {EditFilled, LikeOutlined} from "@ant-design/icons";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
 import {
@@ -73,6 +73,12 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
         lyricDetail && push("/lyric/edit/" + lyricDetail.id).then();
     }
 
+    const title = useMemo(() => {
+        return [ref,
+            getTranslation("lyric.slogan", "Save your lyric for free", locale)]
+            .join(" | ")
+    },[locale, ref]);
+
     useEffect(() => {
         dispatch(fetchLyricContent(ref as string));
         setLoggInUserInfo(getUserInfo());
@@ -88,7 +94,7 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
 
     return <LyricLayout>
         <Head>
-            <title>{getTranslation("lyric.lyric", "Lyric", locale)} - {getTranslation("lyric.slogan", "Save your lyric for free", locale)} | {lyricDetail ? lyricDetail.title: ''}</title>
+            <title>{title}</title>
         </Head>
         {isNotFound && <LyricNotFound locale={locale}/>}
         {lyricDetail && <div className={styles.wrapper}>
@@ -193,6 +199,12 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
 
 interface LyricDetailPageProps extends NotificationProps {
     children?: any;
+}
+
+export async function getServerSideProps() {
+    // Fetch data from external API
+    // Pass data to the page via props
+    return { props: { data: "aaa" } }
 }
 
 export default withNotification(LyricDetailPage);

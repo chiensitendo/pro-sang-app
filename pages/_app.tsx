@@ -7,10 +7,19 @@ import '../styles/text.scss';
 import type { AppProps } from 'next/app'
 import {Provider} from "react-redux";
 import store from "../redux/store";
+import Script from "next/script";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Provider store={store}>
-    <Component {...pageProps} /></Provider>
+    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-W8K7JKM5D0"/>
+    <Script strategy="afterInteractive">
+      {`window.dataLayer = window.dataLayer || [];
+                    function gtag(){window.dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'G-W8K7JKM5D0');`}
+    </Script>
+    <Component {...pageProps} />
+  </Provider>
 }
 
 export default MyApp

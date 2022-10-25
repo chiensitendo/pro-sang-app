@@ -30,14 +30,6 @@ export default function Document() {
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={"true"}/>
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Trirong|Audiowide|Tangerine|Roboto|Dancing+Script|Noto+Sans+JP|Noto+Music"/>
-                <script async src="https://www.googletagmanager.com/gtag/js?id=G-W8K7JKM5D0"/>
-                <script>
-                    {`window.dataLayer = window.dataLayer || [];
-                    function gtag(){window.dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                  
-                    gtag('config', 'G-W8K7JKM5D0');`}
-                </script>
             </Head>
         <body>
             <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PH7WZ8V"
