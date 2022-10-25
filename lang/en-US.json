@@ -6,6 +6,7 @@
   "lyric": {
     "slogan": "Save your lyric for free",
     "lyric": "Lyric",
+    "lyricOfSong": "Lyric of song: ",
     "list": {
       "header": "Lyric List",
       "actions": {

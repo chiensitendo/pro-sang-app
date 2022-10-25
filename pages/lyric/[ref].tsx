@@ -95,6 +95,7 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
     return <LyricLayout>
         <Head>
             <title>{title}</title>
+            <meta name="description" content={getTranslation("lyric.lyricOfSong", "Lyric of song: ", locale) + ref ? String(ref): ''} />
         </Head>
         {isNotFound && <LyricNotFound locale={locale}/>}
         {lyricDetail && <div className={styles.wrapper}>

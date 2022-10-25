@@ -63,6 +63,7 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
         <div className={styles.wrapper}>
             <Head>
                 <title>{title}</title>
+                <meta name="description" content={getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", locale)} />
             </Head>
             <List
                 loading={isLoading}
