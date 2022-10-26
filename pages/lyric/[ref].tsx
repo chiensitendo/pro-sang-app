@@ -74,9 +74,13 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
     }
 
     const title = useMemo(() => {
-        return [ref,
-            getTranslation("lyric.slogan", "Save your lyric for free", locale)]
-            .join(" | ")
+        return [getTranslation("lyric.lyricOfSong", "Lyric of song: ", locale), ref]
+            .join("")
+    },[locale, ref]);
+
+    const descTags = useMemo(() => {
+        if (!ref) return "";
+        return getTranslation("lyric.lyricOfSong", "Lyric of song: ", locale) + ref ? String(ref): '';
     },[locale, ref]);
 
     useEffect(() => {
@@ -95,7 +99,7 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
     return <LyricLayout>
         <Head>
             <title>{title}</title>
-            <meta name="description" content={getTranslation("lyric.lyricOfSong", "Lyric of song: ", locale) + ref ? String(ref): ''} />
+            {descTags && <meta name="description" content={title} />}
         </Head>
         {isNotFound && <LyricNotFound locale={locale}/>}
         {lyricDetail && <div className={styles.wrapper}>

@@ -49,9 +49,8 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
     }
 
     const title = useMemo(() => {
-        return [getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", locale),
-            getTranslation("lyric.slogan", "Save your lyric for free", locale)]
-            .join(" | ")
+        return [getTranslation( "lyric.layout.header.listBtn", "Your Lyrics", locale)]
+            .join("")
     },[locale]);
 
     useEffect(() => {

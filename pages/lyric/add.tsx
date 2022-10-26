@@ -394,9 +394,9 @@ const AddingLyricPage: NextPage<LyricPageProps> = (props: LyricPageProps) => {
     },[form, isContentCountValid]);
 
     const title = useMemo(() => {
-        return [!detail ? getTranslation( "lyric.layout.header.newBtn", "Create New Lyric", locale): getTranslation("lyric.button.edit", "Edit", locale) + ` ${detail.title}`,
-            getTranslation("lyric.slogan", "Save your lyric for free", locale)]
-            .join(" | ")
+        return [!detail ? getTranslation( "lyric.layout.header.newBtn", "Create New Lyric", locale):
+            getTranslation("lyric.button.edit", "Edit", locale) + ` ${detail.title}`,]
+            .join("")
     },[locale, detail]);
 
     useEffect(() => {
