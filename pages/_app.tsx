@@ -8,9 +8,23 @@ import type { AppProps } from 'next/app'
 import {Provider} from "react-redux";
 import store from "../redux/store";
 import Script from "next/script";
+import {useEffect, useState} from "react";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  const [siteName, setSiteName] = useState("");
+  useEffect(() => {
+    setSiteName(location.host);
+  },[]);
+
   return <Provider store={store}>
+    <Head>
+      {siteName && <meta property="og:site_name" content={siteName}/>}
+      <meta property="og:type" content="website"/>
+      <meta name="copyright" content="Bibii Tech"/>
+      <meta name="author" content="Bibii Tech"/>
+    </Head>
     <Script id ="google-tag-manager" strategy="afterInteractive">{`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=

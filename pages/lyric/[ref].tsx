@@ -32,6 +32,7 @@ import {getUserInfo} from "../../services/auth_services";
 import {PrivateTag} from "./list";
 import {LyricStatuses} from "../../apis/lyric-apis";
 import Head from "next/head";
+import {getMetaTitleTag, getMetaUrlTag} from "../../utils/seo";
 
 
 const toUserInfo = (u: LoggingUserInfo): LyricCommentUserInfo => {
@@ -50,7 +51,7 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
     const {lyricDetail, showReplyBox, replyBoxId, isScrollToBottom, scrollPosition, isRated, isRateLoading, isRateSuccess, isNotFound} =
         useSelector((state: RootState) => state.lyricInfo);
     const [loggInUserInfo, setLoggInUserInfo] = useState<LoggingUserInfo | null>(null);
-
+    const [url, setUrl] = useState("");
     const {ref} = query;
     const [form] = Form.useForm();
     const [rate, setRate] = useState(4.5);
@@ -86,6 +87,7 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
     useEffect(() => {
         dispatch(fetchLyricContent(ref as string));
         setLoggInUserInfo(getUserInfo());
+        setUrl(location.href);
     },[]);
 
     useEffect(() => {
@@ -100,6 +102,8 @@ const LyricDetailPage = (props: LyricDetailPageProps) => {
         <Head>
             <title>{title}</title>
             {descTags && <meta name="description" content={title} />}
+            {getMetaTitleTag(title)}
+            {getMetaUrlTag(url)}
         </Head>
         {isNotFound && <LyricNotFound locale={locale}/>}
         {lyricDetail && <div className={styles.wrapper}>

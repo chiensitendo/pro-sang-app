@@ -14,6 +14,7 @@ import {getUserInfo, isAccountLogging} from "../../services/auth_services";
 import Head from "next/head";
 import * as React from "react";
 import getTranslation from "../../components/translations";
+import {getMetaTitleTag, getMetaUrlTag} from "../../utils/seo";
 
 const LyricListPage: NextPage = (props: LyricListPageProps) => {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
     const [searchText, setSearchText] = useState('');
     const [isLogging, setIsLogging] = useState(false);
     const [accountId, setAccountId] = useState<number | undefined>(undefined);
+    const [url, setUrl] = useState("");
     const handleEdit = (id: number) => {
         isLogging && push("/lyric/edit/" + id).then();
     }
@@ -35,17 +37,20 @@ const LyricListPage: NextPage = (props: LyricListPageProps) => {
         }));
         setIsLogging(isAccountLogging());
         setAccountId(getUserInfo()?.id);
+        setUrl(location.href);
     },[]);
 
     const title = useMemo(() => {
-        return [getTranslation("lyric.list.header", "Lyric List", locale),
+        return ['Bibii Lyric',
                 getTranslation("lyric.slogan", "Save your lyric for free", locale)]
-            .join(" | ")
+            .join(" - ")
     },[locale]);
 
     return <LyricLayout>
         <Head>
             <title>{title}</title>
+            {getMetaTitleTag(title)}
+            {getMetaUrlTag(url)}
         </Head>
         <div className={styles.wrapper}>
             <ListActions loading={initLoading} locale={locale} onSearch={(value) => {
