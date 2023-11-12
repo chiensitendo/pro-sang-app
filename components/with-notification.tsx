@@ -1,3 +1,4 @@
+
 import { notification } from "antd";
 import { NextPage } from "next";
 import React, {useMemo} from "react";
@@ -5,7 +6,7 @@ import {GlobalError} from "../types/error";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../redux/store";
 import {removeErrorNotification} from "../redux/reducers/lyric/notificationSlice";
-import {useRouter} from "next/router";
+import { useLocale } from "next-intl";
 import getTranslation from "./translations";
 const openError = (message: string, locale?: string | undefined) => {
     notification['error']({
@@ -29,7 +30,7 @@ const withNotification = (WrapperComponent: NextPage<any>) => {
 
     // eslint-disable-next-line react/display-name
     return () => {
-        const {locale} = useRouter();
+        const locale = useLocale();
         const {error} = useSelector((state: RootState) => state.notification);
         const dispatch = useDispatch();
         const handleErrors = (err: any) => {
