@@ -42,6 +42,7 @@
     "alloyeditor": "^2.14.6",
     "antd": "^4.21.3",
     "axios": "^0.26.1",
+    "classnames": "^2.3.2",
     "draft-convert": "^2.1.12",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
