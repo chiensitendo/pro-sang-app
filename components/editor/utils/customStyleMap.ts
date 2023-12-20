@@ -7,7 +7,7 @@ const POSITION: Property.Position[] = ["relative"];
 const customStyleMap: DraftStyleMap = {}
 
 
-POSITION.forEach(pos => {
+POSITION.forEach((pos: any) => {
     const prefix = "POSITION";
     customStyleMap[prefix+'-'+pos] = {
         position: pos

@@ -4,7 +4,7 @@ import { Input, Tag, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from "./TagsInput.module.scss";
 import getTranslation from "../translations";
-import {SPECIAL_CHARS_REGEX} from "../../pages/lyric/add";
+import { SPECIAL_CHARS_REGEX } from '@/constants/lyric_const';
 
 const TagsInput: React.FC<TagsInputProps> = (props: TagsInputProps) => {
     const {name, onChange, max, maxLength, placeholder, initialValue, locale} = props;

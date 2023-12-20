@@ -54,5 +54,5 @@ const BoostModal = forwardRef(({ children, show, onClose, title, useCustomConfir
     </div>
 });
 
-
+BoostModal.displayName = "BoostModal";
 export default BoostModal;
