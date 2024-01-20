@@ -9,6 +9,14 @@ import lyricContentSaga from "./sagas/lyric/lyricContentSaga";
 import lyricInfoSaga from "./sagas/lyric/lyricInfoSaga";
 import lyricActionSaga from "./sagas/lyric/lyricActionSaga";
 import accountSaga from "./sagas/accountSaga";
+import folderListSaga from "./sagas/folder/folderListSaga";
+import folderImageListSaga from "./sagas/image/folderImageListSaga";
+import createFolderSaga from "./sagas/folder/createFolderSaga";
+import publicImageListSaga from "./sagas/image/publicImageListSaga";
+import folderDetailSaga from "./sagas/folder/getFolderSaga";
+import updateFolderSaga from "./sagas/folder/updateFolderSaga";
+import changePublicOfImagesSaga from "./sagas/image/changePublicOfImagesSaga";
+import deleteImageSaga from "./sagas/image/deleteImageSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -25,7 +33,14 @@ sagaMiddleware.run(lyricContentSaga);
 sagaMiddleware.run(lyricInfoSaga);
 sagaMiddleware.run(lyricActionSaga);
 sagaMiddleware.run(accountSaga);
-
+sagaMiddleware.run(folderListSaga);
+sagaMiddleware.run(folderImageListSaga);
+sagaMiddleware.run(createFolderSaga);
+sagaMiddleware.run(publicImageListSaga);
+sagaMiddleware.run(folderDetailSaga);
+sagaMiddleware.run(updateFolderSaga);
+sagaMiddleware.run(changePublicOfImagesSaga);
+sagaMiddleware.run(deleteImageSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 

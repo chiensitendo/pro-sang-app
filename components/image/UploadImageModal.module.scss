@@ -1,0 +1,45 @@
+.UploadImageModal {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 100%;
+    column-gap: 20px;
+    row-gap: 20px;
+
+    div[class="ant-card-head"] {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    .log {
+        height: 30vh;
+        overflow: auto;
+    }
+    .folderListLabel {
+        display: flex;
+        align-items: center;
+        p {
+            margin: 0;
+        }
+        button {
+            margin-left: 10px;
+        }
+    }
+    .description {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        row-gap: 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .UploadImageModal {
+        grid-template-columns: 100%;
+        row-gap: 20px;
+
+        .log {
+            max-width: 100%;
+            height: unset;
+            overflow: unset;
+        }
+    }
+}

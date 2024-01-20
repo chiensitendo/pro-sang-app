@@ -9,6 +9,11 @@ interface ErrorItem {
     [key: string]: string;
 }
 
+export interface ErrorMessage {
+    code: number,
+    message: string
+}
+
 
 export const handleErrors = (err: any) => {
     const [api, contextHolder] = notification.useNotification();

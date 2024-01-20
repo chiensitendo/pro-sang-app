@@ -29,7 +29,7 @@ const BoostModal = forwardRef(({ children, show, onClose, title, useCustomConfir
                 }
             });
         }
-    }, []);
+    }, [onClose]);
     return <div>
         <button type="button" ref={btnRef} hidden className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         </button>

@@ -6,6 +6,7 @@ import Script from "next/script";
 import { GqlProvider } from "@/providers/gqlProvider";
 import { IntlClientProvider } from "@/providers/intlClientProvider";
 import StyledComponentsRegistry from "@/libs/AntdRegistry";
+import { CSSProperties } from "linaria";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,18 @@ export const metadata: Metadata = {
 
 export function generateStaticParams() {
   return [{ locale: "en-US" }, { locale: "vi" }];
+}
+const proLoadingCssStyles: CSSProperties = {
+  zIndex: -1,
+  position: 'fixed',
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  top: '0',
+  left: '0',
+  background: 'rgba(0,0,0,0.4)'
 }
 
 export default async function RootLayout({
@@ -56,6 +69,9 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css?family=Sofia|Trirong|Audiowide|Tangerine|Roboto|Dancing+Script|Noto+Sans+JP|Noto+Music"
         />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossOrigin="anonymous"></link>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet"></link>
         <Script
           id="google-tag-manager"
           strategy="afterInteractive"
@@ -86,11 +102,14 @@ export default async function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
+        <div id="pro-loading" hidden style={proLoadingCssStyles}>
+          <div className="lds-hourglass"></div>
+        </div>
         <ReduxProvider>
           <GqlProvider>
             <IntlClientProvider locale={!locale ? "en-US" : locale}>
               <StyledComponentsRegistry>
-              {children}
+                {children}
               </StyledComponentsRegistry>
             </IntlClientProvider>
           </GqlProvider>

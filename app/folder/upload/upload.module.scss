@@ -1,0 +1,55 @@
+.FolderUploadPageWrapper {
+    padding: 20px;
+}
+.FolderUploadPage {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: 20px;
+
+    div[class="ant-card-head"] {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    .log {
+        max-width: calc(100% - 20px);
+        height: 50vh;
+        overflow: auto;
+    }
+    .folderListLabel {
+        display: flex;
+        align-items: center;
+        p {
+            margin: 0;
+        }
+        button {
+            margin-left: 10px;
+        }
+    }
+    .description {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        row-gap: 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .FolderUploadPage {
+        grid-template-columns: 100%;
+        row-gap: 20px;
+
+        .log {
+            max-width: 100%;
+            height: unset;
+            overflow: unset;
+        }
+        .upload {
+            position: sticky;
+            top: 20px;
+            left: 0;
+            z-index: 100;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        }
+    }
+}

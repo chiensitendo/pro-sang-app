@@ -17,6 +17,18 @@ export interface LoginResponse {
 	refreshTokenExpiredTime: string;
 }
 
+export interface LoginResponseV2 {
+	id: number;
+	username: string;
+	email: string;
+	photo_url: string;
+	name: string;
+	access_token: string;
+	expired_time: string;
+	refresh_token: string;
+	refresh_expired_time: string;
+}
+
 export interface LyricRequest {
 	title: string;
 	content: string;

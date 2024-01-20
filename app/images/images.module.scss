@@ -1,0 +1,236 @@
+.PublicImageListPage {
+    padding: 20px;
+
+    .loadMoreBtn {
+        padding: 20px 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .viewItem {
+        display: flex;
+        align-items: center;
+        padding-top: 20px;
+
+        & p {
+            margin: 0 10px 0 0;
+        }
+    }
+
+    .logo {
+        padding-left: 0.5rem;
+        padding-bottom: calc(0.4em + 1px);
+    }
+
+    .topBar {
+        grid-area: n;
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+        animation: 5s ease-out 0s 1 fadeIn !important;
+        font-family: 'Sarabun', sans-serif !important;
+        font-size: 1.5rem;
+
+        span {
+            box-sizing: border-box;
+            position: relative;
+            /*   box-shadow: 0px 1px 0px 0px black; */
+        }
+
+        span:after {
+            display: block;
+            position: absolute;
+            width: 100%;
+            content: "";
+            border-bottom: 1px solid black;
+            padding: 0 0 .4em 2em;
+            /*top right bottom left*/
+            left: -0.5rem;
+            bottom: -0.2rem;
+            animation: 3s ease-out 0s slideInFromLeft
+        }
+    }
+}
+
+.Theme1 {
+
+    .hello {
+        opacity: 1 !important;
+    }
+
+    .full {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .full .content {
+        background-color: rgba(0, 0, 0, 0.75) !important;
+        height: 100%;
+        width: 100%;
+        display: grid;
+    }
+
+    .full .content img {
+        left: 50%;
+        transform: translate3d(0, 0, 0);
+        animation: zoomin 1s ease;
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+    }
+
+    .byebye {
+        opacity: 0;
+    }
+
+    .byebye:hover {
+        transform: scale(0.2) !important;
+    }
+
+    .gallery {
+        display: grid;
+        grid-column-gap: 8px;
+        grid-row-gap: 8px;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-auto-rows: 8px;
+        padding-top: 25px;
+    }
+
+    .gallery img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 0 16px #333;
+        transition: all 1.5s ease;
+    }
+
+    .gallery img:hover {
+        box-shadow: 0 0 32px #333;
+    }
+
+    .gallery .content {
+        padding: 4px;
+    }
+
+    .gallery .galleryItem {
+        transition: grid-row-start 300ms linear;
+        transition: transform 300ms ease;
+        transition: all 0.5s ease;
+        cursor: pointer;
+    }
+
+
+    .gallery .galleryItem:hover {
+        transform: scale(1.025);
+    }
+
+    // @media (max-width: 600px) {
+    //     .gallery {
+    //         grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    //     }
+    // }
+
+    @media (max-width: 400px) {
+        .gallery {
+            grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+        }
+    }
+
+    @-moz-keyframes zoomin {
+        0% {
+            max-width: 50%;
+            transform: rotate(-30deg);
+            filter: blur(4px);
+        }
+
+        30% {
+            filter: blur(4px);
+            transform: rotate(-80deg);
+        }
+
+        70% {
+            max-width: 50%;
+            transform: rotate(45deg);
+        }
+
+        100% {
+            max-width: 100%;
+            transform: rotate(0deg);
+        }
+    }
+
+    @-webkit-keyframes zoomin {
+        0% {
+            max-width: 50%;
+            transform: rotate(-30deg);
+            filter: blur(4px);
+        }
+
+        30% {
+            filter: blur(4px);
+            transform: rotate(-80deg);
+        }
+
+        70% {
+            max-width: 50%;
+            transform: rotate(45deg);
+        }
+
+        100% {
+            max-width: 100%;
+            transform: rotate(0deg);
+        }
+    }
+
+    @-o-keyframes zoomin {
+        0% {
+            max-width: 50%;
+            transform: rotate(-30deg);
+            filter: blur(4px);
+        }
+
+        30% {
+            filter: blur(4px);
+            transform: rotate(-80deg);
+        }
+
+        70% {
+            max-width: 50%;
+            transform: rotate(45deg);
+        }
+
+        100% {
+            max-width: 100%;
+            transform: rotate(0deg);
+        }
+    }
+
+    @keyframes zoomin {
+        0% {
+            max-width: 50%;
+            transform: rotate(-30deg);
+            filter: blur(4px);
+        }
+
+        30% {
+            filter: blur(4px);
+            transform: rotate(-80deg);
+        }
+
+        70% {
+            max-width: 50%;
+            transform: rotate(45deg);
+        }
+
+        100% {
+            max-width: 100%;
+            transform: rotate(0deg);
+        }
+    }
+
+}

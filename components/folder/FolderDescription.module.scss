@@ -1,0 +1,37 @@
+.FolderDescription {
+    margin: 20px 0;
+
+    .UpdateBtn {
+        margin-top: 20px;
+    }
+
+    .buttonGroup {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 10px;
+    }
+    .description {
+        white-space: pre-line;
+        max-height: 25vh;
+        overflow: auto;
+    }
+    .line {
+        margin: 0;
+        position: relative;
+        span {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: none;
+            background: white;
+        }
+        &:hover {
+            span {
+                display: block;
+            }
+        }
+    }
+}

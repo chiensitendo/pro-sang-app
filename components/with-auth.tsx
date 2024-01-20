@@ -1,15 +1,8 @@
 import { NextPage } from "next";
-import { useRouter} from "next/router";
 import React, { useEffect } from "react";
-import { refreshTokenAPI } from "../apis/auth-apis";
-import { RefreshTokenResponse } from "../types/account";
 import { NotificationProps } from "../types/page";
-import {
-    getRefreshToken, getUsername,
-    isAccessTokenExpired,
-    isAccountLogging,
-    isRefreshTokenExpired, setRefreshTokenLocalStorage
-} from "../services/auth_services";
+import { isSessionAccessTokenExpired, isSessionLogging } from "@/services/session-service";
+import { useRouter, useParams } from "next/navigation";
 
 const getUri = (location: Location) => {
     if (!location || !location.pathname) return "";
@@ -18,39 +11,41 @@ const getUri = (location: Location) => {
 
 const withAuth = (WrapperComponent: NextPage<any>) => {
     // eslint-disable-next-line react/display-name
-    return (props: AuthProps) => {
+    return (props: any) => {
         const {onErrors, onSuccess} = props;
         const router = useRouter();
         const [shouldLoad, setShouldLoad] = React.useState(false);
         useEffect(() => {
-            const isLogging = isAccountLogging();
+            const isLogging = isSessionLogging();
             const uri = getUri(location);
             const loginUrl = `/login${uri? '?redirectUrl='+ uri: ''}`;
             if (!isLogging) {
-                router.push(loginUrl).then();
+                router.push(loginUrl);
                 return;
             }
-            if (isAccessTokenExpired()) {
-                if (isRefreshTokenExpired()) {
-                    router.push(loginUrl).then();
-                    return;
-                } else {
-                    const token = getRefreshToken();
-                    const username = getUsername();
-                    refreshTokenAPI({
-                        refreshToken: token,
-                        username: username
-                    }).then(res => {
-                        setRefreshTokenLocalStorage(res.data.body as RefreshTokenResponse);
-                        setShouldLoad(true);
-                    }).catch(err => router.push(loginUrl));
-                }
+            if (isSessionAccessTokenExpired()) {
+                router.push(loginUrl);
+                return;
+                // if (isRefreshTokenExpired()) {
+                //     router.push(loginUrl).then();
+                //     return;
+                // } else {
+                //     const token = getRefreshToken();
+                //     const username = getUsername();
+                //     refreshTokenAPI({
+                //         refreshToken: token,
+                //         username: username
+                //     }).then(res => {
+                //         setRefreshTokenLocalStorage(res.data.body as RefreshTokenResponse);
+                //         setShouldLoad(true);
+                //     }).catch(err => router.push(loginUrl));
+                // }
             } else  {
                 setShouldLoad(true);
             }
 
         },[router]);
-        return shouldLoad ? <WrapperComponent onErrors = {onErrors} onSuccess = {onSuccess}/> : <React.Fragment></React.Fragment>;
+        return shouldLoad ? <WrapperComponent onErrors = {onErrors} onSuccess = {onSuccess} isAuth = {shouldLoad}/> : <React.Fragment></React.Fragment>;
     }
 }
 

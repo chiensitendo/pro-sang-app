@@ -1,5 +1,5 @@
 import moment from "moment";
-import {LoggingUserInfo, LoginResponse, RefreshTokenResponse} from "../types/account";
+import {LoggingUserInfo, LoginResponse, LoginResponseV2, RefreshTokenResponse} from "../types/account";
 
 const PREFIX = "PRO_SANG_";
 
@@ -11,18 +11,16 @@ export const isSessionLogging = () => {
 
 }
 
-export const setLoginSessionStorage = (res: LoginResponse) => {
-
+export const setLoginSessionStorage = (res: LoginResponseV2) => {
     if (!res) {
         return;
     }
-    const userInfo: LoggingUserInfo = {...res};
-    sessionStorage.setItem(PREFIX + "TOKEN", res.accessToken);
-    sessionStorage.setItem(PREFIX + "RERESH_TOKEN", res.refreshToken);
+    sessionStorage.setItem(PREFIX + "TOKEN", res.access_token);
+    sessionStorage.setItem(PREFIX + "RERESH_TOKEN", res.refresh_token);
     sessionStorage.setItem(PREFIX + "USERNAME", res.username);
-    sessionStorage.setItem(PREFIX + "USER_INFO", JSON.stringify(userInfo));
-    sessionStorage.setItem(PREFIX + "TOKEN_EXPIRED_TIME", res.accessTokenExpiredTime + "+07:00");
-    sessionStorage.setItem(PREFIX + "REFRESH_TOKEN_EXPIRED_TIME", res.refreshTokenExpiredTime + "+07:00");
+    sessionStorage.setItem(PREFIX + "USER_INFO", JSON.stringify({...res}));
+    sessionStorage.setItem(PREFIX + "TOKEN_EXPIRED_TIME", res.expired_time + "+00:00");
+    sessionStorage.setItem(PREFIX + "REFRESH_TOKEN_EXPIRED_TIME", res.refresh_expired_time + "+00:00");
 }
 
 export const setRefreshTokenSessionStorage = (res: RefreshTokenResponse) => {

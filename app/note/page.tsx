@@ -2,6 +2,7 @@
 
 import useInsertNote from "@/apis/graphql/useCreateNote";
 import useGetNoteList from "@/apis/graphql/useGetNoteList";
+import generalAxios from "@/axios/generalAxios";
 import BoostModal from "@/components/boostrap/boost-modal";
 import Form1 from "@/components/core/forms/Form1";
 import HandWriteList from "@/components/core/list/HandWriteList";
@@ -24,6 +25,10 @@ const NotePage: NextPage = () => {
             setShow(false);
         }
     }, [note]);
+
+    useEffect(() => {
+        // generalAxios.get("/api/public/folder").then(res => console.log(res))
+    },[]);
 
     return <div>
         <button onClick={() => {

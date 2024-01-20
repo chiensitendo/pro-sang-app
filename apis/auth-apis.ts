@@ -6,7 +6,7 @@ import authAxios from "../axios/authAxios";
 import {LyricListAccountResponse} from "./lyric-apis";
 
 export const loginAccount = (req: LoginRequest, locale: string | undefined): Promise<AxiosResponse> => {
-    return generalAxios.post<any>(process.env.apiUrl + "/account/login", req, {
+    return generalAxios.post<any>("/api/auth/login", {password: req.password, loginId: req.username}, {
         ...langHeader(locale)
     });
 }

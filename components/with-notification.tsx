@@ -74,7 +74,7 @@ const withNotification = (WrapperComponent: NextPage<any>) => {
                 handleErrors(error);
                 dispatch(removeErrorNotification());
             }
-        },[error, dispatch]);
+        },[error, dispatch, handleErrors]);
         return <WrapperComponent onErrors = {handleErrors} onSuccess = {handleSuccess}/>;
     }
 }

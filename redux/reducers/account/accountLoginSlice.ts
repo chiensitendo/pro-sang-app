@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {LoginRequest, LoginResponse} from "../../../types/account";
+import {LoginRequest, LoginResponse, LoginResponseV2} from "../../../types/account";
 
 interface AccountLoginState {
     isSubmit: boolean;
-    response: LoginResponse | null;
+    response: LoginResponseV2 | null;
 }
 
 const initialState: AccountLoginState = {
@@ -21,7 +21,7 @@ const accountLoginSlice = createSlice({
         },
         loginSuccess(state, action) {
             state.isSubmit = false;
-            state.response = action.payload.data.body;
+            state.response = action.payload.data;
         },
         loginFailed(state) {
             state.isSubmit = false;

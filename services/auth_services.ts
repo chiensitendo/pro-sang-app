@@ -34,6 +34,16 @@ export const clearAuthLocalStorage = () => {
     localStorage.removeItem(PREFIX + "REFRESH_TOKEN_EXPIRED_TIME");
 }
 
+export const clearAuthSessionStorage = () => {
+    sessionStorage.removeItem(PREFIX + "TOKEN");
+    sessionStorage.removeItem(PREFIX + "RERESH_TOKEN");
+    sessionStorage.removeItem(PREFIX + "USERNAME");
+    sessionStorage.removeItem(PREFIX + "USER_INFO");
+    sessionStorage.removeItem(PREFIX + "TOKEN_EXPIRED_TIME");
+    sessionStorage.removeItem(PREFIX + "REFRESH_TOKEN_EXPIRED_TIME");
+}
+
+
 export const setRefreshTokenLocalStorage = (res: RefreshTokenResponse) => {
 
     if (!res) {

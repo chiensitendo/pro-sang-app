@@ -1,0 +1,33 @@
+.logo {
+    padding-left: 0.5rem;
+    padding-bottom: calc(0.4em + 1px);
+}
+
+.topBar {
+    grid-area: n;
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    animation: 5s ease-out 0s 1 fadeIn !important;
+    font-family: 'Sarabun', sans-serif !important;
+    font-size: 1.5rem;
+
+    span {
+        box-sizing: border-box;
+        position: relative;
+        /*   box-shadow: 0px 1px 0px 0px black; */
+    }
+
+    span:after {
+        display: block;
+        position: absolute;
+        width: 100%;
+        content: "";
+        border-bottom: 1px solid black;
+        padding: 0 0 .4em 2em;
+        /*top right bottom left*/
+        left: -0.5rem;
+        bottom: -0.2rem;
+        animation: 3s ease-out 0s slideInFromLeft
+    }
+}
