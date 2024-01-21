@@ -24,9 +24,9 @@ const getFolderIdx = (folderName: string) => {
     const idx = ["", ""];
     if (folderName) {
         const a = folderName.split("_");
-        const [name, id] = a;
+        const [name] = a;
         idx[0] = name;
-        idx[a.length - 1] = id;
+        idx[1] = a[a.length - 1];
     }
     return idx;
 }
