@@ -12,7 +12,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchFolderList } from "@/redux/reducers/folder/folderListReducer";
 import { CheckCircleOutlined, CloseCircleOutlined, PlusOutlined, RedoOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons';
 import { FolderItem, FolderRequest } from "@/types/folder";
-import { clearCreateFolderError, createFolderAction } from "@/redux/reducers/folder/createFolderReducer";
+import { clearCreateFolderError, clearCreateFolderResponse, createFolderAction } from "@/redux/reducers/folder/createFolderReducer";
 import { UploadProps } from "antd/lib";
 import { getSessionAccessToken } from "@/services/session-service";
 import { postUpdateFileAPI } from "@/apis/image-apis";
@@ -188,6 +188,7 @@ const FolderUploadPage = () => {
         setIsOpenAddFolder(false);
         form.setFieldValue("folder_id", response.id);
         setFolderId(response.id);
+        dispatch(clearCreateFolderResponse());
     }
 
     const handleRetry = (item: CustomUploadFile<any>, index: number) => {

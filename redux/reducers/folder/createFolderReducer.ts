@@ -35,10 +35,15 @@ const createFolderSlice = createSlice({
             if (state.error) {
                 state.error = undefined;
             }
+        },
+        clearCreateFolderResponse(state) {
+            state.response = undefined;
+            state.loading = false;
+            state.error = undefined;
         }
     }
 });
 
-export const {createFolderAction, createFolderActionSuccess, createFolderActionFailed, clearCreateFolderError} = createFolderSlice.actions;
+export const {createFolderAction, createFolderActionSuccess, createFolderActionFailed, clearCreateFolderError, clearCreateFolderResponse} = createFolderSlice.actions;
 
 export default createFolderSlice.reducer;
