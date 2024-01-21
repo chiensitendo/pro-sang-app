@@ -48,7 +48,11 @@ const AddFolderModal = ({ open, onCancel, onOk, clearError, error }: {
         disabled: !!error
     }} open={open} onOk={() => {
         form.validateFields(["folder_name", "description"]).then(values => {
-            onOk(values);
+
+            onOk({
+                description: values.description,
+                folder_name: values.folder_name.replaceAll(/\s/g, "_")
+            });
         }).catch(_ => { });
     }} onCancel={() => {
         form.resetFields(["folder_name", "description"]);
