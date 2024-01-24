@@ -21,6 +21,7 @@ interface FolderImageListState {
     selectedImages: CustomMap;
     isOpenDeleteModal: boolean;
     isOpenUploadImageModal: boolean;
+    shouldScrollToBottom: boolean;
 }
 const initialState: FolderImageListState = {
     count: 0,
@@ -31,7 +32,8 @@ const initialState: FolderImageListState = {
     prevLimit: 20,
     selectedImages: new CustomMap(),
     isOpenDeleteModal: false,
-    isOpenUploadImageModal: false
+    isOpenUploadImageModal: false,
+    shouldScrollToBottom: false
 }
 
 const folderImageListSlice = createSlice({
@@ -63,9 +65,14 @@ const folderImageListSlice = createSlice({
         },
         fetchNextFolderImageListSuccess(state, action) {
             const {count, images} = action.payload.data as ImageResponse;
-            state.images = !state.images? images: [...state.images, ...images];
+            if (!state.images) {
+                state.images = images;
+            } else {
+                state.images = state.images.concat(images);
+            }
             state.count = count;
             state.loading = false;
+            state.shouldScrollToBottom = true;
         },
         fetchNextFolderImageListFailed(state) {
             state.loading = false;
@@ -84,6 +91,7 @@ const folderImageListSlice = createSlice({
             state.images = images;
             state.count = count;
             state.loading = false;
+            state.shouldScrollToBottom = true;
         },
         changeFolderImageListLimitFailed(state) {
             state.loading = false;
@@ -211,6 +219,9 @@ const folderImageListSlice = createSlice({
         refreshFolderImageListFailed(state) {
             state.loading = false;
         },
+        stopScrollToBottom(state) {
+            state.shouldScrollToBottom = false;
+        }
     }
 });
 
@@ -219,6 +230,6 @@ export const {fetchFolderImageList, fetchFolderImageListSuccess, fetchFolderImag
     changeFolderImageListLimit, changeFolderImageListLimitSuccess, changeFolderImageListLimitFailed, selectImageItem, changePublicOfImages, 
     changePublicOfImagesSuccess, changePublicOfImagesFailed, openDeleteModal, openUploadImageModal,
     deleteImages, deleteImagesFailed, deleteImagesSuccess, addImageInFolder, refreshFolderImageList, refreshFolderImageListSuccess, refreshFolderImageListFailed,
-    changeAllPublicOfImages, changeAllPublicOfImagesSuccess, changeAllPublicOfImagesFailed} = folderImageListSlice.actions;
+    changeAllPublicOfImages, changeAllPublicOfImagesSuccess, changeAllPublicOfImagesFailed, stopScrollToBottom} = folderImageListSlice.actions;
 
 export default folderImageListSlice.reducer;

@@ -8,7 +8,7 @@ import { RootState } from "@/redux/store";
 import { LegacyRef, useEffect, useMemo, useRef, useState } from "react";
 import { changeFolderImageListLimit, deleteImages, fetchFolderImageList, fetchNextFolderImageList, openDeleteModal, openUploadImageModal, refreshFolderImageList, selectImageItem } from "@/redux/reducers/image/folderImageListSlice";
 import cls from "classnames";
-import { Button, Image, Select, Switch, Tag } from 'antd';
+import { Button, Image, Select, Spin, Switch, Tag } from 'antd';
 import FolderDescription from "@/components/folder/FolderDescription";
 import { fetchFolderById, updateFolder } from "@/redux/reducers/folder/folderDetailReducer";
 import FolderMenu from "@/components/folder/FolderMenu";
@@ -17,6 +17,7 @@ import DeleteImageModal from "@/components/image/DeleteImageModal";
 import UploadImageModal from "@/components/image/UploadImageModal";
 import withAuth from "@/components/with-auth";
 import ProHeader from "@/components/core/header/ProHeader";
+import { stopScrollToBottom } from "@/redux/reducers/lyric/lyricCommentSlice";
 
 
 const getFolderIdx = (folderName: string) => {
@@ -31,7 +32,7 @@ const getFolderIdx = (folderName: string) => {
     return idx;
 }
 
-const Theme1 = ({ images }: { images: Array<{ url: string, id: number, item: ImageItem }> }) => {
+const Theme1 = ({ images, shouldScrollToBottom }: { images: Array<{ url: string, id: number, item: ImageItem }>, shouldScrollToBottom: boolean }) => {
 
     const [current, setCurrent] = useState(0);
     const galleryRef: LegacyRef<HTMLDivElement> = useRef(null);
@@ -44,6 +45,10 @@ const Theme1 = ({ images }: { images: Array<{ url: string, id: number, item: Ima
     const { selectedImages } = useSelector(
         (state: RootState) => state.image.folder.list
     );
+
+    let statuses = useMemo(() => 0, [images]);
+
+    const ref = useRef(null);
     const getGaleryItems = (item: any) => {
         const items: any[] = [];
         for (let i = 0; i < item.children.length; i++) {
@@ -68,6 +73,15 @@ const Theme1 = ({ images }: { images: Array<{ url: string, id: number, item: Ima
             });
         }
     }, [galleryRef]);
+
+    useEffect(() => {
+        if (shouldScrollToBottom) {
+            if (galleryRef?.current) {
+                (galleryRef.current as any)?.scrollIntoView({ behavior: "smooth" });
+            }
+            dispatch(stopScrollToBottom());
+        }
+    },[dispatch, shouldScrollToBottom, galleryRef]);
 
     return <div className={styles.Theme1}>
         <Image.PreviewGroup items={images.map(i => i.url)} preview={{
@@ -102,6 +116,7 @@ const Theme1 = ({ images }: { images: Array<{ url: string, id: number, item: Ima
                                 if (node) {
                                     node.style.gridRowEnd = "span " + Math.ceil((getHeight(node) + gap) / (altura + gap));
                                 }
+                            statuses++;
                             }} />
                     </div>
                 </div>)}
@@ -120,7 +135,7 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
     const [name, id] = getFolderIdx(folderName);
     const dispatch = useDispatch();
 
-    const { count, images, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal } = useSelector(
+    const { count, images, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
         (state: RootState) => state.image.folder.list
     );
 
@@ -157,7 +172,7 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
             }));
             dispatch(fetchFolderById(+id));
         }
-    }, [limit, offset, dispatch]);
+    }, []);
 
     return <div className={cls(styles.FolderImageListPage)}>
         <ProHeader/>
@@ -189,7 +204,8 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
             </div>
             <div>Selected: {selectedImages.getCount()}</div>
         </div>}
-        {images && <Theme1 images={images.map(i => ({ url: !i.content_type ? i.path : "/public/" + i.path, id: i.id, item: i }))} />}
+        {images && <Spin spinning={loading} 
+        tip="Loading..."><Theme1 shouldScrollToBottom = {shouldScrollToBottom} images={images.map(i => ({ url: !i.content_type ? i.path : "/public/" + i.path, id: i.id, item: i }))} /></Spin>}
         {shouldLoadMore && folder && <div className={styles.loadMoreBtn}><Button onClick={() => dispatch(fetchNextFolderImageList({
             folderId: folder.id, limit, offset: offset + limit
         }))} loading={loading}>Load more</Button></div>}

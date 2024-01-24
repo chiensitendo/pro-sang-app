@@ -38,12 +38,12 @@ export function* refreshImageFolderListSaga(action: PayloadAction<FolderImageLis
 export function* getNextFolderImageListSaga(action: PayloadAction<FolderImageListAction>) {
     try {
         const {folderId, limit, offset} = action.payload;
-        setLoading(true);
+        // setLoading(true);
         let result: Response = yield getImageListByFolderIdAPI({folderId, limit, offset});
         yield put(fetchNextFolderImageListSuccess(result));
-        setLoading(false);
+        // setLoading(false);
     } catch (e) {
-        setLoading(false);
+        // setLoading(false);
         yield put(fetchNextFolderImageListFailed());
         yield put(showErrorNotification(e));
     }
@@ -52,12 +52,12 @@ export function* getNextFolderImageListSaga(action: PayloadAction<FolderImageLis
 export function* changeFolderImageListLimitSaga(action: PayloadAction<FolderImageListAction>) {
     try {
         const {folderId, limit, offset} = action.payload;
-        setLoading(true);
+        // setLoading(true);
         let result: Response = yield getImageListByFolderIdAPI({folderId, limit, offset});
         yield put(changeFolderImageListLimitSuccess(result));
-        setLoading(false);
+        // setLoading(false);
     } catch (e) {
-        setLoading(false);
+        // setLoading(false);
         yield put(changeFolderImageListLimitFailed());
         yield put(showErrorNotification(e));
     }
