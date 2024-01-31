@@ -59,6 +59,10 @@ const nextConfig = {
         source: '/public/:path*',
         destination: apiUrl +'/public/:path*' // Proxy to Backend
       },
+      {
+        source: '/Callback',
+        destination: apiUrl +'/Callback' // Proxy to Backend
+      },
     ]
   }
 }
