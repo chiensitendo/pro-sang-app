@@ -60,6 +60,8 @@ const LoginPage: NextPage = (props: LoginPageProps) => {
         if (redirectUrl) {
           
           router.push(redirectUrl as string);
+        } else {
+          router.push("/folder");
         }
   }
   }, [response, redirectUrl, router, locale, onSuccess]);

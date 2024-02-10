@@ -134,6 +134,7 @@ const FolderUploadPage = () => {
     const [isOpenRetry, setIsOpenRetry] = useState(false);
     const [fileList, setFileList] = useState<CustomUploadFile<any>[]>([]);
     const [previewFileList, setPreviewFileList] = useState<(string | ArrayBuffer)[]>([]);
+    const [status, setStatus] = useState(0);
     const { list: { folders, loading }, create: { response, error } } = useSelector(
         (state: RootState) => state.folder
     );
@@ -281,8 +282,12 @@ const FolderUploadPage = () => {
 
 
     useEffect(() => {
-        dispatch(fetchFolderList());
-    }, [dispatch]);
+        if (status === 0) {
+            setStatus(1);
+        }
+        if (status === 1)
+            dispatch(fetchFolderList());
+    }, [dispatch, status]);
 
     useEffect(() => {
         if (response) {

@@ -9,6 +9,7 @@ import cls from "classnames";
 import { Button, Image, Select } from 'antd';
 import { changePublicImageListLimit, fetchNextPublicImageList, fetchPublicImageList } from "@/redux/reducers/image/publicImageListSlice";
 import ProHeader from "@/components/core/header/ProHeader";
+import { getImageUrl } from "@/types/image";
 
 
 const Theme1 = ({ images }: { images: string[] }) => {
@@ -81,7 +82,7 @@ const Theme1 = ({ images }: { images: string[] }) => {
 
 const PublicImageListPage = () => {
     const dispatch = useDispatch();
-
+    const [status, setStatus] = useState(0);
     const { count, images, limit, offset, loading } = useSelector(
         (state: RootState) => state.image.public.list
     );
@@ -94,8 +95,12 @@ const PublicImageListPage = () => {
     }, [count, limit, images, offset]);
 
     useEffect(() => {
-        dispatch(fetchPublicImageList({ limit, offset}));
-    }, []);
+        if (status === 0) {
+            setStatus(1);
+        }
+        if (status === 1)
+            dispatch(fetchPublicImageList({ limit, offset}));
+    }, [status]);
 
     return <div className={cls(styles.PublicImageListPage)}>
         <ProHeader/>
@@ -113,7 +118,7 @@ const PublicImageListPage = () => {
                 ]}
             />
         </div>}
-        {images && <Theme1 images={images.map(i => "/public/" + i.path)} />}
+        {images && <Theme1 images={images.map(i => getImageUrl(i))} />}
         {shouldLoadMore && <div className={styles.loadMoreBtn}><Button onClick={() => dispatch(fetchNextPublicImageList({limit, offset: offset + limit
         }))} loading={loading}>Load more</Button></div>}
     </div>

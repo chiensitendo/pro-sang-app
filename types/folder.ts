@@ -1,3 +1,5 @@
+import { Service } from "./image";
+
 export interface FolderItem {
     id: number,
     image_count: number,
@@ -20,7 +22,10 @@ export interface ImageItem {
     content_type: string,
     name: string,
     path: string,
-    is_public: boolean
+    is_public: boolean,
+    generate_expired_time: string,
+    generated_link: string,
+    service: Service
 }
 
 export interface ImageResponse {

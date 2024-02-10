@@ -2,7 +2,7 @@
 
 import { fetchFolderList } from "@/redux/reducers/folder/folderListReducer";
 import { RootState } from "@/redux/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import styles from "./folder.module.scss";
@@ -11,14 +11,18 @@ import withAuth from "@/components/with-auth";
 const FolderListPage = () => {
 
   const dispatch = useDispatch();
-
+  const [status, setStatus] = useState(0);
   const { count, folders } = useSelector(
     (state: RootState) => state.folder.list
   );
 
   useEffect(() => {
-    dispatch(fetchFolderList());
-  }, [dispatch]);
+    if (status === 0) {
+      setStatus(1);
+    }
+    if (status === 1)
+      dispatch(fetchFolderList());
+  }, [dispatch, status]);
 
   return <div className={styles.FolderListPageWrapper}>
     <ProHeader />

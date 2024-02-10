@@ -18,6 +18,7 @@ import UploadImageModal from "@/components/image/UploadImageModal";
 import withAuth from "@/components/with-auth";
 import ProHeader from "@/components/core/header/ProHeader";
 import { stopScrollToBottom } from "@/redux/reducers/lyric/lyricCommentSlice";
+import { getImageUrl } from "@/types/image";
 
 
 const getFolderIdx = (folderName: string) => {
@@ -134,10 +135,10 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
     const { folderName } = params ?? { folderName: '' };
     const [name, id] = getFolderIdx(folderName);
     const dispatch = useDispatch();
-
-    const { count, images, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
+    const { count, images, isFetched, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
         (state: RootState) => state.image.folder.list
     );
+    const [status, setStatus] = useState(0);
 
     const { folder, loading: folderLoading } = useSelector(
         (state: RootState) => state.folder.detail
@@ -166,13 +167,18 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
     }
 
     useEffect(() => {
-        if (id && +id) {
+        
+        if (status === 0) {
+            setStatus(1);
+        }
+        if (id && +id && status === 1) {
             dispatch(fetchFolderImageList({
                 folderId: +id, limit, offset
             }));
             dispatch(fetchFolderById(+id));
+            setStatus(1);
         }
-    }, []);
+    }, [status, id]);
 
     return <div className={cls(styles.FolderImageListPage)}>
         <ProHeader/>
@@ -205,7 +211,7 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
             <div>Selected: {selectedImages.getCount()}</div>
         </div>}
         {images && <Spin spinning={loading} 
-        tip="Loading..."><Theme1 shouldScrollToBottom = {shouldScrollToBottom} images={images.map(i => ({ url: !i.content_type ? i.path : "/public/" + i.path, id: i.id, item: i }))} /></Spin>}
+        tip="Loading..."><Theme1 shouldScrollToBottom = {shouldScrollToBottom} images={images.map(i => ({ url: getImageUrl(i), id: i.id, item: i }))} /></Spin>}
         {shouldLoadMore && folder && <div className={styles.loadMoreBtn}><Button onClick={() => dispatch(fetchNextFolderImageList({
             folderId: folder.id, limit, offset: offset + limit
         }))} loading={loading}>Load more</Button></div>}
