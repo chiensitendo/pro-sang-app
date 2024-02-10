@@ -3,7 +3,7 @@
 import { Button, Form, Input } from "antd";
 import { NextPage } from "next";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import withNotification from "@/components/with-notification";
 import { RootState } from "@/redux/store";
@@ -18,6 +18,11 @@ import { useLocale } from "next-intl";
 import { setLoginSessionStorage, isSessionLogging, isSessionAccessTokenExpired } from "@/services/session-service";
 
 const LoginPage: NextPage = (props: LoginPageProps) => {
+
+  return <Suspense><Login {...props}/></Suspense>
+}
+
+const Login = (props: LoginPageProps) => {
   const { onSuccess } = props;
   const router = useRouter();
   const locale = useLocale();
@@ -77,7 +82,7 @@ const LoginPage: NextPage = (props: LoginPageProps) => {
     };
   }, [redirectUrl]);
 
-  return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", flexDirection: "column"}}>
+  return  <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", flexDirection: "column"}}>
         <div style={{padding: "2rem 0"}}>
             <h1>{getTranslation("account.login", "Login", locale)}</h1>
         </div>
