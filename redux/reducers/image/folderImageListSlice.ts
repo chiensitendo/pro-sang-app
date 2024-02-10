@@ -22,7 +22,6 @@ interface FolderImageListState {
     isOpenDeleteModal: boolean;
     isOpenUploadImageModal: boolean;
     shouldScrollToBottom: boolean;
-    isFetched: "INIT" | "LOADING" | "COMPLETED";
 }
 const initialState: FolderImageListState = {
     count: 0,
@@ -35,7 +34,6 @@ const initialState: FolderImageListState = {
     isOpenDeleteModal: false,
     isOpenUploadImageModal: false,
     shouldScrollToBottom: false,
-    isFetched: "INIT"
 }
 
 const folderImageListSlice = createSlice({
@@ -47,21 +45,18 @@ const folderImageListSlice = createSlice({
             state.count = 0;
             state.loading = true;
             state.folderName = action.payload.folderName;
-            state.isFetched = "LOADING";
         },
         fetchFolderImageListSuccess(state, action) {
             const {count, images} = action.payload.data as ImageResponse;
             state.images = images;
             state.count = count;
             state.loading = false;
-            state.isFetched = "COMPLETED";
         },
         fetchFolderImageListFailed(state) {
             state.images = undefined;
             state.count = 0;
             state.loading = false;
             state.folderName = undefined;
-            state.isFetched = "COMPLETED";
         },
         fetchNextFolderImageList(state, action: PayloadAction<FolderImageListAction>) {
             state.prevOffset = state.offset;

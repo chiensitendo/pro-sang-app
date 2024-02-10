@@ -135,7 +135,7 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
     const { folderName } = params ?? { folderName: '' };
     const [name, id] = getFolderIdx(folderName);
     const dispatch = useDispatch();
-    const { count, images, isFetched, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
+    const { count, images, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
         (state: RootState) => state.image.folder.list
     );
     const [status, setStatus] = useState(0);

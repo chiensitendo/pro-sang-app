@@ -23,8 +23,8 @@ export interface ImageItem {
     name: string,
     path: string,
     is_public: boolean,
-    generate_expired_time: string,
-    generated_link: string,
+    generate_expired_time?: string,
+    generated_link?: string,
     service: Service
 }
 

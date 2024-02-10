@@ -10,6 +10,7 @@ import { postUpdateFileAPI } from "@/apis/image-apis";
 import { RcFile } from "antd/es/upload";
 import { useDispatch } from "react-redux";
 import { addImageInFolder } from "@/redux/reducers/image/folderImageListSlice";
+import { Service } from "@/types/image";
 
 const UploadImageModal = ({ open, onOk, onCancel, folder }: { open: boolean, onOk: (shouldRefresh: boolean) => void, onCancel: (shouldRefresh: boolean) => void, folder: FolderItem }) => {
 
@@ -62,7 +63,8 @@ const UploadImageModal = ({ open, onOk, onCancel, folder }: { open: boolean, onO
                         id: -1,
                         name: v.name,
                         is_public: false,
-                        path: url as string
+                        path: url as string,
+                        service: Service.AWS
                     }));
                     setPreviewFileList(l);
                 };
