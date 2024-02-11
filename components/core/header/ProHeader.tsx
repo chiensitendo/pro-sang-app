@@ -1,10 +1,11 @@
-import { FolderOpenOutlined, HomeOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
-import ProLogo from "../logo/ProLogo";
+import { BankOutlined, FolderOpenOutlined, HomeOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
 import styles from "./ProHeader.module.scss";
 import clx from 'classnames';
 import { Avatar } from "antd";
 import { useSessionAuth } from "@/components/use-session-auth";
 import React from "react";
+import ProLogo from "../logo/ProLogo";
+import { Roles } from "@/types/account";
 const ProHeader = () => {
     const {userInfo} = useSessionAuth();
     return <div className={styles.ProHeader}>
@@ -30,6 +31,12 @@ const ProHeader = () => {
                         <FolderOpenOutlined className={styles.icon} />
                     </a>
                 </li>
+                {userInfo.role === Roles.ADMIN && <li>
+                    <a href="/admin">
+                        <span className={styles.text}>Admin</span>
+                        <BankOutlined className={styles.icon} />
+                    </a>
+                </li>}
                 </React.Fragment>}
                 <li>
                     <a href={!userInfo ? "/login" : "/images"}>

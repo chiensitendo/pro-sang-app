@@ -1,7 +1,7 @@
 import {all, put, takeLatest} from "@redux-saga/core/effects";
 import {PayloadAction} from "@reduxjs/toolkit";
 import {CreateAccountRequest, LoginRequest} from "../../types/account";
-import {showErrorNotification} from "../reducers/lyric/notificationSlice";
+import {showErrorNotification} from "../reducers/notificationSlice";
 import {useLoading} from "../../components/core/useLoading";
 import {loginAccount, registerAccountAPI} from "../../apis/auth-apis";
 import {loginFailed, loginSuccess} from "../reducers/account/accountLoginSlice";

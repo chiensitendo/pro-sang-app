@@ -35,7 +35,7 @@ import {
     likeReplyAPI,
     rateLyricAPI
 } from "../../../apis/lyric-apis";
-import {showErrorNotification} from "../../reducers/lyric/notificationSlice";
+import {showErrorNotification} from "../../reducers/notificationSlice";
 import {getLyricInfo, getLyricRepliedComments, loadMoreCommentsAPI} from "../../../apis/common/lyric-public-api";
 import {useLoading} from "../../../components/core/useLoading";
 const {setLoading} = useLoading();

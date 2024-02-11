@@ -1,7 +1,7 @@
 import {all, put, takeLatest} from "@redux-saga/core/effects";
 import {PayloadAction} from "@reduxjs/toolkit";
 import {LyricRequest} from "../../../types/account";
-import {showErrorNotification} from "../../reducers/lyric/notificationSlice";
+import {showErrorNotification} from "../../reducers/notificationSlice";
 import {useLoading} from "../../../components/core/useLoading";
 import {addLyricAPI, editLyricAPI, getEditLyricDetailAPI} from "../../../apis/lyric-apis";
 import {

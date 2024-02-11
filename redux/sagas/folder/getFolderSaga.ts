@@ -1,5 +1,5 @@
 import {all, put, takeLatest} from "@redux-saga/core/effects";
-import {showErrorNotification} from "../../reducers/lyric/notificationSlice";
+import {showErrorNotification} from "../../reducers/notificationSlice";
 import {useLoading} from "../../../components/core/useLoading";
 import { getFolderByIdAPI } from "@/apis/folder-apis";
 import { PayloadAction } from "@reduxjs/toolkit";

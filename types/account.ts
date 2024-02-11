@@ -15,6 +15,7 @@ export interface LoginResponse {
 	accessTokenExpiredTime: string;
 	refreshToken: string;
 	refreshTokenExpiredTime: string;
+	role: Roles;
 }
 
 export interface LoginResponseV2 {
@@ -27,6 +28,7 @@ export interface LoginResponseV2 {
 	expired_time: string;
 	refresh_token: string;
 	refresh_expired_time: string;
+	role: Roles;
 }
 
 export interface LyricRequest {
@@ -58,12 +60,13 @@ export interface LoggingUserInfo {
 	email: string;
 	name: string;
 	photoUrl: string;
+	role: Roles;
 }
 
 export enum Roles {
-	SUPER_ADMIN,
-	ADMIN,
-	USER
+	SUPER_ADMIN = "SUPER_ADMIN",
+	ADMIN = "ADMIN",
+	USER = "USER"
 }
 
 export interface CreateAccountRequest {

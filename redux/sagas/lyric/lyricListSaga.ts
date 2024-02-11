@@ -9,7 +9,7 @@ import {
 import {PayloadAction} from "@reduxjs/toolkit";
 import {getLyricInfo, getLyricListAPI} from "../../../apis/common/lyric-public-api";
 import {fetchLyricInfoFailed, fetchLyricInfoSuccess} from "../../reducers/lyric/lyricInfoSlice";
-import {showErrorNotification} from "../../reducers/lyric/notificationSlice";
+import {showErrorNotification} from "../../reducers/notificationSlice";
 import {useLoading} from "../../../components/core/useLoading";
 const {setLoading} = useLoading();
 

@@ -1,11 +1,11 @@
 
 import { notification } from "antd";
 import { NextPage } from "next";
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import {GlobalError} from "../types/error";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../redux/store";
-import {removeErrorNotification} from "../redux/reducers/lyric/notificationSlice";
+import {removeErrorNotification, removeMessageNotification} from "../redux/reducers/notificationSlice";
 import { useLocale } from "next-intl";
 import getTranslation from "./translations";
 const openError = (message: string, locale?: string | undefined) => {
@@ -31,7 +31,7 @@ const withNotification = (WrapperComponent: NextPage<any>) => {
     // eslint-disable-next-line react/display-name
     return () => {
         const locale = useLocale();
-        const {error} = useSelector((state: RootState) => state.notification);
+        const {error, message} = useSelector((state: RootState) => state.notification);
         const dispatch = useDispatch();
         const handleErrors = (err: any) => {
             if (!err) {
@@ -75,6 +75,12 @@ const withNotification = (WrapperComponent: NextPage<any>) => {
                 dispatch(removeErrorNotification());
             }
         },[error, dispatch, handleErrors]);
+        useEffect(() => {
+            if (message) {
+                handleSuccess(message);
+                dispatch(removeMessageNotification());
+            }
+        },[message, dispatch, handleErrors]);
         return <WrapperComponent onErrors = {handleErrors} onSuccess = {handleSuccess}/>;
     }
 }

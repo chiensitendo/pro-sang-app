@@ -4,7 +4,7 @@ import lyricCommentSlice from "./lyric/lyricCommentSlice";
 import shellUserSlice from "./shellUserSlice";
 import lyricContentSlice from "./lyric/lyricContentSlice";
 import lyricInfoSlice from "./lyric/lyricInfoSlice";
-import notificationSlice from "./lyric/notificationSlice";
+import notificationSlice from "./notificationSlice";
 import lyricActionSlice from "./lyric/lyricActionSlice";
 import accountLoginSlice from "./account/accountLoginSlice";
 import accountRegisterSlice from "./account/accountRegisterSlice";
@@ -13,6 +13,7 @@ import folderImageListSlice from '@/redux/reducers/image/folderImageListSlice';
 import createFolderSlice from '@/redux/reducers/folder/createFolderReducer';
 import publicImageListSlice from './image/publicImageListSlice';
 import folderDetailSlice from "./folder/folderDetailReducer";
+import adminSlice from './admin/adminSlice';
 const rootReducer = combineReducers({
     lyric: combineReducers({
         list: lyricListSlice,
@@ -39,7 +40,8 @@ const rootReducer = combineReducers({
         public: combineReducers({
             list: publicImageListSlice
         })
-    })
+    }),
+    admin: adminSlice
 });
 
 export default rootReducer;

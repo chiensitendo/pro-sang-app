@@ -12,7 +12,7 @@ const initialState: NotificationState = {
 
 
 const notificationSlice = createSlice({
-    name: 'lyric/notification',
+    name: 'notification',
     initialState: initialState,
     reducers: {
         showErrorNotification(state, action: PayloadAction<any>) {
@@ -20,10 +20,16 @@ const notificationSlice = createSlice({
         },
         removeErrorNotification(state) {
             state.error = null;
+        },
+        showMessageNotification(state, action: PayloadAction<string>) {
+            state.message = action.payload;
+        },
+        removeMessageNotification(state) {
+            state.message = null;
         }
     }
 });
 
-export const {showErrorNotification, removeErrorNotification} = notificationSlice.actions;
+export const {showErrorNotification, removeErrorNotification, showMessageNotification, removeMessageNotification} = notificationSlice.actions;
 
 export default notificationSlice.reducer;

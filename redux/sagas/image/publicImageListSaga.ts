@@ -1,5 +1,5 @@
 import {all, put, takeLatest} from "@redux-saga/core/effects";
-import {showErrorNotification} from "../../reducers/lyric/notificationSlice";
+import {showErrorNotification} from "../../reducers/notificationSlice";
 import {useLoading} from "../../../components/core/useLoading";
 import { PayloadAction } from "@reduxjs/toolkit";
 import {getPublicImageListAPI } from "@/apis/image-apis";

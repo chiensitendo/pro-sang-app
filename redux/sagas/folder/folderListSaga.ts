@@ -1,5 +1,5 @@
 import {all, put, takeLatest} from "@redux-saga/core/effects";
-import {showErrorNotification} from "../../reducers/lyric/notificationSlice";
+import {showErrorNotification} from "../../reducers/notificationSlice";
 import {useLoading} from "../../../components/core/useLoading";
 import { getFolderListAPI } from "@/apis/folder-apis";
 import { fetchFolderListFailed, fetchFolderListSuccess } from "@/redux/reducers/folder/folderListReducer";
