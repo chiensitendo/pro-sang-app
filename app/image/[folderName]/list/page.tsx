@@ -33,7 +33,7 @@ const getFolderIdx = (folderName: string) => {
     return idx;
 }
 
-const Theme1 = ({ images, shouldScrollToBottom }: { images: Array<{ url: string, id: number, item: ImageItem }>, shouldScrollToBottom: boolean }) => {
+const Theme1 = ({ images }: { images: Array<{ url: string, id: number, item: ImageItem }>, shouldScrollToBottom: boolean }) => {
 
     const [current, setCurrent] = useState(0);
     const galleryRef: LegacyRef<HTMLDivElement> = useRef(null);
@@ -75,14 +75,14 @@ const Theme1 = ({ images, shouldScrollToBottom }: { images: Array<{ url: string,
         }
     }, [galleryRef]);
 
-    useEffect(() => {
-        if (shouldScrollToBottom) {
-            if (galleryRef?.current) {
-                (galleryRef.current as any)?.scrollIntoView({ behavior: "smooth" });
-            }
-            dispatch(stopScrollToBottom());
-        }
-    },[dispatch, shouldScrollToBottom, galleryRef]);
+    // useEffect(() => {
+    //     if (shouldScrollToBottom) {
+    //         if (galleryRef?.current) {
+    //             (galleryRef.current as any)?.scrollIntoView({ behavior: "smooth" });
+    //         }
+    //         dispatch(stopScrollToBottom());
+    //     }
+    // },[dispatch, shouldScrollToBottom, galleryRef]);
 
     return <div className={styles.Theme1}>
         <Image.PreviewGroup items={images.map(i => i.url)} preview={{
