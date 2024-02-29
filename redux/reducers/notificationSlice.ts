@@ -1,12 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface NotificationState {
-    error: any,
+    error?: any,
     message: any,
 }
 
 const initialState: NotificationState = {
-    error: null,
     message: null,
 }
 
@@ -19,7 +18,7 @@ const notificationSlice = createSlice({
             state.error = action.payload;
         },
         removeErrorNotification(state) {
-            state.error = null;
+            state.error = undefined;
         },
         showMessageNotification(state, action: PayloadAction<string>) {
             state.message = action.payload;

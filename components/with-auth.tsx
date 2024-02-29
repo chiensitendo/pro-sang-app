@@ -1,8 +1,11 @@
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 import { NotificationProps } from "../types/page";
-import { isSessionAccessTokenExpired, isSessionLogging } from "@/services/session-service";
+import { getSession_SessionId, isSessionAccessTokenExpired, isSessionLogging } from "@/services/session-service";
 import { useRouter, useParams } from "next/navigation";
+import { useLocale } from "next-intl";
+import { isEmpty } from "lodash";
+import { logoutAccount } from "@/apis/auth-apis";
 
 const getUri = (location: Location) => {
     if (!location || !location.pathname) return "";
@@ -14,32 +17,26 @@ const withAuth = (WrapperComponent: NextPage<any>) => {
     return (props: any) => {
         const {onErrors, onSuccess} = props;
         const router = useRouter();
+        const locale = useLocale();
         const [shouldLoad, setShouldLoad] = React.useState(false);
         useEffect(() => {
             const isLogging = isSessionLogging();
             const uri = getUri(location);
             const loginUrl = `/login${uri? '?redirectUrl='+ uri: ''}`;
+            const sessionId = getSession_SessionId();
             if (!isLogging) {
+                if (!isEmpty(sessionId)) {
+                    logoutAccount(sessionId, locale).then(res => res).catch(err => err);
+                }
                 router.push(loginUrl);
                 return;
             }
             if (isSessionAccessTokenExpired()) {
+                if (!isEmpty(sessionId)) {
+                    logoutAccount(sessionId, locale).then(res => res).catch(err => err);
+                }
                 router.push(loginUrl);
                 return;
-                // if (isRefreshTokenExpired()) {
-                //     router.push(loginUrl).then();
-                //     return;
-                // } else {
-                //     const token = getRefreshToken();
-                //     const username = getUsername();
-                //     refreshTokenAPI({
-                //         refreshToken: token,
-                //         username: username
-                //     }).then(res => {
-                //         setRefreshTokenLocalStorage(res.data.body as RefreshTokenResponse);
-                //         setShouldLoad(true);
-                //     }).catch(err => router.push(loginUrl));
-                // }
             } else  {
                 setShouldLoad(true);
             }

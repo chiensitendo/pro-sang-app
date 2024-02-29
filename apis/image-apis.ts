@@ -15,10 +15,10 @@ export const getImageListByFolderIdAPI = ({folderId, limit, offset, locale}: {fo
     }
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.get<any>(`/api/image/folder/${folderId}${params.length === 0 ? '': '?' + params.join("&")}`,
-                { headers: authHeaders(locale, accessToken) as any, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: authHeaders(obj ? {locale, ...obj}: {locale}) as any, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }
@@ -30,10 +30,10 @@ export const postUpdateFileAPI = ({folder_id, file, locale}: {folder_id: number,
     const formData = new FormData();
     formData.append('image',file);
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.post<any>(`/api/image/upload${params.length === 0 ? '': '?' + params.join("&")}`, formData,
-                { headers: {...authHeaders(locale, accessToken) as any, 'Content-Type': 'multipart/form-data'}, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: {...authHeaders(obj ? {locale, ...obj}: {locale}) as any, 'Content-Type': 'multipart/form-data'}, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }
@@ -48,9 +48,9 @@ export const getPublicImageListAPI = ({limit, offset, locale}: {limit?: number, 
     }
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxiosButNotRequired().then(accessToken => {
+        preSessionAxiosButNotRequired().then(obj => {
             generalAxios.get<any>(`/public/images${params.length === 0 ? '': '?' + params.join("&")}`,
-            { headers: accessToken === null ? undefined : authHeaders(locale, accessToken) as any})
+            { headers: obj === null ? undefined : authHeaders({locale, ...obj}) as any})
             .then(res => resolve(res)).catch(err => {
                 reject(err);
             });
@@ -63,10 +63,10 @@ export const getPublicImageListAPI = ({limit, offset, locale}: {limit?: number, 
 export const changePublicOfImagesAPI = ({request, locale}: {request: PublicImageRequest, locale?: string }): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.put<any>(`/api/image/change-public`, request,
-                { headers: {...authHeaders(locale, accessToken) as any}, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: {...authHeaders(obj ? {locale, ...obj}: {locale}) as any}, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }
@@ -74,10 +74,10 @@ export const changePublicOfImagesAPI = ({request, locale}: {request: PublicImage
 export const changeAllPublicOfImagesAPI = ({folderId, request, locale}: {folderId: number, request: PublicImageRequest, locale?: string }): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.put<any>(`/api/image/folder/${folderId}/change-all-public`, request,
-                { headers: {...authHeaders(locale, accessToken) as any}, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: {...authHeaders(obj ? {locale, ...obj}: {locale}) as any}, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }
@@ -85,10 +85,10 @@ export const changeAllPublicOfImagesAPI = ({folderId, request, locale}: {folderI
 export const deleteImagesAPI = ({request, locale}: {request: DeleteImageRequest, locale?: string }): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.put<any>(`/api/image/delete`, request,
-                { headers: {...authHeaders(locale, accessToken) as any}, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: {...authHeaders(obj ? {locale, ...obj}: {locale}) as any}, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }

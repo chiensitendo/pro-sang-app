@@ -7,7 +7,8 @@ const PREFIX = "PRO_SANG_";
 export const isSessionLogging = () => {
     return (!(!sessionStorage.getItem(PREFIX + "TOKEN") ||
         !sessionStorage.getItem(PREFIX + "RERESH_TOKEN") ||
-        !sessionStorage.getItem(PREFIX + "USERNAME")));
+        !sessionStorage.getItem(PREFIX + "USERNAME") || 
+        !sessionStorage.getItem(PREFIX + "SESSION_ID")));
 
 }
 
@@ -21,6 +22,7 @@ export const setLoginSessionStorage = (res: LoginResponseV2) => {
     sessionStorage.setItem(PREFIX + "USER_INFO", JSON.stringify({...res}));
     sessionStorage.setItem(PREFIX + "TOKEN_EXPIRED_TIME", res.expired_time + "+00:00");
     sessionStorage.setItem(PREFIX + "REFRESH_TOKEN_EXPIRED_TIME", res.refresh_expired_time + "+00:00");
+    sessionStorage.setItem(PREFIX + "SESSION_ID", res.session_id);
 }
 
 export const setRefreshTokenSessionStorage = (res: RefreshTokenResponse) => {
@@ -82,7 +84,15 @@ export const getSessionUsername = () => {
     return username;
 }
 
-export const getSessionUserInfo = (): LoggingUserInfo | null => {
+export const getSession_SessionId = () => {
+    const sessionId = sessionStorage.getItem(PREFIX + "SESSION_ID");
+    if (!sessionId) {
+        return "";
+    }
+    return sessionId;
+}
+
+export const getSessionUserInfo = (): LoginResponseV2 | null => {
     const userInfoVal = sessionStorage.getItem(PREFIX + "USER_INFO");
     if (!userInfoVal) {
         return null;

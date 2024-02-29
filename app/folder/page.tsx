@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import styles from "./folder.module.scss";
 import ProHeader from "@/components/core/header/ProHeader";
 import withAuth from "@/components/with-auth";
+import withNotification from "@/components/with-notification";
+import Banner from "@/components/banner";
 const FolderListPage = () => {
 
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const FolderListPage = () => {
 
   return <div className={styles.FolderListPageWrapper}>
     <ProHeader />
+    <Banner/>
     <div className={styles.FolderListPage}>
 
       <div className={styles.container}>
@@ -45,4 +48,4 @@ const FolderListPage = () => {
   </div>
 }
 
-export default withAuth(FolderListPage);
+export default withNotification(withAuth(FolderListPage));

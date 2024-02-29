@@ -23,14 +23,11 @@ authAxios.interceptors.response.use(
       return response;
     },
     function (error) {
-        if (!error.response || !error.response.data) {
-            return Promise.reject(error);
-        }
-        const errorObj: GlobalError = error.response.data;
-        if (!errorObj.errors && !errorObj.validations) {
-            return Promise.reject(error);
-        }
-      return Promise.reject(error.response.data);
+      if (error && error.response && error.response.data) {
+        return Promise.reject(error.response.data);
+      } else {
+        return Promise.reject(error);
+      }
     }
   );
 

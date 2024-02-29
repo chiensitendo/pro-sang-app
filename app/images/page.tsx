@@ -10,6 +10,8 @@ import { Button, Image, Select } from 'antd';
 import { changePublicImageListLimit, fetchNextPublicImageList, fetchPublicImageList } from "@/redux/reducers/image/publicImageListSlice";
 import ProHeader from "@/components/core/header/ProHeader";
 import { getImageUrl } from "@/types/image";
+import withNotification from "@/components/with-notification";
+import Banner from "@/components/banner";
 
 
 const Theme1 = ({ images }: { images: string[] }) => {
@@ -104,6 +106,7 @@ const PublicImageListPage = () => {
 
     return <div className={cls(styles.PublicImageListPage)}>
         <ProHeader/>
+        <Banner/>
         {images && <div className={styles.viewItem}>
             <p>View: </p>
             <Select
@@ -124,4 +127,4 @@ const PublicImageListPage = () => {
     </div>
 }
 
-export default PublicImageListPage;
+export default withNotification(PublicImageListPage);

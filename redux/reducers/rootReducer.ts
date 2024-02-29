@@ -14,6 +14,9 @@ import createFolderSlice from '@/redux/reducers/folder/createFolderReducer';
 import publicImageListSlice from './image/publicImageListSlice';
 import folderDetailSlice from "./folder/folderDetailReducer";
 import adminSlice from './admin/adminSlice';
+import accountVerifySlice from './account/accountVerifySlice';
+import accountLogoutSlice from './account/accountLogoutSlice';
+import accountStatusSlice from './account/accountStatusSlice';
 const rootReducer = combineReducers({
     lyric: combineReducers({
         list: lyricListSlice,
@@ -26,7 +29,10 @@ const rootReducer = combineReducers({
     notification: notificationSlice,
     account: combineReducers({
         login: accountLoginSlice,
-        register: accountRegisterSlice
+        logout: accountLogoutSlice,
+        register: accountRegisterSlice,
+        verify: accountVerifySlice,
+        status: accountStatusSlice
     }),
     folder: combineReducers({
         list: folderListSlice,

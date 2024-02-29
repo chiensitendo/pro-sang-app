@@ -19,6 +19,8 @@ import withAuth from "@/components/with-auth";
 import ProHeader from "@/components/core/header/ProHeader";
 import { stopScrollToBottom } from "@/redux/reducers/lyric/lyricCommentSlice";
 import { getImageUrl } from "@/types/image";
+import withNotification from "@/components/with-notification";
+import Banner from "@/components/banner";
 
 
 const getFolderIdx = (folderName: string) => {
@@ -182,6 +184,7 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
 
     return <div className={cls(styles.FolderImageListPage)}>
         <ProHeader/>
+        <Banner/>
         <div>
             {folder && <FolderDescription folder={folder} onDescription={description => dispatch(updateFolder({
                 id: folder.id,
@@ -223,4 +226,4 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
     </div>
 }
 
-export default withAuth(FolderImageListPage);
+export default withNotification(withAuth(FolderImageListPage));

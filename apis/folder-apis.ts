@@ -6,10 +6,10 @@ import { FolderRequest, UpdateFolderRequest } from "@/types/folder";
 export const getFolderListAPI = (locale?: string): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.get<any>(`/api/folder`,
-                { headers: authHeaders(locale, accessToken) as any, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: authHeaders(obj ? {locale, ...obj}: {locale}) as any, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }
@@ -17,30 +17,30 @@ export const getFolderListAPI = (locale?: string): Promise<AxiosResponse> => {
 export const createFolderAPI = (request: FolderRequest, locale?: string): Promise<AxiosResponse> => {
 
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.post<any>(`/api/folder`,request,
-                { headers: authHeaders(locale, accessToken) as any, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: authHeaders(obj ? {locale, ...obj}: {locale}) as any, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }
 
 export const getFolderByIdAPI = (id: number, locale?: string): Promise<AxiosResponse> => {
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.get<any>(`/api/folder/${id}`,
-                { headers: authHeaders(locale, accessToken) as any, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers: authHeaders(obj ? {locale, ...obj}: {locale}) as any, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }
 
 export const updateFolderByIdAPI = (id: number, request: UpdateFolderRequest, locale?: string): Promise<AxiosResponse> => {
     return new Promise<AxiosResponse>((resolve, reject) => {
-        preSessionAxios(true).then(accessToken => {
+        preSessionAxios(true).then(obj => {
             authAxios.put<any>(`/api/folder/${id}`, request,
-                { headers: authHeaders(locale, accessToken) as any, withCredentials: true })
-                .then(res => resolve(res)).catch(err => reject(err));
+                { headers:  authHeaders(obj ? {locale, ...obj}: {locale}) as any, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
         }).catch(err => redirectToLogin(err, reject));
     });
 }

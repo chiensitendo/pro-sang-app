@@ -1,6 +1,8 @@
 import { DEFAULT_LANG } from "@/constants";
 import { clearAuthSessionStorage } from "@/services/auth_services";
-import { getSessionAccessToken, isSessionAccessTokenExpired, isSessionLogging } from "@/services/session-service";
+import { getSessionAccessToken, getSessionUserInfo, getSession_SessionId, isSessionAccessTokenExpired, isSessionLogging } from "@/services/session-service";
+import { ErrorMessage } from "@/types/error";
+import { ErrorPageType, HttpStatus, SESSION_HEADER } from "@/types/general";
 
 export const langHeader = (locale: string | undefined) => ({
     headers: {
@@ -8,33 +10,54 @@ export const langHeader = (locale: string | undefined) => ({
     }
 });
 
-export const authHeaders = (locale: string | undefined, accessToken?: string | null) => {
-    if (!accessToken) {
+export interface AuthObject {
+    locale?: string, 
+    sessionId?: string, 
+    accessToken?: string | null
+}
+
+export const authHeaders = ({locale, sessionId, accessToken}: AuthObject) => {
+    if (!accessToken || !sessionId) {
         return {'Accept-Language': locale ? locale: DEFAULT_LANG};
     }
     return {
         'Access-Control-Allow-Origin': '*',
         'Authorization': `Bearer ${accessToken}`,
         'Accept-Language': locale ? locale: DEFAULT_LANG,
+        [`${SESSION_HEADER}`]: sessionId
     }
 };
 
 export const redirectToLogin = (err: any, reject: any) => {
-    if (!err.shouldRedirect) {
+    const error: ErrorMessage = err;
+    if ([HttpStatus.UNAUTHORIZED].includes(error?.code)) {
+        window.location.href = "/logout";
+    } else if (err.errorPageType === ErrorPageType.INACTIVE || error?.code === HttpStatus.INACTIVE_ACCOUNT ) {
+
+        window.location.href = `/error/${ErrorPageType.INACTIVE}`;
     } else {
-        window.location.href = "/login";
+        if (err.shouldRedirect) {
+            window.location.href = "/logout";
+        }
     }
+    
     reject(err);
 }
 
-export const preSessionAxios = (isAuthAPI?: boolean): Promise<string | null> => {
+export const preSessionAxios = (isAuthAPI?: boolean): Promise<AuthObject | null> => {
     return new Promise((resolve, reject) => {
         if (!isAuthAPI && !isSessionLogging()) {
             resolve(null);
         }
         try {
             let accessToken = getSessionAccessToken();
-            if (!accessToken) {
+            let sessionId = getSession_SessionId();
+            const userInfo = getSessionUserInfo();
+            if (!userInfo?.is_active) {
+                reject({shouldRedirect: true, errorPageType: ErrorPageType.INACTIVE});
+                return;
+            }
+            if (!accessToken || !sessionId) {
                 reject({shouldRedirect: true});
             }
             if (isSessionAccessTokenExpired()) {
@@ -60,7 +83,7 @@ export const preSessionAxios = (isAuthAPI?: boolean): Promise<string | null> => 
                 //     });
                 // }
             } else {
-                resolve(accessToken);
+                resolve({accessToken, sessionId});
             }
         } catch (e) {
             reject({shouldRedirect: true});
@@ -68,20 +91,21 @@ export const preSessionAxios = (isAuthAPI?: boolean): Promise<string | null> => 
     });
 }
 
-export const preSessionAxiosButNotRequired = (): Promise<string | null> => {
+export const preSessionAxiosButNotRequired = (): Promise<AuthObject | null> => {
     return new Promise((resolve, reject) => {
         if (!isSessionLogging()) {
             resolve(null);
         }
         try {
             let accessToken = getSessionAccessToken();
-            if (!accessToken) {
+            let sessionId = getSession_SessionId();
+            if (!accessToken || !sessionId) {
                 resolve(null);
             }
             if (isSessionAccessTokenExpired()) {
                 resolve(null);
             } else {
-                resolve(accessToken);
+                resolve({accessToken, sessionId});
             }
         } catch (e) {
             reject(null);

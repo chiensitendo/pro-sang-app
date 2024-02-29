@@ -19,6 +19,9 @@ import { postUpdateFileAPI } from "@/apis/image-apis";
 import { RcFile } from "antd/lib/upload";
 import TextArea from "antd/lib/input/TextArea";
 import ProHeader from "@/components/core/header/ProHeader";
+import withNotification from "@/components/with-notification";
+import Banner from "@/components/banner";
+import { useSessionAuth } from "@/components/use-session-auth";
 
 
 
@@ -135,6 +138,7 @@ const FolderUploadPage = () => {
     const [fileList, setFileList] = useState<CustomUploadFile<any>[]>([]);
     const [previewFileList, setPreviewFileList] = useState<(string | ArrayBuffer)[]>([]);
     const [status, setStatus] = useState(0);
+    const {isValidAccount} = useSessionAuth();
     const { list: { folders, loading }, create: { response, error } } = useSelector(
         (state: RootState) => state.folder
     );
@@ -298,6 +302,7 @@ const FolderUploadPage = () => {
 
     return <div className={styles.FolderUploadPageWrapper}>
         <ProHeader />
+        <Banner/>
         <div className={styles.FolderUploadPage}>
 
             <Card title="Upload Files" className={styles.upload}
@@ -310,6 +315,7 @@ const FolderUploadPage = () => {
                     layout="vertical"
                     form={form}
                     autoComplete="off"
+                    disabled = {!isValidAccount}
                 >
                     <div>
                         {<Form.Item
@@ -334,7 +340,7 @@ const FolderUploadPage = () => {
                     </div>
                     <Divider />
 
-                    <Upload {...props} disabled={!folderId}>
+                    <Upload {...props} disabled={!folderId && !isValidAccount}>
                         <Button icon={<UploadOutlined />} disabled={!folderId}>Click to Upload</Button>
                     </Upload>
                 </Form>
@@ -384,4 +390,4 @@ const FolderUploadPage = () => {
     </div>
 }
 
-export default withAuth(FolderUploadPage);
+export default withNotification(withAuth(FolderUploadPage));

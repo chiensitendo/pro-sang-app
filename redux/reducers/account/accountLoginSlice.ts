@@ -3,12 +3,16 @@ import {LoginRequest, LoginResponse, LoginResponseV2} from "../../../types/accou
 
 interface AccountLoginState {
     isSubmit: boolean;
+    isTooManyLogin: boolean;
     response: LoginResponseV2 | null;
+    isComplete: boolean;
 }
 
 const initialState: AccountLoginState = {
     isSubmit: false,
-    response: null
+    response: null,
+    isTooManyLogin: false,
+    isComplete: false
 }
 
 const accountLoginSlice = createSlice({
@@ -21,15 +25,20 @@ const accountLoginSlice = createSlice({
         },
         loginSuccess(state, action) {
             state.isSubmit = false;
+            state.isComplete = true;
             state.response = action.payload.data;
         },
-        loginFailed(state) {
+        loginFailed(state, action: PayloadAction<boolean>) {
+            state.isTooManyLogin = action.payload;
             state.isSubmit = false;
+            state.isComplete = true;
             state.response = null;
         },
         clearLoginState: (state) => {
             state.isSubmit = false;
             state.response = null;
+            state.isTooManyLogin = false;
+            state.isComplete = false;
         }
     }
 });

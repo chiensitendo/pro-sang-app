@@ -2,12 +2,13 @@
 import { notification } from "antd";
 import { NextPage } from "next";
 import React, {useEffect, useMemo} from "react";
-import {GlobalError} from "../types/error";
+import {ErrorMessage, GlobalError} from "../types/error";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../redux/store";
 import {removeErrorNotification, removeMessageNotification} from "../redux/reducers/notificationSlice";
 import { useLocale } from "next-intl";
 import getTranslation from "./translations";
+import { isEmpty } from "lodash";
 const openError = (message: string, locale?: string | undefined) => {
     notification['error']({
       message: getTranslation("lyric.notification.error", 'Error', locale),
@@ -47,7 +48,12 @@ const withNotification = (WrapperComponent: NextPage<any>) => {
 
             if (!error.errors && !error.validations) {
                 // openError("Unknown Error");
-                openError("Oops! Something went wrong.", locale);
+                const error2: ErrorMessage = err;
+                if (error2.message) {
+                    openError(error2.message, locale);
+                } else {
+                    openError("Oops! Something went wrong.", locale);
+                }
             } else {
                 if (error.errors) {
                     error.errors.forEach(v => {
@@ -70,17 +76,18 @@ const withNotification = (WrapperComponent: NextPage<any>) => {
             openSuccess(mes, locale);
         }
         useMemo(() => {
-            if (error) {
+            if (!isEmpty(error)) {
                 handleErrors(error);
                 dispatch(removeErrorNotification());
             }
         },[error, dispatch, handleErrors]);
         useEffect(() => {
+            
             if (message) {
                 handleSuccess(message);
                 dispatch(removeMessageNotification());
             }
-        },[message, dispatch, handleErrors]);
+        },[message, dispatch, handleSuccess]);
         return <WrapperComponent onErrors = {handleErrors} onSuccess = {handleSuccess}/>;
     }
 }

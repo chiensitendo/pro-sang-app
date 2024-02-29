@@ -9,12 +9,14 @@ import { useDispatch } from "react-redux";
 import { openUploadImageModal } from "@/redux/reducers/image/folderImageListSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useSessionAuth } from "../use-session-auth";
 
 
 const FolderDescription = ({ folder, onDescription }: { folder: FolderItem, onDescription: (description: string) => void }) => {
 
     const [description, setDescription] = useState("");
     const [isEdit, setIsEdit] = useState(false);
+    const {isValidAccount} = useSessionAuth();
     const { count } = useSelector(
         (state: RootState) => state.image.folder.list
     );
@@ -69,8 +71,8 @@ const FolderDescription = ({ folder, onDescription }: { folder: FolderItem, onDe
 
     return <div className={styles.FolderDescription}>
         <Descriptions extra={<div className={styles.buttonGroup}>
-            <Button type="primary" className="green_primary_button" icon={<PlusOutlined />} onClick={() => dispatch(openUploadImageModal({ open: true }))}>Add</Button>
-            <Button type="primary" onClick={() => {
+            <Button type="primary" className="green_primary_button" icon={<PlusOutlined />} disabled={!isValidAccount} onClick={() => dispatch(openUploadImageModal({ open: true }))}>Add</Button>
+            <Button type="primary" disabled={!isValidAccount} onClick={() => {
                 if (isEdit) {
                     setDescription(folder.description);
                 }

@@ -33,7 +33,7 @@ export const authHeaders = (locale: string | undefined, accessToken?: string | n
 export const redirectToLogin = (err: any, reject: any) => {
     if (!err.shouldRedirect) {
     } else {
-        window.location.href = "/login";
+        window.location.href = "/logout";
     }
     reject(err);
 }

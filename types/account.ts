@@ -18,6 +18,18 @@ export interface LoginResponse {
 	role: Roles;
 }
 
+export interface AccountVerifyRequest {
+    verifyToken: string;
+    accountId: number;
+}
+
+export interface AccountVerifyResponse {
+    is_verified: boolean;
+    id: number;
+	is_active: boolean;
+}
+
+
 export interface LoginResponseV2 {
 	id: number;
 	username: string;
@@ -29,6 +41,9 @@ export interface LoginResponseV2 {
 	refresh_token: string;
 	refresh_expired_time: string;
 	role: Roles;
+	session_id: string;
+	is_verify: boolean;
+	is_active: boolean;
 }
 
 export interface LyricRequest {
@@ -69,6 +84,13 @@ export enum Roles {
 	USER = "USER"
 }
 
+export enum RoleIds {
+	SUPER_ADMIN = 0,
+	ADMIN = 1,
+	USER = 2
+}
+
+// Legacy
 export interface CreateAccountRequest {
 	username: string;
 	email: string;
@@ -77,6 +99,16 @@ export interface CreateAccountRequest {
 	last_name: string;
 	photoUrl?: string;
 	role: Roles;
+}
+
+export interface RegisterRequest {
+	username: string;
+	email: string;
+	password: string;
+	first_name: string;
+	last_name: string;
+	role_id: RoleIds;
+	is_test?: boolean;
 }
 
 export interface CreateAccountResponse {

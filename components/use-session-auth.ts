@@ -1,9 +1,9 @@
 import { getSessionUserInfo, isSessionAccessTokenExpired, isSessionLogging } from "@/services/session-service";
-import { LoggingUserInfo } from "@/types/account";
+import { LoginResponseV2 } from "@/types/account";
 import { useEffect, useState } from "react"
 
 export const useSessionAuth = () => {
-    const [userInfo, setUserInfo] = useState<LoggingUserInfo | null>(null);
+    const [userInfo, setUserInfo] = useState<LoginResponseV2 | null>(null);
 
     useEffect(() => {
         const isLogging = isSessionLogging();
@@ -16,9 +16,9 @@ export const useSessionAuth = () => {
         } else  {
             setUserInfo(getSessionUserInfo());
         }
-
     },[]);
     return {
-        userInfo
+        userInfo,
+        isValidAccount: userInfo?.is_verify && userInfo?.is_active
     }
 }

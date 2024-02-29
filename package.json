@@ -16,6 +16,7 @@
     "@types/filesystem": "^0.0.32",
     "@types/firebase": "^3.2.1",
     "@types/linkify-it": "^3.0.2",
+    "@types/lodash": "^4.14.202",
     "@types/react-infinite-scroll-component": "^5.0.0",
     "@types/react-redux": "^7.1.24",
     "add": "^2.0.6",
