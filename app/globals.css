@@ -76,3 +76,13 @@ button.ant-btn-primary.orange_primary_button:not(:disabled):not(.ant-btn-disable
   background: #f78e3d;
 }
 
+.input_with_prefix_style_1:where(.css-dev-only-do-not-override-1rqnfsa).ant-input-affix-wrapper >input.ant-input {
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

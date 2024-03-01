@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Form, Input, Modal, Result, Upload } from "antd";
+import { Button, Card, Form, Input, Modal, Result, Upload } from "antd";
 import styles from "./register.module.scss";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -101,10 +101,10 @@ const RegisterPage = () => {
 
 
     return <div className={styles.RegisterPage}>
-        <ProLogo />
+        {isSuccess && <ProLogo />}
         <OutSessionComponent/>
-        {!isSuccess && <div className={styles.wrapper}>
-            <h1>Register Account</h1>
+        {!isSuccess && <Card className={styles.wrapper} title={<div style={{display: 'flex'}}><ProLogo /></div>}>
+            <h1 style={{textAlign: 'center'}}>Register Account</h1>
             <Form
                 name="register"
                 layout={"vertical"}
@@ -200,13 +200,13 @@ const RegisterPage = () => {
                     </Form.Item>
                 </Form.Item> */}
                 <Form.Item style={{ textAlign: "center" }}>
-                    <Button type="primary" htmlType="submit" disabled={isSubmit}>
+                    <Button type="primary" htmlType="submit" style={{width: '100%', maxWidth: '500px'}} disabled={isSubmit}>
                         {getTranslation("button.register", "Register", locale)}
                     </Button>
                     <p className={styles.subText}>Go to <a href="/login"><span>login</span></a></p>
                 </Form.Item>
             </Form>
-        </div>}
+        </Card>}
         {isSuccess && <div>
             <Result
                 status="success"
