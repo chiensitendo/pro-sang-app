@@ -120,7 +120,7 @@ const ContactPage = () => {
                         showErrorNotification(err);
                     }).finally(() => setLoading(false));
                 } else  {
-                    const mobileSessionId = createMobileSessionId();
+                    const mobileSessionId = isEmpty(getMobileSessionId()) ? createMobileSessionId(): getMobileSessionId();
                     getAnonymousContactInfo({ _ga: mobileSessionId }).then(res => {
                         const data: ContactInfo = res.data;
                         setShouldShowForm(data?.can_send);
