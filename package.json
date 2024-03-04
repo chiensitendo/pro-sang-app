@@ -19,6 +19,7 @@
     "@types/lodash": "^4.14.202",
     "@types/react-infinite-scroll-component": "^5.0.0",
     "@types/react-redux": "^7.1.24",
+    "@types/uuid": "^9.0.8",
     "add": "^2.0.6",
     "alloyeditor": "^2.14.6",
     "antd": "^5.12.5",
@@ -45,7 +46,8 @@
     "sass": "^1.52.3",
     "suneditor": "^2.43.13",
     "suneditor-react": "^3.4.0",
-    "tlds": "^1.231.0"
+    "tlds": "^1.231.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.6",

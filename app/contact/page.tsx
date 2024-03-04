@@ -15,7 +15,7 @@ import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { ContactInfo, UserContactRequest } from "@/types/account";
 import { getContactInfoAPI, sendUserContactEmail } from "@/apis/user-apis";
-import { isSessionLogging } from "@/services/session-service";
+import { createMobileSessionId, getMobileSessionId, isSessionLogging } from "@/services/session-service";
 import { getAnonymousContactInfo } from "@/apis/public-apis";
 import { Statistic } from 'antd';
 import { MIN_SECONDS } from "@/types/general";
@@ -57,9 +57,14 @@ const ContactPage = () => {
             full_name: values.name
         }
         const _ga = get_ga();
-        const isAnonymous = !isSessionLogging() && !isEmpty(_ga);
+        const mobileSessionId = getMobileSessionId();
+        const isAnonymous = !isSessionLogging() && (!isEmpty(_ga) || !isEmpty(mobileSessionId));
         if (isAnonymous) {
-            request._ga = _ga;
+            if (!isEmpty(_ga)) {
+                request._ga = _ga;
+            } else {
+                request._ga = mobileSessionId;
+            }
         }
         setLoading(true);
         sendUserContactEmail({ request, isAuth: !isAnonymous }).then(res => {
@@ -114,8 +119,14 @@ const ContactPage = () => {
                         setShouldShowForm(false);
                         showErrorNotification(err);
                     }).finally(() => setLoading(false));
+                } else  {
+                    const mobileSessionId = createMobileSessionId();
+                    getAnonymousContactInfo({ _ga: mobileSessionId }).then(res => {
+                        const data: ContactInfo = res.data;
+                        setShouldShowForm(data?.can_send);
+                        setRemainingSeconds(data?.remaining_seconds ?? 0);
+                    }).catch(err => { setShouldShowForm(false); showErrorNotification(err); }).finally(() => setLoading(false));
                 }
-
             }
         }
     }, [status]);

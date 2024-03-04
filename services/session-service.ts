@@ -1,5 +1,6 @@
 import moment from "moment";
 import {LoggingUserInfo, LoginResponse, LoginResponseV2, RefreshTokenResponse} from "../types/account";
+import { v4 as uuidv4 } from 'uuid';
 
 const PREFIX = "PRO_SANG_";
 
@@ -106,4 +107,19 @@ export const setSessionItem = (key: string, value: string) => {
 
 export const getSessionItem = (key: string) => {
     sessionStorage.getItem(key);
+}
+
+export const createMobileSessionId = () => {
+    const mobileSessionId = uuidv4();
+    sessionStorage.setItem(PREFIX + "MOBILE_SESSION_ID", uuidv4());
+
+    return mobileSessionId;
+}
+
+export const getMobileSessionId = () => {
+    const mobileSessionId = sessionStorage.getItem(PREFIX + "MOBILE_SESSION_ID");
+    if (!mobileSessionId) {
+        return "";
+    }
+    return mobileSessionId;
 }
