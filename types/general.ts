@@ -15,3 +15,4 @@ export enum ErrorPageType {
 }
 
 export const SESSION_HEADER = "x-pro-sang-session-id-header";
+export const MIN_SECONDS = 60;

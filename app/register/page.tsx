@@ -20,7 +20,6 @@ import { clearAuthSessionStorage } from "@/services/auth_services";
 import withNotification from "@/components/with-notification";
 import OutSessionComponent from "@/components/out-session";
 
-
 interface RegisterFormSharp {
     newUsername: string,
     newEmail: string,
@@ -97,78 +96,79 @@ const RegisterPage = () => {
             }
             form.resetFields(Object.keys(obj));
         }
-    },[isSuccess]);
+    }, [isSuccess]);
 
 
     return <div className={styles.RegisterPage}>
         {isSuccess && <ProLogo />}
-        <OutSessionComponent/>
-        {!isSuccess && <Card className={styles.wrapper} title={<div style={{display: 'flex'}}><ProLogo /></div>}>
-            <h1 style={{textAlign: 'center'}}>Register Account</h1>
-            <Form
-                name="register"
-                layout={"vertical"}
-                onFinish={onFinish}
-                form={form}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-            >
-                <Form.Item
-                    label={getTranslation("lyric.username", "Username", locale)}
-                    name="newUsername"
-                    rules={[{ required: true, message: getTranslation("lyric.validation.username.required", 'Please input your username!', locale) }]}
+        <OutSessionComponent />
+        {!isSuccess && <div className={"flex_center"}>
+            <Card className={styles.wrapper} title={<div style={{ display: 'flex' }}><ProLogo /></div>}>
+                <h1 style={{ textAlign: 'center' }}>Register Account</h1>
+                <Form
+                    name="register"
+                    layout={"vertical"}
+                    onFinish={onFinish}
+                    form={form}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
                 >
-                    <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
-                </Form.Item>
+                    <Form.Item
+                        label={getTranslation("lyric.username", "Username", locale)}
+                        name="newUsername"
+                        rules={[{ required: true, message: getTranslation("lyric.validation.username.required", 'Please input your username!', locale) }]}
+                    >
+                        <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
+                    </Form.Item>
 
-                <Form.Item
-                    label={getTranslation("lyric.email", "Email", locale)}
-                    name="newEmail"
-                    rules={[{ required: true, message: getTranslation("validation.email.required", 'Please input your email!', locale) },
-                    { type: "email", message: getTranslation("validation.email.email", "", locale) }
-                    ]}
-                >
-                    <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
-                </Form.Item>
+                    <Form.Item
+                        label={getTranslation("lyric.email", "Email", locale)}
+                        name="newEmail"
+                        rules={[{ required: true, message: getTranslation("validation.email.required", 'Please input your email!', locale) },
+                        { type: "email", message: getTranslation("validation.email.email", "", locale) }
+                        ]}
+                    >
+                        <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
+                    </Form.Item>
 
-                <Form.Item
-                    label={getTranslation("lyric.password", "Password", locale)}
-                    name="newPassword"
-                    rules={[{ required: true, message: getTranslation("lyric.validation.password.required", 'Please input your password!', locale) }]}
-                >
-                    <Input.Password autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
-                </Form.Item>
+                    <Form.Item
+                        label={getTranslation("lyric.password", "Password", locale)}
+                        name="newPassword"
+                        rules={[{ required: true, message: getTranslation("lyric.validation.password.required", 'Please input your password!', locale) }]}
+                    >
+                        <Input.Password autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
+                    </Form.Item>
 
-                <Form.Item
-                    label={getTranslation("lyric.rePassword", "Verify Password", locale)}
-                    name="reNewPassword"
-                    rules={[
-                        {
-                            validator: function (rule, value, callback) {
-                                const password = form.getFieldValue("newPassword");
-                                if (password !== value) callback(getTranslation("validation.rePassword.notSame", "Please input correct password!", locale));
-                                else callback(undefined);
+                    <Form.Item
+                        label={getTranslation("lyric.rePassword", "Verify Password", locale)}
+                        name="reNewPassword"
+                        rules={[
+                            {
+                                validator: function (rule, value, callback) {
+                                    const password = form.getFieldValue("newPassword");
+                                    if (password !== value) callback(getTranslation("validation.rePassword.notSame", "Please input correct password!", locale));
+                                    else callback(undefined);
+                                }
                             }
-                        }
-                    ]}
-                >
-                    <Input.Password autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
-                </Form.Item>
-                <Form.Item
-                    label={getTranslation("account.firstName", "First Name", locale)}
-                    name="firstName"
-                    rules={[{ required: true, message: getTranslation("validation.firstName.required", 'Please input your first name!', locale) }]}
-                >
-                    <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
-                </Form.Item>
-                <Form.Item
-                    label={getTranslation("account.lastName", "Last Name", locale)}
-                    name="lastName"
-                    rules={[{ required: true, message: getTranslation("validation.lastName.required", 'Please input your last name!', locale) }]}
-                >
-                    <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
-                </Form.Item>
-                {/* <Form.Item
+                        ]}
+                    >
+                        <Input.Password autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
+                    </Form.Item>
+                    <Form.Item
+                        label={getTranslation("account.firstName", "First Name", locale)}
+                        name="firstName"
+                        rules={[{ required: true, message: getTranslation("validation.firstName.required", 'Please input your first name!', locale) }]}
+                    >
+                        <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
+                    </Form.Item>
+                    <Form.Item
+                        label={getTranslation("account.lastName", "Last Name", locale)}
+                        name="lastName"
+                        rules={[{ required: true, message: getTranslation("validation.lastName.required", 'Please input your last name!', locale) }]}
+                    >
+                        <Input autoComplete="off" maxLength={MAX_TEXT_LENGTH} />
+                    </Form.Item>
+                    {/* <Form.Item
                     label={getTranslation("account.photoUrl", "Photo Url", locale)}
                     name="photoUrl"
                     hasFeedback
@@ -199,14 +199,15 @@ const RegisterPage = () => {
                         </Upload.Dragger>
                     </Form.Item>
                 </Form.Item> */}
-                <Form.Item style={{ textAlign: "center" }}>
-                    <Button type="primary" htmlType="submit" style={{width: '100%', maxWidth: '500px'}} disabled={isSubmit}>
-                        {getTranslation("button.register", "Register", locale)}
-                    </Button>
-                    <p className={styles.subText}>Go to <a href="/login"><span>login</span></a></p>
-                </Form.Item>
-            </Form>
-        </Card>}
+                    <Form.Item style={{ textAlign: "center" }}>
+                        <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={isSubmit}>
+                            {getTranslation("button.register", "Register", locale)}
+                        </Button>
+                        <p className={styles.subText}>Go to <a href="/login"><span>login</span></a></p>
+                    </Form.Item>
+                </Form>
+            </Card>
+        </div>}
         {isSuccess && <div>
             <Result
                 status="success"

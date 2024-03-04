@@ -44,6 +44,8 @@ export interface LoginResponseV2 {
 	session_id: string;
 	is_verify: boolean;
 	is_active: boolean;
+	first_name: string;
+	last_name: string;
 }
 
 export interface LyricRequest {
@@ -117,4 +119,16 @@ export interface CreateAccountResponse {
 	id: number;
 	created_date: string;
 	updated_date: string;
+}
+
+export interface UserContactRequest {
+	email: string;
+	content: string;
+	full_name: string;
+	_ga?: string;
+}
+
+export interface ContactInfo {
+	can_send: boolean;
+	remaining_seconds: number;
 }

@@ -1,22 +1,14 @@
-.RegisterPage {
+.ContactPage {
     padding: 20px;
-
     .wrapper {
         max-width: 500px;
         min-width: 500px;
-        &>form {
-            width: 100%;
-            max-width: 768px;
-        }
-
-        .subText {
-            margin-top: 10px;
-        }
+        margin-top: 50px;
     }
 }
 
 @media screen and (max-width: 500px) {
-    .RegisterPage {
+    .ContactPage {
         .wrapper {
             min-width: 100%;
         }
