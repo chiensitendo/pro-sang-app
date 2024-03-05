@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
 
 
 const TestPage = () => {
@@ -9,7 +10,14 @@ const TestPage = () => {
     //         method: "GET"
     //     }).then(res => console.log(res)).catch(t => console.log(t));
     // },[]);
-    return <div>Test</div>;
+    const [data, setData] = useState('');
+
+    useEffect(() => {
+        setData(document.cookie);
+    },[]);
+    return <div>
+        Data: {isEmpty(data) ? 'No data': data}
+    </div>;
 }
 
 export default TestPage;
