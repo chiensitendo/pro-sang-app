@@ -4,7 +4,7 @@ const path = require('path');
 let apiUrl = "http://localhost:8088";
 switch (process.env.NODE_ENV) {
   case "production":
-    apiUrl = "http://minhsang.site:8088";
+    apiUrl = "http://103.82.135.49:8088";
     break;
   case "development":
     apiUrl = "http://localhost:8088";
