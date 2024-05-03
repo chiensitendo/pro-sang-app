@@ -5,7 +5,7 @@ let apiUrl = "http://localhost:8088";
 let awsUrl = "https://s3.cloudfly.vn";
 switch (process.env.NODE_ENV) {
   case "production":
-    apiUrl = "http://minhsang.site:8088";
+    apiUrl = "http://103.82.135.49:8088";
     break;
   case "development":
     apiUrl = "http://localhost:8088";
