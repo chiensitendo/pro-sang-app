@@ -1,3 +1,4 @@
+import { RcFile } from "antd/lib/upload";
 import {LyricStatuses} from "../apis/lyric-apis";
 
 export interface LoginRequest {
@@ -131,4 +132,49 @@ export interface UserContactRequest {
 export interface ContactInfo {
 	can_send: boolean;
 	remaining_seconds: number;
+}
+
+export interface CoverRequest {
+	originCover?: RcFile;
+	cropCover: File;
+}
+
+export interface AvatarRequest {
+	originAvatar?: RcFile;
+	cropAvatar: File;
+}
+
+export interface UserDataItem {
+	id: string,
+	user_id: number,
+	crop_cover: string,
+	original_cover: string,
+	crop_avatar: string,
+	original_avatar: string
+}
+
+export interface UserInfoResponse {
+	id: number,
+    username: string,
+    email: string,
+    first_name: string,
+    last_name: string,
+    created_time: string,
+    updated_time: string,
+    is_active: boolean,
+    role_id: number,
+    is_verify: boolean,
+    verified_time: string,
+	user_data?: UserDataItem
+}
+
+export interface UpdateUserRequest {
+	first_name: string,
+    last_name: string
+}
+
+export interface UpdateUserResponse {
+	id: number,
+	first_name: string,
+    last_name: string
 }

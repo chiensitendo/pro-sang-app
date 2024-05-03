@@ -7,6 +7,8 @@ import { GqlProvider } from "@/providers/gqlProvider";
 import { IntlClientProvider } from "@/providers/intlClientProvider";
 import StyledComponentsRegistry from "@/libs/AntdRegistry";
 import { CSSProperties } from "linaria";
+import 'react-image-crop/dist/ReactCrop.css';
+import "cropperjs/dist/cropper.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

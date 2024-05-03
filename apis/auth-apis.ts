@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import generalAxios from "../axios/generalAxios";
-import {AccountVerifyRequest, CreateAccountRequest, LoginRequest, RefreshTokenRequest, RegisterRequest} from "../types/account";
+import {AccountVerifyRequest, CreateAccountRequest, LoginRequest, RefreshTokenRequest, RegisterRequest, UpdateUserRequest} from "../types/account";
 import {langHeader, preAxios, redirectToLogin} from "./common/lyric-public-api";
 import authAxios from "../axios/authAxios";
 import { preSessionAxios, authHeaders } from "./common";
@@ -46,4 +46,15 @@ export const registerAccountAPI = (req: RegisterRequest, locale: string | undefi
 
 export const refreshTokenAPI = (req: RefreshTokenRequest): Promise<AxiosResponse> => {
     return generalAxios.post<any>(process.env.apiUrl + "/account/refresh-token", req);
+}
+
+export const putUpdateUserAPI = ({request, locale}: { request: UpdateUserRequest, locale?: string }): Promise<AxiosResponse> => {
+    const params: string[] = [];
+    return new Promise<AxiosResponse>((resolve, reject) => {
+        preSessionAxios(true).then(obj => {
+            authAxios.put<any>(`/api/auth/update-user${params.length === 0 ? '': '?' + params.join("&")}`, request,
+                { headers: {...authHeaders(obj ? {locale, ...obj}: {locale}) as any}, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
+        }).catch(err => redirectToLogin(err, reject));
+    });
 }

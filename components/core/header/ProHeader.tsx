@@ -8,7 +8,7 @@ import ProLogo from "../logo/ProLogo";
 import { Roles } from "@/types/account";
 import { MenuProps } from "antd/lib";
 import OutSessionComponent from "@/components/out-session";
-const ProHeader = () => {
+const ProHeader = ({className}: {className?: string}) => {
   const { userInfo } = useSessionAuth();
 
   const items: MenuProps['items'] = [
@@ -41,10 +41,10 @@ const ProHeader = () => {
     },
   ];
 
-  return <div className={styles.ProHeader}>
+  return <div className={clx(className,styles.ProHeader)}>
     <ProLogo />
     <OutSessionComponent />
-    <nav className={clx(styles.navigation, styles.navigationInline)}>
+    <nav className={clx(styles.nav_pc, styles.navigation, styles.navigationInline)}>
       <ul>
         <li>
           <a href="/images">
@@ -91,6 +91,46 @@ const ProHeader = () => {
         {/* {!userInfo && <li><a href="/login"><UserOutlined /></a></li>} */}
       </ul>
     </nav>
+    <div className={styles.nav_mobile}>
+      <label htmlFor="menu-control" className={styles.hamburger}>
+        <i className={styles.hamburger__icon}></i>
+        <i className={styles.hamburger__icon}></i>
+        <i className={styles.hamburger__icon}></i>
+      </label>
+
+      <input type="checkbox" id="menu-control" className={styles.menu_control}></input>
+      <aside className={styles.sidebar}>
+        <nav className={styles.sidebar__menu}>
+          <a href="/images">
+            <HomeOutlined className={styles.icon} />
+          </a>
+          {userInfo && <React.Fragment>
+            <a href="/folder/upload">
+              <UploadOutlined className={styles.icon} />
+            </a>
+            <a href="/folder">
+              <FolderOpenOutlined className={styles.icon} />
+            </a>
+            {[Roles.ADMIN, Roles.SUPER_ADMIN].includes(userInfo.role) && <a href="/admin">
+              <BankOutlined className={styles.icon} />
+            </a>}
+          </React.Fragment>}
+          <a href="/contact">
+            <ContactsOutlined className={styles.icon} />
+          </a>
+          {userInfo && <a><Dropdown menu={{ items }} arrow={{ pointAtCenter: true }}><div className={styles.a}>
+            <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${1}`} />
+          </div></Dropdown></a>}
+          {!userInfo && <a><Dropdown menu={{ items: unAuthItems }}
+            arrow={{ pointAtCenter: true }}>
+            <div className={styles.a}>
+              <UserOutlined style={{ cursor: 'pointer' }} />
+            </div></Dropdown></a>}
+        </nav>
+
+        <label htmlFor="menu-control" className={styles.sidebar__close}></label>
+      </aside>
+    </div>
   </div>
 }
 

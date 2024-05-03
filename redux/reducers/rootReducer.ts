@@ -17,6 +17,8 @@ import adminSlice from './admin/adminSlice';
 import accountVerifySlice from './account/accountVerifySlice';
 import accountLogoutSlice from './account/accountLogoutSlice';
 import accountStatusSlice from './account/accountStatusSlice';
+import accountProfileSlice from './account/accountProfileSlice';
+import accountUpdateSlice from './account/accountUpdateSlice';
 const rootReducer = combineReducers({
     lyric: combineReducers({
         list: lyricListSlice,
@@ -32,7 +34,9 @@ const rootReducer = combineReducers({
         logout: accountLogoutSlice,
         register: accountRegisterSlice,
         verify: accountVerifySlice,
-        status: accountStatusSlice
+        status: accountStatusSlice,
+        profile: accountProfileSlice,
+        update: accountUpdateSlice
     }),
     folder: combineReducers({
         list: folderListSlice,

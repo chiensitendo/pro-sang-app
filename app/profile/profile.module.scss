@@ -1,0 +1,111 @@
+
+.ProfilePage {
+    padding: 20px;
+    .cover {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        & > img {
+            width: 100%;
+            height: 45vh;
+            min-height: 150px;
+        }
+    }
+    
+    .avatar {
+        display: flex;
+        align-items: center;
+        position: relative;
+        & > div > span {
+            position: relative;
+            @media only screen and (max-width: 576px)  { //xs
+                margin-top: -32px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            @media only screen and (min-width: 576px) and (max-width: 768px)  { //sm
+                margin-top: -40px;
+                margin-left: 40px;
+            }
+            @media only screen and (min-width: 768px) and (max-width: 992px)  { //md
+                margin-top: -40px;
+                margin-left: 40px;
+            }
+            @media only screen and (min-width: 992px) and (max-width: 1200px)  { //lg
+                margin-top: -50px;
+                margin-left: 50px;
+            }
+            @media only screen and (min-width: 1200px) and (max-width: 1600px)  { //xl
+                margin-top: -50px;
+                margin-left: 50px;
+            }
+            @media only screen and (min-width: 1600px) { //xxl
+                margin-top: -70px;
+                margin-left: 70px;
+            }
+        }
+        .avatarWrapper {
+            position: relative;
+            .avatarBtn {
+              position: absolute;
+              bottom: -5px;
+              right: -10px;  
+            }
+        }
+        .name {
+            margin-left: 20px;
+        }
+        .coverEditBtn {
+            position: absolute;
+            right: 10px;
+            top: calc(-100% - 10px);
+        }
+
+        
+    }
+    .fullname {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+        & p {
+            margin: 0;
+        }
+    }
+    .wrapper {
+        padding: 20px;
+    }
+}
+
+.cropperContainer {
+    position: relative;
+    .navGroup {
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+        transform: translateX(-50%);
+        display: flex;
+        column-gap: 5px;
+    }
+}
+
+@media only screen and (max-width: 576px)  {
+    .ProfilePage {
+        .cover {
+            & > img {
+                height: 50vw;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1600px) { 
+    .ProfilePage {
+        .cover {
+            & > img {
+                height: 55vh;
+            }
+        }
+    }
+}
