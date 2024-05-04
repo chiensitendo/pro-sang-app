@@ -87,6 +87,9 @@ const CropModal = ({ open, onCancel, onOk, aspectRatio, title, original }: { ope
         onDrop(e) {
             // console.log('Dropped files', e.dataTransfer.files);
         },
+        beforeUpload() {
+            return false;
+        }
     };
 
     useEffect(() => {
