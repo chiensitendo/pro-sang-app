@@ -9,11 +9,19 @@ import { Roles } from "@/types/account";
 import { MenuProps } from "antd/lib";
 import OutSessionComponent from "@/components/out-session";
 const ProHeader = ({className}: {className?: string}) => {
-  const { userInfo } = useSessionAuth();
+  const { userInfo, avatar } = useSessionAuth();
 
   const items: MenuProps['items'] = [
     {
       key: '1',
+      label: (
+        <a rel="noopener noreferrer" href="/profile">
+          Profile
+        </a>
+      ),
+    },
+    {
+      key: '2',
       label: (
         <a rel="noopener noreferrer" href="/logout">
           Logout
@@ -80,7 +88,7 @@ const ProHeader = ({className}: {className?: string}) => {
         </li>
         {userInfo && <Dropdown menu={{ items }} arrow={{ pointAtCenter: true }}><li>
           <div className={styles.a}>
-            <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${1}`} />
+            <Avatar src={avatar} />
           </div>
         </li></Dropdown>}
         {!userInfo && <Dropdown menu={{ items: unAuthItems }} arrow={{ pointAtCenter: true }}><li>
@@ -119,7 +127,7 @@ const ProHeader = ({className}: {className?: string}) => {
             <ContactsOutlined className={styles.icon} />
           </a>
           {userInfo && <a><Dropdown menu={{ items }} arrow={{ pointAtCenter: true }}><div className={styles.a}>
-            <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${1}`} />
+            <Avatar src={avatar} />
           </div></Dropdown></a>}
           {!userInfo && <a><Dropdown menu={{ items: unAuthItems }}
             arrow={{ pointAtCenter: true }}>

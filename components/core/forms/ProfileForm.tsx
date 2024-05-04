@@ -12,7 +12,7 @@ interface ProfileFormSharp {
     lastName: string
 }
 
-const ProfileForm = ({userInfo, onUpdate}: {userInfo: UserInfoResponse, onUpdate: (req: UpdateUserRequest) => void}) => {
+const ProfileForm = ({userInfo, onUpdate, disabled}: {userInfo: UserInfoResponse, onUpdate: (req: UpdateUserRequest) => void, disabled?: boolean}) => {
     const [form] = Form.useForm<ProfileFormSharp>();
     const locale = useLocale();
     const onFinish = (values: ProfileFormSharp) => {
@@ -29,7 +29,7 @@ const ProfileForm = ({userInfo, onUpdate}: {userInfo: UserInfoResponse, onUpdate
         }
     },[userInfo]);
 
-    return <Form className={styles.ProfileForm} form={form} onFinish={onFinish}>
+    return <Form className={styles.ProfileForm} form={form} onFinish={onFinish} disabled = {disabled}>
         <Form.Item
             label={getTranslation("account.firstName", "First Name", locale)}
             name="firstName"

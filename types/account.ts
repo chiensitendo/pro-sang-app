@@ -47,6 +47,7 @@ export interface LoginResponseV2 {
 	is_active: boolean;
 	first_name: string;
 	last_name: string;
+	user_data?: UserDataItem;
 }
 
 export interface LyricRequest {

@@ -21,10 +21,14 @@ import withNotification from '@/components/with-notification';
 import withAuth from '@/components/with-auth';
 import Banner from "@/components/banner";
 import TextLoading from '@/components/core/TextLoading';
-import { UserInfoResponse } from '@/types/account';
+import { UserDataItem, UserInfoResponse } from '@/types/account';
 import { updateAccount } from '@/redux/reducers/account/accountUpdateSlice';
 import ProfileForm from '@/components/core/forms/ProfileForm';
 import moment from 'moment';
+import Image from 'next/image';
+import { useSessionAuth } from '@/components/use-session-auth';
+import { getAvatar } from '@/types/user';
+import { useLoading } from '@/components/core/useLoading';
 
 //https://flowbite.com/docs/components/forms/
 
@@ -171,23 +175,21 @@ const CropModal = ({ open, onCancel, onOk, aspectRatio, title, original }: { ope
 
 
 const FullName = ({ data, onUpdate }: { data: UserInfoResponse, onUpdate: (request: { firstName: string, lastName: string }) => void }) => {
-    const [editFullname, setEditFullname] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
     useEffect(() => {
-        setFirstName(data?.first_name);
-        setLastName(data?.last_name);
+        if (!isEmpty(data?.first_name)) {
+            setFirstName(data?.first_name);
+        }
+        
+        if (!isEmpty(data?.last_name)) {
+            setLastName(data?.last_name);
+        }
     }, [data]);
     return <div className={styles.fullname}>
-        {!editFullname && <React.Fragment>
-            <p style={{fontWeight: 'bold'}}>{data?.first_name + ' ' + data?.last_name}</p>
-        </React.Fragment>}
-        {editFullname && <React.Fragment>
-            <Input placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-            <Input placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
-            <Button type='text' shape='circle' icon={<SaveOutlined />} onClick={() => onUpdate({ firstName: firstName, lastName: lastName })} />
-            <Button type='text' shape='circle' icon={<CloseOutlined />} onClick={() => setEditFullname(false)} />
+        {<React.Fragment>
+            <p style={{fontWeight: 'bold'}}>{firstName + ' ' + lastName}</p>
         </React.Fragment>}
     </div>
 }
@@ -202,7 +204,8 @@ const ProfilePage = () => {
     const dispatch = useDispatch();
     const { isCompleted, data, isError, loading } = useSelector((state: RootState) => state.account.profile);
     const { isSuccess: isUpdatedSuccess, response: updateResponse, isSubmit: isUpdateSubmit } = useSelector((state: RootState) => state.account.update);
-
+    const {updateUserData, isValidAccount} = useSessionAuth();
+    const {setLoading} = useLoading();
     const items: DescriptionsProps['items'] = useMemo(() => {
         if (isEmpty(data)) {
             return [];
@@ -257,11 +260,17 @@ const ProfilePage = () => {
 
     useEffect(() => {
         if (!isEmpty(data?.user_data)) {
-
-            setCoverSrc(`/cover/user${data.id}/${data.user_data.crop_cover}`);
-            setCoverOriSrc(`/cover/user${data.id}/${data.user_data.original_cover}`);
-            setAvatar(`/avatar/user${data.id}/${data.user_data.crop_avatar}`);
-            setOriAvatar(`/avatar/user${data.id}/${data.user_data.original_avatar}`);
+            const {original_avatar, crop_cover, original_cover} = data.user_data;
+            setAvatar(getAvatar(data.user_data));
+            if (!isEmpty(crop_cover))
+                setCoverSrc(`/cover/user${data.id}/${crop_cover}`);
+            if (!isEmpty(original_avatar)) {
+                setOriAvatar(`/avatar/user${data.id}/${original_avatar}`);
+            }
+            if (!isEmpty(original_cover)) {
+                setCoverOriSrc(`/cover/user${data.id}/${original_cover}`);
+            }
+            
         }
     }, [data]);
 
@@ -270,22 +279,22 @@ const ProfilePage = () => {
         <Banner />
         <Spin spinning={loading || isUpdateSubmit}>
             <div className={styles.cover}>
-                {isEmpty(coverSrc) ? <img src="https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg" /> : <img src={coverSrc} />}
+                {isEmpty(coverSrc) ? <Image src="/images/default_cover.jpeg" width={500} height={500} alt="User cover" /> : <Image src={coverSrc} width={500} height={500} alt="User cover" />}
 
                 <div className={styles.avatar}>
                     <div className={styles.avatarWrapper}>
                         <Avatar size={{ xs: 64, sm: 80, md: 80, lg: 100, xl: 100, xxl: 140 }}
-                            src={isEmpty(avatar) ? `https://api.dicebear.com/7.x/miniavs/svg?seed=${0}` : avatar} />
-                        <Button className={styles.avatarBtn} type='text' shape='circle' icon={<EditOutlined />} onClick={() => setOpenAvatar(true)} />
+                            src={isEmpty(avatar) ? `https://api.dicebear.com/7.x/miniavs/svg?seed=${1}` : avatar} />
+                        <Button className={styles.avatarBtn} disabled={!isValidAccount} type='text' shape='circle' icon={<EditOutlined />} onClick={() => setOpenAvatar(true)} />
                     </div>
                     <div className={styles.name}>{loading ? <TextLoading /> : !isEmpty(data) && <FullName data={data} onUpdate={req => {
                         dispatch(updateAccount({ request: { first_name: req.firstName, last_name: req.lastName }, locale: undefined }));
                     }} />}</div>
-                    <div className={styles.coverEditBtn}><Button icon={<EditOutlined />} onClick={() => setOpenCover(true)} /></div>
+                    <div className={styles.coverEditBtn}><Button icon={<EditOutlined />} disabled={!isValidAccount} onClick={() => setOpenCover(true)} /></div>
                 </div>
                 <div className={styles.wrapper}>
                     <Descriptions title="User Info" items={items} />
-                    {!isEmpty(data) && <ProfileForm userInfo={data} onUpdate={req => dispatch(updateAccount({ request: req, locale: undefined }))} />}
+                    {!isEmpty(data) && <ProfileForm userInfo={data} onUpdate={req => dispatch(updateAccount({ request: req, locale: undefined }))} disabled= {!isValidAccount} />}
                 </div>
             </div>
         </Spin>
@@ -294,6 +303,7 @@ const ProfilePage = () => {
             const myFile = new File([result.cropBlob], 'image.png', {
                 type: result.cropBlob.type,
             });
+            setLoading(true);
             putCoverUserAPI({
                 request: {
                     originCover: result.originalFile,
@@ -303,9 +313,10 @@ const ProfilePage = () => {
                 setCoverSrc(result.crop);
                 setOpenCover(false);
                 setCoverOriSrc(result.original);
+                updateUserData(res.data as UserDataItem);
             }).catch(err => {
                 console.log(err);
-            })
+            }).finally(() => setLoading(false));
 
 
         }} />
@@ -314,6 +325,7 @@ const ProfilePage = () => {
             const myFile = new File([result.cropBlob], 'image.png', {
                 type: result.cropBlob.type,
             });
+            setLoading(true);
             putAvatarUserAPI(({
                 request: {
                     originAvatar: result.originalFile,
@@ -323,9 +335,10 @@ const ProfilePage = () => {
                 setAvatar(result.crop);
                 setOpenAvatar(false);
                 setOriAvatar(result.original);
+                updateUserData(res.data as UserDataItem);
             }).catch(err => {
                 console.log(err);
-            })
+            }).finally(() => setLoading(false));
 
         }} />
     </div>
