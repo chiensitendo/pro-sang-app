@@ -20,7 +20,8 @@ export interface JobResponse {
 }
 
 export enum JobType {
-    SYNC_FOLDER_IMAGES = "SYNC_FOLDER_IMAGES"
+    SYNC_FOLDER_IMAGES = "SYNC_FOLDER_IMAGES",
+    REFRESH_AWS_IMAGE_URL = "REFRESH_AWS_IMAGE_URL"
 }
 
 export enum JobStatus {
