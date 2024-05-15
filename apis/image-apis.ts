@@ -3,15 +3,19 @@ import { authHeaders, preSessionAxios, preSessionAxiosButNotRequired, redirectTo
 import authAxios from "@/axios/authAxios";
 import { RcFile } from "antd/lib/upload";
 import generalAxios from "@/axios/generalAxios";
-import { DeleteImageRequest, PublicImageRequest } from "@/types/folder";
+import { DeleteImageRequest, ImageSearchParameter, PublicImageRequest } from "@/types/folder";
+import { isEmpty } from "lodash";
 
-export const getImageListByFolderIdAPI = ({folderId, limit, offset, locale}: {folderId: number, limit?: number, offset?: number, locale?: string}): Promise<AxiosResponse> => {
+export const getImageListByFolderIdAPI = ({folderId, limit, offset, locale, searchParams}: {folderId: number, searchParams: ImageSearchParameter, limit?: number, offset?: number, locale?: string}): Promise<AxiosResponse> => {
     const params: string[] = [];
     if (limit) {
         params.push(`limit=${limit}`);
     }
     if (offset !== undefined && offset !== null) {
         params.push(`offset=${offset}`);
+    }
+    if (searchParams.is_public !== undefined && searchParams.is_public !== null) {
+        params.push(`is_public=${searchParams.is_public}`);
     }
 
     return new Promise<AxiosResponse>((resolve, reject) => {

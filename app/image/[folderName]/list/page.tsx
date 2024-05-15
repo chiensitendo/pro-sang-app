@@ -6,9 +6,9 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { LegacyRef, useEffect, useMemo, useRef, useState } from "react";
-import { changeFolderImageListLimit, deleteImages, fetchFolderImageList, fetchNextFolderImageList, openDeleteModal, openUploadImageModal, refreshFolderImageList, selectImageItem } from "@/redux/reducers/image/folderImageListSlice";
+import { changeFolderImageListLimit, deleteImages, fetchFolderImageList, fetchNextFolderImageList, openDeleteModal, openUploadImageModal, refreshFolderImageList, searchFolderImageList, selectImageItem } from "@/redux/reducers/image/folderImageListSlice";
 import cls from "classnames";
-import { Button, Image, Select, Spin, Switch, Tag } from 'antd';
+import { Button, Checkbox, Image, Select, Spin, Switch, Tag } from 'antd';
 import FolderDescription from "@/components/folder/FolderDescription";
 import { fetchFolderById, updateFolder } from "@/redux/reducers/folder/folderDetailReducer";
 import FolderMenu from "@/components/folder/FolderMenu";
@@ -21,6 +21,7 @@ import { stopScrollToBottom } from "@/redux/reducers/lyric/lyricCommentSlice";
 import { getImageUrl } from "@/types/image";
 import withNotification from "@/components/with-notification";
 import Banner from "@/components/banner";
+import { isEmpty } from "lodash";
 
 
 const getFolderIdx = (folderName: string) => {
@@ -119,7 +120,7 @@ const Theme1 = ({ images }: { images: Array<{ url: string, id: number, item: Ima
                                 if (node) {
                                     node.style.gridRowEnd = "span " + Math.ceil((getHeight(node) + gap) / (altura + gap));
                                 }
-                            statuses++;
+                                statuses++;
                             }} />
                     </div>
                 </div>)}
@@ -131,17 +132,19 @@ const Theme1 = ({ images }: { images: Array<{ url: string, id: number, item: Ima
     </div>
 }
 
-const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
+const FolderImageListPage = ({ isAuth }: { isAuth: boolean }) => {
     const router = useRouter();
     const params = useParams<{ folderName: string }>();
     const { folderName } = params ?? { folderName: '' };
     const [name, id] = getFolderIdx(folderName);
     const dispatch = useDispatch();
-    const { count, images, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
+    
+    const { count, images, searchParams, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
         (state: RootState) => state.image.folder.list
     );
     const [status, setStatus] = useState(0);
-
+    const [publicBtn, setPublicBtn] = useState(false);
+    const [privateBtn, setPrivateBtn] = useState(false);
     const { folder, loading: folderLoading } = useSelector(
         (state: RootState) => state.folder.detail
     );
@@ -158,33 +161,33 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
             folder && dispatch(refreshFolderImageList({
                 folderId: folder.id,
                 limit: 20,
-                offset: 0
+                offset: 0,
+                searchParams
             }));
         } else {
             dispatch(openUploadImageModal({
                 open: false
             }));
         }
-        
+
     }
 
     useEffect(() => {
-        
+
         if (status === 0) {
             setStatus(1);
         }
         if (id && +id && status === 1) {
             dispatch(fetchFolderImageList({
-                folderId: +id, limit, offset
+                folderId: +id, limit, offset,searchParams
             }));
             dispatch(fetchFolderById(+id));
             setStatus(1);
         }
     }, [status, id]);
-
     return <div className={cls(styles.FolderImageListPage)}>
-        <ProHeader/>
-        <Banner/>
+        <ProHeader />
+        <Banner />
         <div>
             {folder && <FolderDescription folder={folder} onDescription={description => dispatch(updateFolder({
                 id: folder.id,
@@ -195,34 +198,70 @@ const FolderImageListPage = ({isAuth}: {isAuth: boolean}) => {
         </div>
         {images && <FolderMenu />}
         {images && folder && <div className={styles.viewItemWrapper}>
-            <div className={styles.viewItem}>
-                <p>View: </p>
-                <Select
-                    defaultValue={20}
-                    value={limit}
-                    onChange={e => dispatch(changeFolderImageListLimit({
-                        folderId: folder.id, offset: 0, limit: e
-                    }))}
-                    options={[
-                        { value: 1, label: '1 items' },
-                        { value: 5, label: '5 items' },
-                        { value: 10, label: '10 items' },
-                        { value: 20, label: '20 items' },
-                    ]}
-                />
+            <div>
+                <div className={styles.viewItem}>
+                    <p>View: </p>
+                    <Select
+                        defaultValue={20}
+                        value={limit}
+                        onChange={e => dispatch(changeFolderImageListLimit({
+                            folderId: folder.id, offset: 0, limit: e,searchParams
+                        }))}
+                        options={[
+                            { value: 1, label: '1 items' },
+                            { value: 5, label: '5 items' },
+                            { value: 10, label: '10 items' },
+                            { value: 20, label: '20 items' },
+                        ]}
+                        disabled={loading}
+                    />
+                </div>
+                <div className={styles.viewItem}>
+                    <div className="checkbox-wrapper-47">
+                        <input type="checkbox" name="cb" id="cb-public"
+                        disabled={loading} 
+                        checked= {publicBtn}  
+                        onChange={e => {
+                            setPublicBtn(e.target.checked);
+                            if (e.target.checked === true) {
+                                setPrivateBtn(false);
+                            }
+                            dispatch(searchFolderImageList({
+                                folderId: folder.id, offset: 0, limit: limit, searchParams: {...searchParams, is_public: e.target.checked === false ? undefined: true}
+                            }));
+                        }} />
+                        <label htmlFor="cb-public">Public</label>
+                    </div>
+                    <div className="checkbox-wrapper-private">
+                        <input type="checkbox" name="cb" id="cb-private" disabled={loading} 
+                        checked = {privateBtn}
+                        onChange={e => {
+                            
+                            setPrivateBtn(e.target.checked);
+                            if (e.target.checked === true) {
+                                setPublicBtn(false);
+                            }
+                            dispatch(searchFolderImageList({
+                                folderId: folder.id, offset: 0, limit: limit, searchParams: {...searchParams, is_public: e.target.checked === false ? undefined: false}
+                            }))
+                        }} 
+                        />
+                        <label htmlFor="cb-private">Private</label>
+                    </div>
+                </div>
             </div>
             <div>Selected: {selectedImages.getCount()}</div>
         </div>}
-        {images && <Spin spinning={loading} 
-        tip="Loading..."><Theme1 shouldScrollToBottom = {shouldScrollToBottom} images={images.map(i => ({ url: getImageUrl(i), id: i.id, item: i }))} /></Spin>}
+        {images && <Spin spinning={loading}
+            tip="Loading..."><Theme1 shouldScrollToBottom={shouldScrollToBottom} images={images.map(i => ({ url: getImageUrl(i), id: i.id, item: i }))} /></Spin>}
         {shouldLoadMore && folder && <div className={styles.loadMoreBtn}><Button onClick={() => dispatch(fetchNextFolderImageList({
-            folderId: folder.id, limit, offset: offset + limit
+            folderId: folder.id, limit, offset: offset + limit, searchParams
         }))} loading={loading}>Load more</Button></div>}
         <DeleteImageModal open={isOpenDeleteModal} onOk={() => !selectedImages.isEmpty() && dispatch(deleteImages({
             images: selectedImages.getItems().map((v: ImageItem) => v.id)
         }))} onCancel={() => dispatch(openDeleteModal({ open: false }))} />
-        {folder && <UploadImageModal open={isOpenUploadImageModal} onOk={(shouldRefresh) => refresh(shouldRefresh)} 
-        onCancel={(shouldRefresh) => refresh(shouldRefresh)} folder={folder} />}
+        {folder && <UploadImageModal open={isOpenUploadImageModal} onOk={(shouldRefresh) => refresh(shouldRefresh)}
+            onCancel={(shouldRefresh) => refresh(shouldRefresh)} folder={folder} />}
     </div>
 }
 

@@ -51,3 +51,7 @@ export interface PublicImageRequest {
 export interface DeleteImageRequest {
     images: number[]
 }
+
+export interface ImageSearchParameter {
+    is_public?: boolean;
+}

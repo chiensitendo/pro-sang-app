@@ -1,4 +1,4 @@
-import { DeleteImageRequest, ImageItem, ImageResponse, PublicImageRequest } from "@/types/folder"
+import { DeleteImageRequest, ImageItem, ImageResponse, ImageSearchParameter, PublicImageRequest } from "@/types/folder"
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { CustomMap } from "../type";
 
@@ -6,7 +6,8 @@ export interface FolderImageListAction {
     limit: number,
     offset: number,
     folderName?: string,
-    folderId: number
+    folderId: number,
+    searchParams: ImageSearchParameter
 }
 
 interface FolderImageListState {
@@ -22,6 +23,7 @@ interface FolderImageListState {
     isOpenDeleteModal: boolean;
     isOpenUploadImageModal: boolean;
     shouldScrollToBottom: boolean;
+    searchParams: ImageSearchParameter
 }
 const initialState: FolderImageListState = {
     count: 0,
@@ -34,6 +36,7 @@ const initialState: FolderImageListState = {
     isOpenDeleteModal: false,
     isOpenUploadImageModal: false,
     shouldScrollToBottom: false,
+    searchParams: {}
 }
 
 const folderImageListSlice = createSlice({
@@ -221,6 +224,21 @@ const folderImageListSlice = createSlice({
         },
         stopScrollToBottom(state) {
             state.shouldScrollToBottom = false;
+        },
+        searchFolderImageList(state, action: PayloadAction<FolderImageListAction>) {
+            state.loading = true;
+        },
+        searchFolderImageListSuccess(state, action: PayloadAction<{response: any, searchParams: ImageSearchParameter}>) {
+            const {count, images} = action.payload.response.data as ImageResponse;
+            state.images = images;
+            state.count = count;
+            state.loading = false;
+            state.shouldScrollToBottom = true;
+            state.offset= 0;
+            state.searchParams = action.payload.searchParams;
+        },
+        searchFolderImageListFailed(state) {
+            state.loading = false;
         }
     }
 });
@@ -230,6 +248,7 @@ export const {fetchFolderImageList, fetchFolderImageListSuccess, fetchFolderImag
     changeFolderImageListLimit, changeFolderImageListLimitSuccess, changeFolderImageListLimitFailed, selectImageItem, changePublicOfImages, 
     changePublicOfImagesSuccess, changePublicOfImagesFailed, openDeleteModal, openUploadImageModal,
     deleteImages, deleteImagesFailed, deleteImagesSuccess, addImageInFolder, refreshFolderImageList, refreshFolderImageListSuccess, refreshFolderImageListFailed,
-    changeAllPublicOfImages, changeAllPublicOfImagesSuccess, changeAllPublicOfImagesFailed, stopScrollToBottom} = folderImageListSlice.actions;
+    changeAllPublicOfImages, changeAllPublicOfImagesSuccess, changeAllPublicOfImagesFailed, stopScrollToBottom,
+    searchFolderImageList, searchFolderImageListSuccess, searchFolderImageListFailed} = folderImageListSlice.actions;
 
 export default folderImageListSlice.reducer;
