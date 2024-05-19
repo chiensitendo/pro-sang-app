@@ -1,15 +1,13 @@
 "use client";
 
+import generalAxios from "@/axios/generalAxios";
 import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 
 
 const TestPage = () => {
     useEffect(() => {
-        fetch("https://sangapi.pro.vn/api/ping", {
-            method: "GET",
-            headers: {'Access-Control-Allow-Origin': '*', 'Accept-Language': 'en'}
-        }).then(res => console.log(res)).catch(t => console.log(t));
+        generalAxios.get("/api/ping").then(res => console.log(res));
     },[]);
     const [data, setData] = useState('');
 

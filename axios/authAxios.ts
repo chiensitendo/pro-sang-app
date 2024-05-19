@@ -7,7 +7,8 @@ const authAxios = axios.create({
     timeout: API_TIMEOUT,
     httpsAgent: new https.Agent({
         rejectUnauthorized: false
-    })
+    }),
+    baseURL: process.env.apiUrl
 });
 authAxios.interceptors.request.use(
   async function (request) {
