@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 
 
 const TestPage = () => {
-    // useEffect(() => {
-    //     fetch("https://sangapi.pro.vn/api/ping", {
-    //         method: "GET"
-    //     }).then(res => console.log(res)).catch(t => console.log(t));
-    // },[]);
+    useEffect(() => {
+        fetch("https://sangapi.pro.vn/api/ping", {
+            method: "GET",
+            headers: {'Access-Control-Allow-Origin': '*', 'Accept-Language': 'en'}
+        }).then(res => console.log(res)).catch(t => console.log(t));
+    },[]);
     const [data, setData] = useState('');
 
     useEffect(() => {
