@@ -29,6 +29,14 @@ export const authHeaders = ({locale, sessionId, accessToken}: AuthObject) => {
     }
 };
 
+export const loginHeaders = (locale: string | undefined) => {
+    return {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Accept-Language': locale ? locale: DEFAULT_LANG,
+    }
+};
+
 export const redirectToLogin = (err: any, reject: any) => {
     const error: ErrorMessage = err;
     if ([HttpStatus.UNAUTHORIZED].includes(error?.code)) {

@@ -3,10 +3,10 @@ import generalAxios from "../axios/generalAxios";
 import {AccountVerifyRequest, CreateAccountRequest, LoginRequest, RefreshTokenRequest, RegisterRequest, UpdateUserRequest} from "../types/account";
 import {langHeader, preAxios, redirectToLogin} from "./common/lyric-public-api";
 import authAxios from "../axios/authAxios";
-import { preSessionAxios, authHeaders } from "./common";
+import { preSessionAxios, authHeaders, loginHeaders } from "./common";
 export const loginAccount = (req: LoginRequest, locale: string | undefined): Promise<AxiosResponse> => {
     return generalAxios.post<any>("/api/auth/login", {password: req.password, loginId: req.username}, {
-        ...langHeader(locale), withCredentials: true
+        ...loginHeaders(locale), withCredentials: true
     });
 }
 
