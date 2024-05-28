@@ -22,6 +22,7 @@ export const authHeaders = ({locale, sessionId, accessToken}: AuthObject) => {
     }
     return {
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
         'Authorization': `Bearer ${accessToken}`,
         'Accept-Language': locale ? locale: DEFAULT_LANG,
         [`${SESSION_HEADER}`]: sessionId
