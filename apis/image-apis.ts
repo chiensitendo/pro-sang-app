@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { authHeaders, preSessionAxios, preSessionAxiosButNotRequired, redirectToLogin } from "./common";
+import { authHeaders, normalHeaders, preSessionAxios, preSessionAxiosButNotRequired, redirectToLogin } from "./common";
 import authAxios from "@/axios/authAxios";
 import { RcFile } from "antd/lib/upload";
 import generalAxios from "@/axios/generalAxios";
@@ -54,7 +54,7 @@ export const getPublicImageListAPI = ({limit, offset, locale}: {limit?: number, 
     return new Promise<AxiosResponse>((resolve, reject) => {
         preSessionAxiosButNotRequired().then(obj => {
             generalAxios.get<any>(`/public/images${params.length === 0 ? '': '?' + params.join("&")}`,
-            { headers: obj === null ? undefined : authHeaders({locale, ...obj}) as any})
+            { headers: obj === null ? normalHeaders(locale) : authHeaders({locale, ...obj}) as any})
             .then(res => resolve(res)).catch(err => {
                 reject(err);
             });

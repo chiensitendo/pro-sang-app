@@ -51,30 +51,30 @@ const nextConfig = {
 
     return config
   },
-  async rewrites() {
-    return [
-      // {
-      //   source: '/api/:path*',
-      //   destination: apiUrl +'/api/:path*' // Proxy to Backend
-      // },
-      // {
-      //   source: '/public/:path*',
-      //   destination: apiUrl +'/public/:path*' // Proxy to Backend
-      // },
-      // {
-      //   source: '/Callback',
-      //   destination: apiUrl +'/Callback' // Proxy to Backend
-      // },
-      // {
-      //   source: '/cover/:path*',
-      //   destination: awsUrl +'/cover/:path*' // Cover
-      // },
-      // {
-      //   source: '/avatar/:path*',
-      //   destination: awsUrl +'/avatar/:path*' // Avatar
-      // },
-    ]
-  }
+  // async rewrites() {
+  //   return [
+  //     // {
+  //     //   source: '/api/:path*',
+  //     //   destination: apiUrl +'/api/:path*' // Proxy to Backend
+  //     // },
+  //     // {
+  //     //   source: '/public/:path*',
+  //     //   destination: apiUrl +'/public/:path*' // Proxy to Backend
+  //     // },
+  //     // {
+  //     //   source: '/Callback',
+  //     //   destination: apiUrl +'/Callback' // Proxy to Backend
+  //     // },
+  //     // {
+  //     //   source: '/cover/:path*',
+  //     //   destination: awsUrl +'/cover/:path*' // Cover
+  //     // },
+  //     // {
+  //     //   source: '/avatar/:path*',
+  //     //   destination: awsUrl +'/avatar/:path*' // Avatar
+  //     // },
+  //   ]
+  // }
 }
 
 module.exports = nextConfig

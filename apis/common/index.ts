@@ -37,6 +37,13 @@ export const loginHeaders = (locale: string | undefined) => {
     }
 };
 
+export const normalHeaders = (locale: string | undefined) => {
+    return {
+        'Access-Control-Allow-Origin': '*',
+        'Accept-Language': locale ? locale: DEFAULT_LANG,
+    }
+};
+
 export const redirectToLogin = (err: any, reject: any) => {
     const error: ErrorMessage = err;
     if ([HttpStatus.UNAUTHORIZED].includes(error?.code)) {
