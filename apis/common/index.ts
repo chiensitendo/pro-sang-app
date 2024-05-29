@@ -41,6 +41,7 @@ export const normalHeaders = (locale: string | undefined) => {
     return {
         'Access-Control-Allow-Origin': '*',
         'Accept-Language': locale ? locale: DEFAULT_LANG,
+        'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS'
     }
 };
 
