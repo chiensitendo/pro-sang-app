@@ -5,8 +5,8 @@ let apiUrl = "http://localhost:8088";
 let awsUrl = "https://s3.cloudfly.vn";
 switch (process.env.NODE_ENV) {
   case "production":
-    apiUrl = "http://103.82.135.49:8088";
-    // apiUrl = "https://sangapi.pro.vn";
+    // apiUrl = "http://103.82.135.49:8088";
+    apiUrl = "https://sangapi.pro.vn";
     break;
   case "development":
     apiUrl = "http://localhost:8088";
@@ -51,33 +51,33 @@ const nextConfig = {
 
     return config
   },
-  experimental: {
-    proxyTimeout: 1000 * 120
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: apiUrl +'/api/:path*' // Proxy to Backend
-      },
-      {
-        source: '/public/:path*',
-        destination: apiUrl +'/public/:path*' // Proxy to Backend
-      },
-      {
-        source: '/Callback',
-        destination: apiUrl +'/Callback' // Proxy to Backend
-      },
-      {
-        source: '/cover/:path*',
-        destination: awsUrl +'/cover/:path*' // Cover
-      },
-      {
-        source: '/avatar/:path*',
-        destination: awsUrl +'/avatar/:path*' // Avatar
-      },
-    ]
-  }
+  // experimental: {
+  //   proxyTimeout: 1000 * 120
+  // },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/api/:path*',
+  //       destination: apiUrl +'/api/:path*' // Proxy to Backend
+  //     },
+  //     {
+  //       source: '/public/:path*',
+  //       destination: apiUrl +'/public/:path*' // Proxy to Backend
+  //     },
+  //     {
+  //       source: '/Callback',
+  //       destination: apiUrl +'/Callback' // Proxy to Backend
+  //     },
+  //     {
+  //       source: '/cover/:path*',
+  //       destination: awsUrl +'/cover/:path*' // Cover
+  //     },
+  //     {
+  //       source: '/avatar/:path*',
+  //       destination: awsUrl +'/avatar/:path*' // Avatar
+  //     },
+  //   ]
+  // }
 }
 
 module.exports = nextConfig
