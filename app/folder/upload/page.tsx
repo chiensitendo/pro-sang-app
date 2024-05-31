@@ -14,7 +14,7 @@ import { CheckCircleOutlined, CloseCircleOutlined, PlusOutlined, RedoOutlined, S
 import { FolderItem, FolderRequest } from "@/types/folder";
 import { clearCreateFolderError, clearCreateFolderResponse, createFolderAction } from "@/redux/reducers/folder/createFolderReducer";
 import { UploadProps } from "antd/lib";
-import { getSessionAccessToken } from "@/services/session-service";
+import { getSessionAccessToken, getSession_SessionId } from "@/services/session-service";
 import { postUpdateFileAPI } from "@/apis/image-apis";
 import { RcFile } from "antd/lib/upload";
 import TextArea from "antd/lib/input/TextArea";
@@ -142,14 +142,14 @@ const FolderUploadPage = () => {
     const { list: { folders, loading }, create: { response, error } } = useSelector(
         (state: RootState) => state.folder
     );
+    const [accessToken, setAccessToken] = useState<string>();
+
+    const [sessionId, setSessionId] = useState<string>();
 
     const props: UploadProps = {
         name: 'image',
         action: () => {
-            return `/api/image/upload?folder_id=${folderId}`;
-        },
-        headers: {
-            authorization: `Bearer ${getSessionAccessToken()}`,
+            return `${process.env.apiUrl}/api/image/upload?folder_id=${folderId}`;
         },
         multiple: true,
         onChange(info) {
@@ -284,6 +284,11 @@ const FolderUploadPage = () => {
         });
     }, [fileList]);
 
+    useEffect(() => {
+        setAccessToken(getSessionAccessToken());
+        setSessionId(getSession_SessionId());
+    },[]);
+
 
     useEffect(() => {
         if (status === 0) {
@@ -340,9 +345,9 @@ const FolderUploadPage = () => {
                     </div>
                     <Divider />
 
-                    <Upload {...props} disabled={!folderId && !isValidAccount}>
+                    {accessToken && sessionId && <Upload {...props} headers={{authorization: `Bearer ${accessToken}`, 'x-pro-sang-session-id-header': sessionId}} disabled={!folderId && !isValidAccount}>
                         <Button icon={<UploadOutlined />} disabled={!folderId}>Click to Upload</Button>
-                    </Upload>
+                    </Upload>}
                 </Form>
             </Card>
             <Card title={<div>Logs {failedFiles.length > 0 && <Tooltip title="retry all">

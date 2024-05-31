@@ -265,13 +265,13 @@ const ProfilePage = () => {
         if (!isEmpty(data?.user_data)) {
             const {original_avatar, crop_cover, original_cover} = data.user_data;
             setAvatar(getAvatar(data.user_data));
-            if (!isEmpty(crop_cover))
-                setCoverSrc(`/cover/user${data.id}/${crop_cover}`);
+            if (!isEmpty(crop_cover) && crop_cover !== "null")
+                setCoverSrc(`https://s3.cloudfly.vn/cover/user${data.id}/${crop_cover}`);
             if (!isEmpty(original_avatar)) {
-                setOriAvatar(`/avatar/user${data.id}/${original_avatar}`);
+                setOriAvatar(`https://s3.cloudfly.vn/avatar/user${data.id}/${original_avatar}`);
             }
-            if (!isEmpty(original_cover)) {
-                setCoverOriSrc(`/cover/user${data.id}/${original_cover}`);
+            if (!isEmpty(original_cover) && original_cover !== "null") { 
+                setCoverOriSrc(`https://s3.cloudfly.vn/cover/user${data.id}/${original_cover}`);
             }
             
         }

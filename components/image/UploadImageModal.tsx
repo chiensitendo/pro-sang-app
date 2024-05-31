@@ -5,14 +5,14 @@ import { CheckCircleOutlined, CloseCircleOutlined, RedoOutlined, SyncOutlined, U
 import { useCallback, useMemo, useState } from "react";
 import { CustomUploadFile } from "@/app/folder/upload/page";
 import { UploadProps } from "antd/lib";
-import { getSessionAccessToken } from "@/services/session-service";
 import { postUpdateFileAPI } from "@/apis/image-apis";
 import { RcFile } from "antd/es/upload";
 import { useDispatch } from "react-redux";
 import { addImageInFolder } from "@/redux/reducers/image/folderImageListSlice";
 import { Service } from "@/types/image";
 
-const UploadImageModal = ({ open, onOk, onCancel, folder }: { open: boolean, onOk: (shouldRefresh: boolean) => void, onCancel: (shouldRefresh: boolean) => void, folder: FolderItem }) => {
+const UploadImageModal = ({ open, onOk, onCancel, folder, accessToken, sessionId }: { open: boolean, onOk: (shouldRefresh: boolean) => void, onCancel: (shouldRefresh: boolean) => void, 
+    folder: FolderItem, accessToken: string, sessionId: string }) => {
 
     const [fileList, setFileList] = useState<CustomUploadFile<any>[]>([]);
     const [previewFileList, setPreviewFileList] = useState<(string | ArrayBuffer)[]>([]);
@@ -28,10 +28,11 @@ const UploadImageModal = ({ open, onOk, onCancel, folder }: { open: boolean, onO
     const props: UploadProps = {
         name: 'image',
         action: () => {
-            return `/api/image/upload?folder_id=${folder.id}`;
+            return `${process.env.apiUrl}/api/image/upload?folder_id=${folder.id}`;
         },
         headers: {
-            authorization: `Bearer ${getSessionAccessToken()}`,
+            authorization: `Bearer ${accessToken}`,
+            'x-pro-sang-session-id-header': sessionId
         },
         multiple: true,
         onChange(info) {

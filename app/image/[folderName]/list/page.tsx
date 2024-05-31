@@ -22,6 +22,7 @@ import { getImageUrl } from "@/types/image";
 import withNotification from "@/components/with-notification";
 import Banner from "@/components/banner";
 import { isEmpty } from "lodash";
+import { getSessionAccessToken, getSession_SessionId } from "@/services/session-service";
 
 
 const getFolderIdx = (folderName: string) => {
@@ -138,7 +139,8 @@ const FolderImageListPage = ({ isAuth }: { isAuth: boolean }) => {
     const { folderName } = params ?? { folderName: '' };
     const [name, id] = getFolderIdx(folderName);
     const dispatch = useDispatch();
-    
+    const [accessToken, setAccessToken] = useState<string>();
+    const [sessionId, setSessionId] = useState<string>();
     const { count, images, searchParams, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
         (state: RootState) => state.image.folder.list
     );
@@ -171,7 +173,10 @@ const FolderImageListPage = ({ isAuth }: { isAuth: boolean }) => {
         }
 
     }
-
+    useEffect(() => {
+        setAccessToken(getSessionAccessToken());
+        setSessionId(getSession_SessionId());
+    },[]);
     useEffect(() => {
 
         if (status === 0) {
@@ -260,8 +265,8 @@ const FolderImageListPage = ({ isAuth }: { isAuth: boolean }) => {
         <DeleteImageModal open={isOpenDeleteModal} onOk={() => !selectedImages.isEmpty() && dispatch(deleteImages({
             images: selectedImages.getItems().map((v: ImageItem) => v.id)
         }))} onCancel={() => dispatch(openDeleteModal({ open: false }))} />
-        {folder && <UploadImageModal open={isOpenUploadImageModal} onOk={(shouldRefresh) => refresh(shouldRefresh)}
-            onCancel={(shouldRefresh) => refresh(shouldRefresh)} folder={folder} />}
+        {folder && !isEmpty(accessToken) && !isEmpty(sessionId) && <UploadImageModal open={isOpenUploadImageModal} onOk={(shouldRefresh) => refresh(shouldRefresh)}
+            onCancel={(shouldRefresh) => refresh(shouldRefresh)} folder={folder} accessToken={accessToken!} sessionId={sessionId!}/>}
     </div>
 }
 

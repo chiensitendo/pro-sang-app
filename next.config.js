@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
 
-let apiUrl = "http://localhost:8088";
+let apiUrl = "http://localhost:8080";
 let awsUrl = "https://s3.cloudfly.vn";
 switch (process.env.NODE_ENV) {
   case "production":
@@ -9,12 +9,12 @@ switch (process.env.NODE_ENV) {
     apiUrl = "https://sangapi.pro.vn";
     break;
   case "development":
-    apiUrl = "http://localhost:8088";
+    apiUrl = "http://localhost:8080";
     break;
   case "local":
     break;
   default:
-    apiUrl = "http://localhost:8088";
+    apiUrl = "http://localhost:8080";
     break;
 }
 
