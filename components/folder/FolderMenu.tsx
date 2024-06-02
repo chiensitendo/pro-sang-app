@@ -47,15 +47,15 @@ const FolderMenu = () => {
     return <div className={styles.FolderMenu}>
         <Button type="primary" disabled={!isValidAccount} onClick={() => handleChangePublicAll(true)}>Make public all</Button>
         <Button className="orange_primary_button" type="primary" disabled={!isValidAccount} onClick={() => handleChangePublicAll(false)}>Make private all</Button>
-        <Button className="green_primary_button" type="primary"  disabled = {!isValidAccount && privateCount <= 0} onClick={() => dispatch(changePublicOfImages({
+        <Button className="green_primary_button" type="primary"  disabled = {!isValidAccount || privateCount <= 0} onClick={() => dispatch(changePublicOfImages({
             images: items.filter(i => !i.is_public).map(i => i.id),
             is_public: true
         }))}>Make public ({privateCount})</Button>
-        <Button type="default"  disabled = {!isValidAccount && publicCount <= 0} onClick={() => dispatch(changePublicOfImages({
+        <Button type="default"  disabled = {!isValidAccount || publicCount <= 0} onClick={() => dispatch(changePublicOfImages({
             images: items.filter(i => i.is_public).map(i => i.id),
             is_public: false
         }))}>Make private ({publicCount})</Button>
-        <Button type="primary" danger disabled = {!isValidAccount && count <= 0} onClick={() => dispatch(openDeleteModal({open: true}))}>Delete: ({count})</Button>
+        <Button type="primary" danger disabled = {!isValidAccount || count <= 0} onClick={() => dispatch(openDeleteModal({open: true}))}>Delete: ({count})</Button>
     </div>
 }
 

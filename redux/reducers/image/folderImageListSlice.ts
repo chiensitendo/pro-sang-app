@@ -236,6 +236,7 @@ const folderImageListSlice = createSlice({
             state.shouldScrollToBottom = true;
             state.offset= 0;
             state.searchParams = action.payload.searchParams;
+            state.selectedImages = new CustomMap();
         },
         searchFolderImageListFailed(state) {
             state.loading = false;
