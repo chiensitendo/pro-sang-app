@@ -1,0 +1,94 @@
+.BlogBanner {
+    margin-bottom: 80px;
+    .image_wrapper {
+        position: relative;
+        & img {
+            width: 100%;
+            height: 100%;
+            max-height: 540px;
+            border-radius: 10px;
+        }
+        .card {
+            position: absolute;
+            left: 20px;
+            bottom: -40px;
+        }
+        .card_all {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            border: none;
+            border-radius: unset;
+            background: none;
+            div[class="ant-card-body"] {
+                padding: 24px 24px 0 24px;
+            }
+            ul[class="ant-card-actions"]{
+                background: none !important;
+                border-top: none;
+                border-radius: unset;
+                padding-left: 20px;
+                li {
+                    margin: 0 0 12px 0;
+                }
+            }
+        }
+    }
+    .user_info {
+        display: flex;
+        align-items: center;
+        column-gap: 20px;
+        .avatar_group {
+            display: flex;
+            align-items: center;
+            column-gap: 6px;
+        }
+        & p {
+            margin: 0;
+        }
+    }
+    .tag_container {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        row-gap: 6px;
+    }
+    .description {
+        & p {
+            font-size: 1.2rem;
+            color: black;
+        }
+    }
+    .description_all {
+        & p {
+            font-size: 1.2rem;
+            color: white;
+        }
+    }
+}
+
+@media screen and (max-width: 536px) {
+    .BlogBanner {
+        margin-bottom: 40px;
+        .image_wrapper {
+            .card {
+                margin-top: -40%;
+                position: relative;
+                left: unset;
+                bottom: unset;
+                margin-left: 20px;
+            }
+        }
+        .description {
+            & p {
+                font-size: 1rem;
+            }
+        }
+        .description_all {
+            & p {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+.BlogItem {
+    max-width: 100%;
+    .user_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .avatar_group {
+            display: flex;
+            align-items: center;
+            column-gap: 6px;
+        }
+        & p {
+            margin: 0;
+        }
+    }
+}

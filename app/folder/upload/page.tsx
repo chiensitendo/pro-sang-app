@@ -152,6 +152,7 @@ const FolderUploadPage = () => {
             return `${process.env.apiUrl}/api/image/upload?folder_id=${folderId}`;
         },
         multiple: true,
+        maxCount: 10,
         onChange(info) {
 
             if (info.file.status !== 'uploading') {

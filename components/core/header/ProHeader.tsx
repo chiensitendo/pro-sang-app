@@ -8,7 +8,7 @@ import ProLogo from "../logo/ProLogo";
 import { Roles } from "@/types/account";
 import { MenuProps } from "antd/lib";
 import OutSessionComponent from "@/components/out-session";
-const ProHeader = ({className}: {className?: string}) => {
+const ProHeader = ({className, logo}: {className?: string, logo?: React.ReactNode}) => {
   const { userInfo, avatar } = useSessionAuth();
 
   const items: MenuProps['items'] = [
@@ -50,7 +50,7 @@ const ProHeader = ({className}: {className?: string}) => {
   ];
 
   return <div className={clx(className,styles.ProHeader)}>
-    <ProLogo />
+    {logo ? logo : <ProLogo />}
     <OutSessionComponent />
     <nav className={clx(styles.nav_pc, styles.navigation, styles.navigationInline)}>
       <ul>

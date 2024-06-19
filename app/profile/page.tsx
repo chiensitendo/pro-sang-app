@@ -97,6 +97,7 @@ const CropModal = ({
   const props: UploadProps = {
     name: "file",
     multiple: false,
+    maxCount: 10,
     accept: "image/*",
     onChange(info) {
       const { status } = info.file;

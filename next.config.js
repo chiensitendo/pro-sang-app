@@ -37,6 +37,9 @@ const nextConfig = {
     includePaths: [path.join(__dirname, 'styles')],
     prependData: `@import "_variables.scss";`
   },
+  images: {
+    domains: ['images.unsplash.com']
+  },
   webpack(config) {
     config.resolve.fallback = {
       ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified

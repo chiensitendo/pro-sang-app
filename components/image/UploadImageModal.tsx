@@ -35,6 +35,7 @@ const UploadImageModal = ({ open, onOk, onCancel, folder, accessToken, sessionId
             'x-pro-sang-session-id-header': sessionId
         },
         multiple: true,
+        maxCount: 10,
         onChange(info) {
 
             if (info.file.status !== 'uploading') {

@@ -1,0 +1,17 @@
+.BlogPage {
+    margin-top: 20px;
+    .blog_container {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 20px;
+        row-gap: 20px;
+        justify-content: center;
+    }
+    .action_btn {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 80px;
+    }
+}

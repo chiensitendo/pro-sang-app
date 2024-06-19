@@ -10,6 +10,10 @@ import StyledComponentsRegistry from "@/libs/AntdRegistry";
 import { CSSProperties } from "linaria";
 import 'react-image-crop/dist/ReactCrop.css';
 import "cropperjs/dist/cropper.css";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import "quill/dist/quill.core.css";
+import 'react-quill/dist/quill.snow.css';
+
 
 const inter = Inter({ subsets: ["latin"] });
 
