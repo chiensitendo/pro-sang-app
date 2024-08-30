@@ -19,6 +19,7 @@ import accountLogoutSlice from './account/accountLogoutSlice';
 import accountStatusSlice from './account/accountStatusSlice';
 import accountProfileSlice from './account/accountProfileSlice';
 import accountUpdateSlice from './account/accountUpdateSlice';
+import linkSlice from './link/linkSlice';
 const rootReducer = combineReducers({
     lyric: combineReducers({
         list: lyricListSlice,
@@ -51,7 +52,8 @@ const rootReducer = combineReducers({
             list: publicImageListSlice
         })
     }),
-    admin: adminSlice
+    admin: adminSlice,
+    link: linkSlice
 });
 
 export default rootReducer;
