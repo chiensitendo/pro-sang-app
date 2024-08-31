@@ -1,5 +1,4 @@
-import { LinkPreviewData } from "@/app/link/page";
-import { LinkListResponse, LinkRequest, LinkResponse } from "@/types/link";
+import { LinkListResponse, LinkPreviewData, LinkRequest, LinkResponse } from "@/types/link";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface CreateLinkState {
@@ -48,9 +47,9 @@ const linkSlice = createSlice({
             const res = action.payload.data as LinkResponse;
             state.items.unshift(res);
             state.shownItems[0] = {
-                title: "",
-                description: "",
-                image: "",
+                title: res.title,
+                description: res.description,
+                image: res.image,
                 url: res.url,
                 is_edit: false,
                 is_loading: false,
@@ -58,6 +57,7 @@ const linkSlice = createSlice({
                 is_url: res.is_url,
                 id: res.id
             }
+            state.count = state.count+1;
             
         },
         createLinkActionFailed(state, action: PayloadAction<string>) {
@@ -114,9 +114,9 @@ const linkSlice = createSlice({
             state.count = count;
             state.loading = false;
             state.shownItems = items.map(item => ({
-                title: "",
-                description: "",
-                image: "",
+                title: item.title,
+                description: item.description,
+                image: item.image,
                 url: item.url,
                 is_edit: false,
                 is_loading: false,
@@ -141,9 +141,9 @@ const linkSlice = createSlice({
             if (!state.items) {
                 state.items = items;
                 state.shownItems = state.items.map(item => ({
-                    title: "",
-                    description: "",
-                    image: "",
+                    title: item.title,
+                    description: item.description,
+                    image: item.image,
                     url: item.url,
                     is_edit: false,
                     is_loading: false,
@@ -154,9 +154,9 @@ const linkSlice = createSlice({
             } else {
                 state.items = state.items.concat(items);
                 state.shownItems = state.shownItems.concat(items.map(item => ({
-                    title: "",
-                    description: "",
-                    image: "",
+                    title: item.title,
+                    description: item.description,
+                    image: item.image,
                     url: item.url,
                     is_edit: false,
                     is_loading: false,
@@ -179,7 +179,7 @@ const linkSlice = createSlice({
         },
         updateLinkActionSuccess(state, action) {
             state.loading = false;
-            const {id, is_url, url} = action.payload.data as LinkResponse;
+            const {id, is_url, url, image, description, title} = action.payload.data as LinkResponse;
             const index = state.items.findIndex(item => item.id === id);
             if (index !== -1) {
                 state.items[index] = action.payload.data as LinkResponse;
@@ -191,7 +191,10 @@ const linkSlice = createSlice({
                     url: url,
                     is_edit: false,
                     is_url: is_url,
-                    is_loading: false
+                    is_loading: false,
+                    image,
+                    description,
+                    title
                 };
             }
             
@@ -206,6 +209,30 @@ const linkSlice = createSlice({
                 state.shownItems[shownIndex].is_loading = false;
             }
         },
+        deleteLinkAction(state, _: PayloadAction<number>) {
+            state.loading = true;
+            state.error = undefined;
+        },
+        deleteLinkActionSuccess(state, action) {
+            state.loading = false;
+            const {id} = action.payload.data as LinkResponse;
+            const index = state.items.findIndex(item => item.id === id);
+            if (index !== -1) {
+                state.items = state.items.filter((_, ind) => ind !== index);
+            }
+            const shownIndex = state.shownItems.findIndex(item => item.id === id);
+            if (shownIndex !== -1) {
+                state.shownItems = state.shownItems.filter((_, ind) => ind !== index);
+            }
+            state.count = state.count-1;
+            
+        },
+        deleteLinkActionFailed(state, action: PayloadAction<string>) {
+            state.loading = false;
+            if (action.payload) {
+                state.error = action.payload;
+            }
+        },
     }
 });
 
@@ -214,6 +241,7 @@ export const {createLinkAction, createLinkActionSuccess, createLinkActionFailed,
     fetchLinkList, fetchLinkListSuccess, fetchLinkListFailed,
     fetchNextLinkList,fetchNextLinkListSuccess,fetchNextLinkListFailed,
     updateLinkAction, updateLinkActionSuccess, updateLinkActionFailed,
-    addNewItem, cancelLinkAction, editLinkAction} = linkSlice.actions;
+    addNewItem, cancelLinkAction, editLinkAction,
+    deleteLinkAction, deleteLinkActionSuccess, deleteLinkActionFailed} = linkSlice.actions;
 
 export default linkSlice.reducer;

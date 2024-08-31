@@ -42,3 +42,13 @@ export const updateLinkByIdAPI = (id: number, request: LinkRequest, locale?: str
         }).catch(err => redirectToLogin(err, reject));
     });
 }
+
+export const deleteLinkByIdAPI = (id: number, locale?: string): Promise<AxiosResponse> => {
+    return new Promise<AxiosResponse>((resolve, reject) => {
+        preSessionAxios(true).then(obj => {
+            authAxios.delete<any>(`/api/link/${id}`,
+                { headers:  authHeaders(obj ? {locale, ...obj}: {locale}) as any, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
+        }).catch(err => redirectToLogin(err, reject));
+    });
+}

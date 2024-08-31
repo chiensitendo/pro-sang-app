@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, ChangeEvent, useRef, useEffect, useMemo } from "react";
+import React, {
+  useState,
+  ChangeEvent,
+  useRef,
+  useEffect,
+  useMemo,
+} from "react";
 import styles from "./link.module.scss";
 import { Button, Input, message, Spin } from "antd";
 import { isEmpty } from "lodash";
@@ -8,28 +14,28 @@ import {
   CheckOutlined,
   CloseOutlined,
   CopyOutlined,
+  DeleteOutlined,
   EditOutlined,
+  RedoOutlined,
 } from "@ant-design/icons";
 import withNotification from "@/components/with-notification";
 import ProHeader from "@/components/core/header/ProHeader";
 import Banner from "@/components/banner";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { LinkResponse } from "@/types/link";
+import { LinkPreviewData } from "@/types/link";
 import { useDispatch } from "react-redux";
-import { addNewItem, cancelLinkAction, createLinkAction, editLinkAction, fetchLinkList, fetchNextLinkList, updateLinkAction } from "@/redux/reducers/link/linkSlice";
+import {
+  addNewItem,
+  cancelLinkAction,
+  createLinkAction,
+  deleteLinkAction,
+  editLinkAction,
+  fetchLinkList,
+  fetchNextLinkList,
+  updateLinkAction,
+} from "@/redux/reducers/link/linkSlice";
 import withAuth from "@/components/with-auth";
-export interface LinkPreviewData {
-  title: string;
-  description: string;
-  image: string;
-  url: string;
-  is_edit: boolean;
-  is_loading: boolean;
-  is_new: boolean;
-  is_url: boolean;
-  id?: number;
-}
 
 function isValidUrl(urlString: string): boolean {
   const pattern = new RegExp(
@@ -43,16 +49,54 @@ function isValidUrl(urlString: string): boolean {
   return pattern.test(urlString);
 }
 
+const makePreviewData = (linkData: LinkPreviewData) => {
+  return new Promise<LinkPreviewData>((resolve, reject) => {
+    const emptyData = {
+      description: linkData.description,
+      image: linkData.image,
+      is_edit: false,
+      is_loading: false,
+      is_new: false,
+      is_url: linkData.is_url,
+      title: linkData.title,
+      url: linkData.url,
+      id: linkData.id,
+    } as LinkPreviewData;
+    if (!linkData.is_url) {
+      resolve(emptyData);
+    } else {
+      fetch(`/api/preview?url=${encodeURIComponent(linkData.url)}`)
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          if (isEmpty(data.error)) {
+            resolve({
+              ...linkData,
+              image: data.image,
+              description: data.description,
+              title: data.title,
+            });
+          } else {
+            resolve(emptyData);
+          }
+        })
+        .catch((err) => {
+          resolve(emptyData);
+        });
+    }
+  });
+};
+
 const LinkPreviewInput: React.FC<{
-  link: LinkPreviewData;
+  linkPreviewData: LinkPreviewData;
   onComplete: (data: LinkPreviewData, isEdit: boolean) => void;
   onEdit: () => void;
   onCancel: () => void;
-}> = ({ link, onComplete, onEdit, onCancel }) => {
-  const {is_edit, is_loading, id} = link;
-  console.log(link);
+  onDelete: (id: number) => void;
+}> = ({ linkPreviewData, onComplete, onEdit, onCancel, onDelete }) => {
+  const { is_edit, is_loading, id } = linkPreviewData;
   const [url, setUrl] = useState<string>("");
-  const [previewData, setPreviewData] = useState<LinkPreviewData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const handleInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const pastedUrl = event.target.value;
@@ -68,50 +112,24 @@ const LinkPreviewInput: React.FC<{
       is_edit: false,
       is_loading: true,
       is_new: false,
-      is_url: isValidUrl(url)
+      is_url: isValidUrl(url),
     };
-    if (link.is_new) {
-      onComplete(emptyData, false);
-      // setPreviewData(emptyData);
-      
-    } else {
-      onComplete({...emptyData, id: link.id}, true);
-    }
+    handleMakePreviewData(emptyData, linkPreviewData.is_new);
     setUrl("");
-    
   };
 
-  const makePreviewLink = (linkData: LinkPreviewData) => {
-    const emptyData = {
-      description: '',
-      image: '',
-      is_edit: false,
-      is_loading: false,
-      is_new: false,
-      is_url: linkData.is_url,
-      title: '',
-      url: linkData.url,
-      id: linkData.id
-    } as LinkPreviewData;
+  const handleMakePreviewData = (data: LinkPreviewData, isNew: boolean) => {
     setLoading(true);
-    fetch(`/api/preview?url=${encodeURIComponent(linkData.url)}`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        if (isEmpty(data.error)) {
-          setPreviewData(data);
-          setLoading(false);
-        } else {
-          setPreviewData(emptyData);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        setPreviewData(emptyData);
-        setLoading(false);
-      });
-  }
+    if (isNew) {
+      makePreviewData(data)
+        .then((d) => onComplete(d, false))
+        .finally(() => setLoading(false));
+    } else {
+      makePreviewData({ ...data, id: data.id })
+        .then((d) => onComplete(d, true))
+        .finally(() => setLoading(false));
+    }
+  };
 
   const copyToClipboard = async (text: string) => {
     const t = text.trim();
@@ -123,24 +141,6 @@ const LinkPreviewInput: React.FC<{
       message.error("Failed to copy!");
     }
   };
-
-  useEffect(() => {
-    if (link.is_url)
-      makePreviewLink(link);
-    else
-    setPreviewData({
-      description: '',
-      image: '',
-      is_edit: false,
-      is_loading: false,
-      is_new: false,
-      is_url: link.is_url,
-      title: '',
-      url: link.url,
-      id: link.id
-    });
-    
-  },[link]);
 
   return (
     <div className={styles.LinkPreviewInput}>
@@ -167,59 +167,73 @@ const LinkPreviewInput: React.FC<{
           </div>
         </Spin>
       )}
-      {!is_edit && !is_loading && previewData && (
+      {!is_edit && !is_loading && (
         <div className={styles.preview_container}>
-          {previewData.image && (
+          {linkPreviewData.image && (
             <img
-              src={previewData.image}
+              src={linkPreviewData.image}
               alt="Link preview"
               className={styles.preview_image}
             />
           )}
           <div className={styles.preview_content}>
-            {previewData.title && (
+            {linkPreviewData.title && (
               <a
-                href={previewData.url}
+                href={linkPreviewData.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.preview_title}
               >
-                {previewData.title}
+                {linkPreviewData.title}
               </a>
             )}
-            {previewData.description && (
+            {linkPreviewData.description && (
               <p className={styles.preview_description}>
-                {previewData.description}
+                {linkPreviewData.description}
               </p>
             )}
-            {isValidUrl(previewData.url) ? (
+            {linkPreviewData.is_url ? (
               <a
-                href={previewData.url}
+                href={linkPreviewData.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.preview_url}
               >
-                {previewData.url}
+                {linkPreviewData.url}
               </a>
             ) : (
-              <p>{previewData.url}</p>
+              <p>{linkPreviewData.url}</p>
             )}
           </div>
           <div className={styles.edit_buttons}>
             <Button
               disabled={loading}
-              onClick={() => copyToClipboard(link.url)}
+              onClick={() => copyToClipboard(linkPreviewData.url)}
               icon={<CopyOutlined />}
             />
             <Button
               disabled={loading}
               className={styles.button}
               onClick={() => {
-                setUrl(link.url);
+                setUrl(linkPreviewData.url);
                 onEdit();
               }}
               icon={<EditOutlined />}
             />
+            <Button
+              disabled={loading}
+              className={styles.button}
+              onClick={() => {
+                handleMakePreviewData(linkPreviewData, false);
+              }}
+              icon={<RedoOutlined />}
+            />
+            {(linkPreviewData.id) && <Button
+              disabled={loading}
+              danger
+              onClick={() => onDelete(linkPreviewData.id!)}
+              icon={<DeleteOutlined />}
+            />}
           </div>
         </div>
       )}
@@ -228,7 +242,9 @@ const LinkPreviewInput: React.FC<{
 };
 
 const LinkPage = () => {
-  const {shownItems, items, count, loading, limit, offset} = useSelector((state: RootState) => state.link);
+  const { shownItems, items, count, loading, limit, offset } = useSelector(
+    (state: RootState) => state.link
+  );
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const handleAddLink = () => {
@@ -241,20 +257,34 @@ const LinkPage = () => {
     dispatch(cancelLinkAction(indexToRemove));
   };
 
-  const handleOnLinkComplete = (indexx: number, data: LinkPreviewData, isEdit: boolean) => {
+  const handleOnLinkComplete = (
+    indexx: number,
+    data: LinkPreviewData,
+    isEdit: boolean
+  ) => {
     if (isEdit) {
-      dispatch(updateLinkAction({
-        id: data.id!,
-        request: {
-          is_url: data.is_url,
-          url: data.url
-        }
-      }));
+      dispatch(
+        updateLinkAction({
+          id: data.id!,
+          request: {
+            is_url: data.is_url,
+            url: data.url,
+            description: data.description,
+            image: data.image,
+            title: data.title,
+          },
+        })
+      );
     } else {
-      dispatch(createLinkAction({
-        is_url: data.is_url,
-        url: data.url
-      }));
+      dispatch(
+        createLinkAction({
+          is_url: data.is_url,
+          url: data.url,
+          description: data.description,
+          image: data.image,
+          title: data.title,
+        })
+      );
     }
   };
 
@@ -264,46 +294,62 @@ const LinkPage = () => {
 
   const shouldLoadMore = useMemo(() => {
     if (!items || count === 0) {
-        return false;
+      return false;
     }
-    return (count - items.length) > 0;
-}, [count, limit, items, offset]);
+    return count - items.length > 0;
+  }, [count, limit, items, offset]);
 
   useEffect(() => {
-    dispatch(fetchLinkList({
-      limit,
-      offset
-    }));
-  },[]);
+    dispatch(
+      fetchLinkList({
+        limit,
+        offset,
+      })
+    );
+  }, []);
 
   return (
     <div className={styles.LinkPage}>
       <ProHeader />
       <Banner />
       <div className={styles.link_wrapper}>
-      <div className="flex_center">
-          {<Button ref={ref} onClick={handleAddLink}>
-            Add New Link
-          </Button>}
+        <div className="flex_center">
+          {
+            <Button ref={ref} onClick={handleAddLink}>
+              Add New Link
+            </Button>
+          }
         </div>
         <div className={styles.link_container}>
           {shownItems.map((link, index) => (
             <LinkPreviewInput
               key={index}
-              link={link}
-              onComplete={(data, isEdit) => handleOnLinkComplete(index, data, isEdit)}
-              onEdit = {() => handleOnEditComplete(index)}
+              linkPreviewData={link}
+              onComplete={(data, isEdit) =>
+                handleOnLinkComplete(index, data, isEdit)
+              }
+              onEdit={() => handleOnEditComplete(index)}
               onCancel={() => handleCancel(index)}
+              onDelete={id => dispatch(deleteLinkAction(id))}
             />
           ))}
         </div>
-        {shouldLoadMore && <div className="flex_center">
-          {<Button loading= {loading} onClick={() => {
-            dispatch(fetchNextLinkList({limit, offset: offset + limit}))
-          }}>
-            Load more
-          </Button>}
-        </div>}
+        {shouldLoadMore && (
+          <div className="flex_center">
+            {
+              <Button
+                loading={loading}
+                onClick={() => {
+                  dispatch(
+                    fetchNextLinkList({ limit, offset: offset + limit })
+                  );
+                }}
+              >
+                Load more
+              </Button>
+            }
+          </div>
+        )}
       </div>
     </div>
   );
