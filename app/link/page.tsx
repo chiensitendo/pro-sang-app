@@ -70,6 +70,7 @@ const makePreviewData = (linkData: LinkPreviewData) => {
           return res.json();
         })
         .then((data) => {
+          console.log(data);
           if (isEmpty(data.error)) {
             resolve({
               ...linkData,

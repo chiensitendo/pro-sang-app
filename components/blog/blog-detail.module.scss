@@ -1,0 +1,38 @@
+.BlogDetail {
+    padding: 20px;
+    ._tagContainer {
+        margin-bottom: 20px;
+    }
+
+    ._userContainer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .user_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 20px;
+        .avatar_group {
+            display: flex;
+            align-items: center;
+            column-gap: 6px;
+        }
+        & p {
+            margin: 0;
+        }
+    }
+    .BlogContent {
+        max-width: 100%;
+        & img {
+            max-width: 100%;
+        }
+        & p {
+            word-break: break-all;
+        }
+    }
+}
