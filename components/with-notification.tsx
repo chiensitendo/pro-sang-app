@@ -14,7 +14,8 @@ const openError = (message: string, locale?: string | undefined) => {
       message: getTranslation("lyric.notification.error", 'Error', locale),
       description:
       message,
-      duration: 2.5
+      duration: 2.5,
+      placement: 'bottomRight'
     });
 };
 
@@ -23,7 +24,8 @@ const openSuccess = (message: string, locale?: string | undefined) => {
       message: 'Success',
       description:
       message,
-      duration: 2.5
+      duration: 2.5,
+      placement: 'bottomRight'
     });
 };
 

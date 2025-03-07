@@ -1,0 +1,10 @@
+.MoveImageModal {
+    max-height: 50vh;
+    overflow: auto;
+}
+
+.FolderSelect {
+    & > div {
+        width: 100%;
+    }
+}

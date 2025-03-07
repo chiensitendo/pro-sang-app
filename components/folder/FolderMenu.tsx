@@ -1,12 +1,23 @@
-import { Button } from "antd";
+import { Button, notification } from "antd";
 import styles from "./FolderMenu.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useCallback, useMemo } from "react";
 import { ImageItem } from "@/types/folder";
 import { useDispatch } from "react-redux";
-import { changeAllPublicOfImages, changePublicOfImages, openDeleteModal } from "@/redux/reducers/image/folderImageListSlice";
+import { changeAllPublicOfImages, changePublicOfImages, openDeleteModal, openMoveImageModal } from "@/redux/reducers/image/folderImageListSlice";
 import { useSessionAuth } from "../use-session-auth";
+import getTranslation from "../translations";
+
+const openError = (message: string, locale?: string | undefined) => {
+    notification['error']({
+      message: getTranslation("lyric.notification.error", 'Error', locale),
+      description:
+      message,
+      duration: 2.5,
+      placement: 'bottomRight'
+    });
+};
 
 const FolderMenu = () => {
     const {selectedImages, images} = useSelector((state: RootState) => state.image.folder.list);
@@ -55,7 +66,20 @@ const FolderMenu = () => {
             images: items.filter(i => i.is_public).map(i => i.id),
             is_public: false
         }))}>Make private ({publicCount})</Button>
-        <Button type="primary" danger disabled = {!isValidAccount || count <= 0} onClick={() => dispatch(openDeleteModal({open: true}))}>Delete: ({count})</Button>
+        <Button type="primary" danger disabled = {!isValidAccount || count <= 0} onClick={() => {
+            if (count > 10) {
+                openError("You can only delete 10 images at a time.");
+                return;
+            }
+            dispatch(openDeleteModal({open: true}))
+        }}>Delete: ({count})</Button>
+        <Button type="primary" disabled = {!isValidAccount || count <= 0} onClick={() => {
+            if (count > 10) {
+                openError("You can only move 10 images at a time.");
+                return;
+            }
+            dispatch(openMoveImageModal({open: true}));
+        }}>Move: ({count})</Button>
     </div>
 }
 

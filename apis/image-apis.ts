@@ -96,3 +96,14 @@ export const deleteImagesAPI = ({request, locale}: {request: DeleteImageRequest,
         }).catch(err => redirectToLogin(err, reject));
     });
 }
+
+export const moveImageFromFolderToFolderAPI = ({request, sourceFolderId, targetFolderId, locale}: {request: {imageIds: number[]}, sourceFolderId: number, targetFolderId: number, locale?: string }): Promise<AxiosResponse> => {
+
+    return new Promise<AxiosResponse>((resolve, reject) => {
+        preSessionAxios(true).then(obj => {
+            authAxios.post<any>(`/api/image/move/${sourceFolderId}/${targetFolderId}`, request,
+                { headers: {...authHeaders(obj ? {locale, ...obj}: {locale}) as any}, withCredentials: true })
+                .then(res => resolve(res)).catch(err => redirectToLogin(err, reject));
+        }).catch(err => redirectToLogin(err, reject));
+    });
+}

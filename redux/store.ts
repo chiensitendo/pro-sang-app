@@ -19,6 +19,7 @@ import changePublicOfImagesSaga from "./sagas/image/changePublicOfImagesSaga";
 import deleteImageSaga from "./sagas/image/deleteImageSaga";
 import adminSaga from "./sagas/folder/adminSaga";
 import linkSaga from "./sagas/link/linkSaga";
+import moveImageSaga from "./sagas/image/moveImageSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -45,6 +46,7 @@ sagaMiddleware.run(changePublicOfImagesSaga);
 sagaMiddleware.run(deleteImageSaga);
 sagaMiddleware.run(adminSaga);
 sagaMiddleware.run(linkSaga);
+sagaMiddleware.run(moveImageSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 

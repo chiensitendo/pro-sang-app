@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { LegacyRef, useEffect, useMemo, useRef, useState } from "react";
-import { changeFolderImageListLimit, deleteImages, fetchFolderImageList, fetchNextFolderImageList, openDeleteModal, openUploadImageModal, refreshFolderImageList, searchFolderImageList, selectImageItem } from "@/redux/reducers/image/folderImageListSlice";
+import { changeFolderImageListLimit, deleteImages, fetchFolderImageList, fetchNextFolderImageList, moveImage, openDeleteModal, openMoveImageModal, openUploadImageModal, refreshFolderImageList, searchFolderImageList, selectImageItem } from "@/redux/reducers/image/folderImageListSlice";
 import cls from "classnames";
 import { Button, Checkbox, Image, Select, Spin, Switch, Tag } from 'antd';
 import FolderDescription from "@/components/folder/FolderDescription";
@@ -23,6 +23,8 @@ import withNotification from "@/components/with-notification";
 import Banner from "@/components/banner";
 import { isEmpty } from "lodash";
 import { getSessionAccessToken, getSession_SessionId } from "@/services/session-service";
+import MoveImageModal from "@/components/image/MoveImageModal";
+import { fetchFolderList } from "@/redux/reducers/folder/folderListReducer";
 
 
 const getFolderIdx = (folderName: string) => {
@@ -141,7 +143,7 @@ const FolderImageListPage = ({ isAuth }: { isAuth: boolean }) => {
     const dispatch = useDispatch();
     const [accessToken, setAccessToken] = useState<string>();
     const [sessionId, setSessionId] = useState<string>();
-    const { count, images, searchParams, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
+    const { count, images, searchParams, limit, offset, loading, selectedImages, isOpenDeleteModal, isOpenMoveImageModal, isOpenUploadImageModal, shouldScrollToBottom } = useSelector(
         (state: RootState) => state.image.folder.list
     );
     const [status, setStatus] = useState(0);
@@ -187,6 +189,7 @@ const FolderImageListPage = ({ isAuth }: { isAuth: boolean }) => {
                 folderId: +id, limit, offset,searchParams
             }));
             dispatch(fetchFolderById(+id));
+            dispatch(fetchFolderList());
             setStatus(1);
         }
     }, [status, id]);
@@ -265,6 +268,11 @@ const FolderImageListPage = ({ isAuth }: { isAuth: boolean }) => {
         <DeleteImageModal open={isOpenDeleteModal} onOk={() => !selectedImages.isEmpty() && dispatch(deleteImages({
             images: selectedImages.getItems().map((v: ImageItem) => v.id)
         }))} onCancel={() => dispatch(openDeleteModal({ open: false }))} />
+
+        <MoveImageModal open={isOpenMoveImageModal} sourceFolderId={+id} onOk={(targetFolderId) => !selectedImages.isEmpty() && !isEmpty(id) && dispatch(moveImage({
+            images: selectedImages.getItems().map((v: ImageItem) => v.id), sourceFolderId: +id, targetFolderId
+        }))} onCancel={() => dispatch(openMoveImageModal({ open: false }))} />
+
         {folder && !isEmpty(accessToken) && !isEmpty(sessionId) && <UploadImageModal open={isOpenUploadImageModal} onOk={(shouldRefresh) => refresh(shouldRefresh)}
             onCancel={(shouldRefresh) => refresh(shouldRefresh)} folder={folder} accessToken={accessToken!} sessionId={sessionId!}/>}
     </div>

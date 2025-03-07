@@ -21,6 +21,7 @@ interface FolderImageListState {
     folderName?: string,
     selectedImages: CustomMap;
     isOpenDeleteModal: boolean;
+    isOpenMoveImageModal: boolean;
     isOpenUploadImageModal: boolean;
     shouldScrollToBottom: boolean;
     searchParams: ImageSearchParameter
@@ -34,6 +35,7 @@ const initialState: FolderImageListState = {
     prevLimit: 20,
     selectedImages: new CustomMap(),
     isOpenDeleteModal: false,
+    isOpenMoveImageModal: false,
     isOpenUploadImageModal: false,
     shouldScrollToBottom: false,
     searchParams: {}
@@ -158,6 +160,9 @@ const folderImageListSlice = createSlice({
         openDeleteModal(state, action: PayloadAction<{open: boolean}>) {
             state.isOpenDeleteModal = action.payload.open;
         },
+        openMoveImageModal(state, action: PayloadAction<{open: boolean}>) {
+            state.isOpenMoveImageModal = action.payload.open;
+        },
         openUploadImageModal(state, action: PayloadAction<{open: boolean}>) {
             state.isOpenUploadImageModal = action.payload.open;
         },
@@ -190,6 +195,36 @@ const folderImageListSlice = createSlice({
         deleteImagesFailed(state) {
             state.loading = false;
             state.isOpenDeleteModal = false;
+        },
+        moveImage(state, action: PayloadAction<{images: number[], sourceFolderId: number, targetFolderId: number}>) {
+            state.loading = true;
+        },
+        moveImageSuccess(state, action: PayloadAction<{images: number[], sourceFolderId: number, targetFolderId: number}>) {
+            state.loading = false;
+            const arr: ImageItem[] = [];
+            let count = 0;
+            if (state.images) {
+                state.images.forEach(i => {
+                    if (state.selectedImages.has(i.id)) {
+                        const newI: ImageItem = state.selectedImages.getValue(i.id);
+                        if (!newI) {
+                            arr.push(i); 
+                        } else {
+                            count++;
+                        }
+                    } else {
+                        arr.push(i);
+                    }
+                })
+            }
+            state.count = state.count - count;
+            state.images = Array.from(arr);
+            state.selectedImages = new CustomMap();
+            state.isOpenMoveImageModal = false;
+        },
+        moveImageFailed(state) {
+            state.loading = false;
+            state.isOpenMoveImageModal = false;
         },
         addImageInFolder(state, action: PayloadAction<ImageItem>) {
             const item = Object.assign({}, action.payload);
@@ -250,6 +285,7 @@ export const {fetchFolderImageList, fetchFolderImageListSuccess, fetchFolderImag
     changePublicOfImagesSuccess, changePublicOfImagesFailed, openDeleteModal, openUploadImageModal,
     deleteImages, deleteImagesFailed, deleteImagesSuccess, addImageInFolder, refreshFolderImageList, refreshFolderImageListSuccess, refreshFolderImageListFailed,
     changeAllPublicOfImages, changeAllPublicOfImagesSuccess, changeAllPublicOfImagesFailed, stopScrollToBottom,
-    searchFolderImageList, searchFolderImageListSuccess, searchFolderImageListFailed} = folderImageListSlice.actions;
+    searchFolderImageList, searchFolderImageListSuccess, searchFolderImageListFailed,
+    moveImage, moveImageSuccess, moveImageFailed, openMoveImageModal} = folderImageListSlice.actions;
 
 export default folderImageListSlice.reducer;
